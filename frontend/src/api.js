@@ -20,7 +20,9 @@ export const getColleges = async () => {
 export const addCollege = async (college) => {
     return await axios.post(`${API_URL}/admin/colleges`, college);
 };
-
+export const addCollegeUser = async(user) =>{
+    return await axios.post(`${API_URL}/admin/addcollegeuser`,user);
+};
 export const getStudents = async () => {
     return await axios.get(`${API_URL}/admin/students`);
 };

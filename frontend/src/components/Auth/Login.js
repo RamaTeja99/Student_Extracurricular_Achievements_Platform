@@ -7,7 +7,7 @@ import './Login.css';
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState(''); // Store selected role
+    const [role, setRole] = useState(''); 
     const navigate = useNavigate();
     const [error, setError] = useState(null);
 
@@ -15,14 +15,16 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await login(username, password, role);
+
             if (response.status === 200 && response.data) {
+                console.log('Login successful:', response.data);
                 localStorage.setItem('role', response.data.role);
-                if (response.data.role === 'ADMIN') {
-                    navigate('/admin');
-                } else if (response.data.role === 'COLLEGE') {
-                    navigate('/college');
+                if (response.data.role === 'admin') {
+                    navigate('/admin/dashboard');
+                } else if (response.data.role === 'college') {
+                    navigate('/college/dashboard');
                 } else {
-                    navigate('/student');
+                    navigate('/student/dashboard');
                 }
             }else {
                 // Handle when no data is returned in the response
@@ -63,9 +65,11 @@ const Login = () => {
                             <option value="STUDENT">Student</option>
                         </select>
                         <button type="submit">Login</button>
+                        
                     </form>
                 </div>
             </div>
+            <button onClick={() => navigate("/")} className="back-button">Back</button> {/* Back button */}
         </div>
     );
 };

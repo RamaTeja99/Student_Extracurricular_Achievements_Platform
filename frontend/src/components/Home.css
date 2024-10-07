@@ -180,9 +180,10 @@ nav ul li a:hover {
 }
 
 .achievement-carousel {
+    margin-left: 30px;
     display: flex;
     overflow-x: auto;
-    gap: 2rem;
+    gap: 4rem;
     padding: 2rem 0;
 }
 
@@ -191,7 +192,7 @@ nav ul li a:hover {
     padding: 2rem;
     border-radius: 10px;
     min-width: 250px;
-    height: 300px; /* Set a fixed height for equal sizing */
+    height: 150px; /* Set a fixed height for equal sizing */
     transition: all 0.3s ease;
     display: flex; 
     flex-direction: column; 

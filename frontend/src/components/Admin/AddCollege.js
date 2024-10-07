@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { addCollege } from '../../api';
+import {addCollegeUser} from '../../api'
 import './AddCollege.css';
 
 const AddCollege = () => {
@@ -13,7 +14,9 @@ const AddCollege = () => {
         e.preventDefault();
         try {
             const college = { name, location, username, password };
+            const user ={username,password,role:'college'};
             await addCollege(college);
+            await addCollegeUser(user);
             setMessage({ type: 'success', text: 'College added successfully!' });
             // Clear fields after submission
             setName('');

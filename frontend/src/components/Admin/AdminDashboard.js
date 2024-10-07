@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
-import CollegeList from './CollegeList.js';
-import AddCollege from './AddCollege.js';
-import StudentList from './StudentList.js';
-import AchievementList from './AchievementList.js';
+import { Link, useLocation, Outlet } from 'react-router-dom';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -17,7 +13,6 @@ const AdminDashboard = () => {
     useEffect(() => {
         // Simulating API call to get dashboard stats
         const fetchStats = async () => {
-            // Replace this with actual API call
             const response = await new Promise(resolve => 
                 setTimeout(() => resolve({
                     colleges: 15,
@@ -35,17 +30,17 @@ const AdminDashboard = () => {
         <div className="admin-dashboard">
             <header className="admin-header">
                 <h2>Admin Dashboard</h2>
+            <nav className="admin-nav">
+                <Link to="/admin/dashboard/colleges" className={location.pathname === '/admin/dashboard/colleges' ? 'active' : ''}>Colleges</Link>
+                <Link to="/admin/dashboard/students" className={location.pathname === '/admin/dashboard/students' ? 'active' : ''}>Students</Link>
+                <Link to="/admin/dashboard/achievements" className={location.pathname === '/admin/dashboard/achievements' ? 'active' : ''}>Achievements</Link>
+                <Link to="/admin/dashboard/add-college" className={location.pathname === '/admin/dashboard/add-college' ? 'active' : ''}>Add College</Link>
+            </nav>
                 <div className="user-info">
                     <div className="user-avatar"></div>
                     <span>Admin User</span>
                 </div>
             </header>
-            <nav className="admin-nav">
-                <Link to="/admin/colleges" className={location.pathname === '/admin/colleges' ? 'active' : ''}>Colleges</Link>
-                <Link to="/admin/students" className={location.pathname === '/admin/students' ? 'active' : ''}>Students</Link>
-                <Link to="/admin/achievements" className={location.pathname === '/admin/achievements' ? 'active' : ''}>Achievements</Link>
-                <Link to="/admin/add-college" className={location.pathname === '/admin/add-college' ? 'active' : ''}>Add College</Link>
-            </nav>
             <div className="admin-content">
                 <div className="dashboard-stats">
                     <div className="stat-card">
@@ -61,12 +56,7 @@ const AdminDashboard = () => {
                         <p>{stats.achievements}</p>
                     </div>
                 </div>
-                <Routes>
-                    <Route path="/admin/colleges" element={<CollegeList />} />
-                    <Route path="/admin/students" element={<StudentList />} />
-                    <Route path="/admin/achievements" element={<AchievementList />} />
-                    <Route path="/admin/add-college" element={<AddCollege />} />
-                </Routes>
+                <Outlet /> {/* This will render the matched child route */}
             </div>
         </div>
     );

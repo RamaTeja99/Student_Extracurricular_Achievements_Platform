@@ -119,6 +119,23 @@ select:focus {
     transform: scale(1.05); /* Scale up on focus */
 }
 
+.back-button {
+    position: absolute; /* Position it absolutely */
+    top: 20px; /* Distance from the top */
+    left: 20px; /* Distance from the left */
+    padding: 10px 20px; /* Button padding */
+    background-color: #007bff; /* Primary color */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s; /* Smooth background color transition */
+  }
+  
+  .back-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+  }
+
 /* Animation for dropdown options */
 @keyframes dropdownFadeIn {
     from {

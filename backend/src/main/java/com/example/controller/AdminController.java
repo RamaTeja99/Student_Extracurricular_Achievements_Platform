@@ -2,9 +2,11 @@ package com.example.controller;
 
 import com.example.entity.College;
 import com.example.entity.Student;
+import com.example.entity.User;
 import com.example.entity.Achievement;
 import com.example.service.CollegeService;
 import com.example.service.StudentService;
+import com.example.service.UserService;
 import com.example.service.AchievementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,19 +17,23 @@ import java.util.List;
 @RequestMapping("/api/admin")
 @CrossOrigin
 public class AdminController {
-    @Autowired
+	@Autowired
     private CollegeService collegeService;
-    
-    @Autowired
+	@Autowired
     private StudentService studentService;
-
-    @Autowired
+	@Autowired
     private AchievementService achievementService;
+	@Autowired
+	private UserService userService;
 
     // Add College
     @PostMapping("/colleges")
     public College addCollege(@RequestBody College college) {
         return collegeService.save(college);
+    }
+    @PostMapping("/addcollegeuser")
+    public User addCollegeUser(@RequestBody User user) {
+    	  return userService.save(user);
     }
 
     // Get All Colleges

@@ -4,6 +4,7 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 
 const Background3D = () => {
     const mountRef = useRef(null);
+    const basketballsRef = useRef([]); // Use a ref to store multiple basketballs
 
     useEffect(() => {
         // Set up scene, camera, and renderer
@@ -11,39 +12,32 @@ const Background3D = () => {
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        mountRef.current.appendChild(renderer.domElement);
 
-        // Create sports balls
-        const ballModels = [
-            '/models/soccer_ball.FBX',
-            '/models/basketball.fbx',
-            '/models/tennis_ball.fbx',
-            '/models/baseball.fbx',
-        ];
+        // Check if mountRef.current exists before appending renderer's DOM element
+        if (mountRef.current) {
+            mountRef.current.appendChild(renderer.domElement);
+        }
 
-        const balls = [];
-        const numBalls = 30;
+        // Create multiple basketballs
+        const ballModel = '/models/basketball.fbx';
         const loader = new FBXLoader();
+        const numBalls = 5; // Number of basketballs
 
         const loadBalls = async () => {
             for (let i = 0; i < numBalls; i++) {
-                const modelPath = ballModels[Math.floor(Math.random() * ballModels.length)];
                 try {
-                    const object = await loader.loadAsync(modelPath);
-                    object.scale.set(0.01, 0.01, 0.01); // Adjust scale as needed
+                    const basketball = await loader.loadAsync(ballModel);
+                    basketball.scale.set(0.01, 0.01, 0.01); // Adjust scale as needed
 
-                    // Position balls around the edges
-                    let x, y, z;
-                    do {
-                        x = (Math.random() - 0.5) * 12;
-                        y = (Math.random() - 0.5) * 12;
-                        z = (Math.random() - 0.5) * 12;
-                    } while (Math.abs(x) < 3 && Math.abs(y) < 3); // Keep balls away from center
-
-                    object.position.set(x, y, z);
-                    object.userData = { originalScale: object.scale.clone() };
-                    scene.add(object);
-                    balls.push(object);
+                    // Randomly position the basketballs
+                    basketball.position.set(
+                        (Math.random() - 0.5) * 10,
+                        (Math.random() - 0.5) * 10,
+                        (Math.random() - 0.5) * 10
+                    );
+                    basketball.userData = { originalScale: basketball.scale.clone() };
+                    scene.add(basketball);
+                    basketballsRef.current.push(basketball); // Store the ball in the ref
                 } catch (error) {
                     console.error('Error loading model:', error);
                 }
@@ -70,12 +64,12 @@ const Background3D = () => {
         // Animation loop
         const animate = () => {
             requestAnimationFrame(animate);
-            balls.forEach(ball => {
-                ball.rotation.x += 0.005;
-                ball.rotation.y += 0.005;
-                
+            basketballsRef.current.forEach(basketball => {
+                basketball.rotation.x += 0.005;
+                basketball.rotation.y += 0.005;
+
                 // Add subtle floating motion
-                ball.position.y += Math.sin(Date.now() * 0.001 + ball.position.x) * 0.002;
+                basketball.position.y += Math.sin(Date.now() * 0.001 + basketball.position.x) * 0.002;
             });
             renderer.render(scene, camera);
         };
@@ -89,48 +83,48 @@ const Background3D = () => {
         };
         window.addEventListener('resize', handleResize);
 
-        // Handle mouse move for hover effect
+        // Handle mouse move for hover effect and moving the balls away
         const handleMouseMove = (event) => {
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
             mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
 
             raycaster.setFromCamera(mouse, camera);
-            const intersects = raycaster.intersectObjects(balls, true);
+            const intersects = raycaster.intersectObjects(basketballsRef.current, true);
 
-            balls.forEach(ball => {
-                if (intersects.find(intersect => intersect.object === ball || ball.children.includes(intersect.object))) {
-                    ball.scale.lerp(ball.userData.originalScale.clone().multiplyScalar(1.2), 0.1);
+            basketballsRef.current.forEach(basketball => {
+                if (intersects.find(intersect => intersect.object === basketball || basketball.children.includes(intersect.object))) {
+                    basketball.scale.lerp(basketball.userData.originalScale.clone().multiplyScalar(1.2), 0.1);
+                    
+                    // Move the ball away from the cursor
+                    const direction = new THREE.Vector3().subVectors(basketball.position, camera.position).normalize();
+                    basketball.position.add(direction.multiplyScalar(0.1)); // Move away from the screen
                 } else {
-                    ball.scale.lerp(ball.userData.originalScale, 0.1);
+                    basketball.scale.lerp(basketball.userData.originalScale, 0.1);
                 }
             });
         };
         window.addEventListener('mousemove', handleMouseMove);
 
-        // Handle click for enlarging balls
-        const handleClick = (event) => {
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
-
-            raycaster.setFromCamera(mouse, camera);
-            const intersects = raycaster.intersectObjects(balls, true);
-
-            if (intersects.length > 0) {
-                const ball = intersects[0].object.parent || intersects[0].object;
-                ball.scale.multiplyScalar(1.5);
-                setTimeout(() => {
-                    ball.scale.copy(ball.userData.originalScale);
-                }, 300);
-            }
-        };
-        window.addEventListener('click', handleClick);
-
         // Clean up
         return () => {
+            // Remove event listeners
             window.removeEventListener('resize', handleResize);
             window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('click', handleClick);
-            mountRef.current.removeChild(renderer.domElement);
+
+            // Clean up basketballs
+            basketballsRef.current.forEach(basketball => {
+                scene.remove(basketball);
+                basketball.geometry?.dispose();
+                basketball.material?.dispose();
+            });
+
+            // Clean up renderer
+            if (mountRef.current && renderer.domElement) {
+                mountRef.current.removeChild(renderer.domElement);
+            }
+
+            // Clean up the scene, renderer, and other resources
+            renderer.dispose();
         };
     }, []);
 
