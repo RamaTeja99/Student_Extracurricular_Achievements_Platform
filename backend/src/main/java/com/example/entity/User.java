@@ -14,6 +14,18 @@ public class User {
     private String username;
     private String password;
     private String role;
+    private int roleSpecificId;
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role
+				+ ", roleSpecificId=" + roleSpecificId + "]";
+	}
+	public int getRoleSpecificId() {
+		return roleSpecificId;
+	}
+	public void setRoleSpecificId(int roleSpecificId) {
+		this.roleSpecificId = roleSpecificId;
+	}
 	public Long getId() {
 		return id;
 	}

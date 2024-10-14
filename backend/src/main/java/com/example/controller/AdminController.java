@@ -30,9 +30,11 @@ public class AdminController {
     @PostMapping("/colleges")
     public College addCollege(@RequestBody College college) {
         return collegeService.save(college);
+        
     }
     @PostMapping("/addcollegeuser")
     public User addCollegeUser(@RequestBody User user) {
+    	  System.out.println("Admin "+user);
     	  return userService.save(user);
     }
 

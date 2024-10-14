@@ -27,10 +27,7 @@ public class UserController {
     	System.out.println("login function");
         String username = loginData.getUsername();
         String password = loginData.getPassword();
-        String role = loginData.getRole();
-
-        User authenticatedUser = userService.authenticate(username, password, role);
-
+        User authenticatedUser = userService.authenticate(username, password);
         return authenticatedUser != null ? 
                ResponseEntity.ok(authenticatedUser) : 
                ResponseEntity.status(401).body(null);

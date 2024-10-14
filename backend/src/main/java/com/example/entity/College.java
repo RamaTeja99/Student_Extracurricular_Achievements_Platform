@@ -31,6 +31,11 @@ public class College {
 	public void setLocation(String location) {
 		this.location = location;
 	}
+	@Override
+	public String toString() {
+		return "College [id=" + id + ", name=" + name + ", location=" + location + "]";
+	}
+	
 
     
 }

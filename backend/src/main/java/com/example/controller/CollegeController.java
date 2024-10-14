@@ -1,7 +1,10 @@
 package com.example.controller;
 
 import com.example.entity.Student;
+import com.example.entity.User;
 import com.example.service.StudentService;
+import com.example.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,13 +16,19 @@ import java.util.List;
 public class CollegeController {
     @Autowired
     private StudentService studentService;
+    
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/{collegeId}/students")
     public Student addStudent(@PathVariable Long collegeId, @RequestBody Student student) {
-        // Add logic to associate student with college
-        return studentService.save(student);
+    	 return studentService.save(collegeId, student);
     }
     
+    @PostMapping("/addstudentuser")
+    public User addCollegeUser(@RequestBody User user) {
+    	  return userService.save(user);
+    }
    
 
     @GetMapping("/{collegeId}/students")

@@ -1,24 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import Achievements from './StudentAchievements';
-import Portfolio from './Portfolio';
+import { Link, useLocation, Outlet } from 'react-router-dom';
 import './StudentDashboard.css';
 
 const StudentDashboard = () => {
+    const location = useLocation();
+
     return (
         <div className="student-dashboard">
             <h2>Student Dashboard</h2>
-            <nav>
-                <Link to="/student/achievements">Achievements</Link>
-                <Link to="/student/portfolio">Portfolio</Link>
+            <nav className="student-nav">
+                <Link to="/student/dashboard/achievements" className={location.pathname === '/student/dashboard/achievements' ? 'active' : ''}>Achievements</Link>
+                <Link to="/student/dashboard/portfolio" className={location.pathname === '/student/dashboard/portfolio' ? 'active' : ''}>Portfolio</Link>
             </nav>
-            <div className="dashboard-content">
-                <div className="achievements">
-                    <Achievements />
-                </div>
-                <div className="portfolio">
-                    <Portfolio />
-                </div>
+            <div className="route-container">
+                <Outlet /> {/* This will render the matched child route */}
             </div>
         </div>
     );

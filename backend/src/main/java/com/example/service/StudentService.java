@@ -1,7 +1,9 @@
 package com.example.service;
 
 
+import com.example.entity.College;
 import com.example.entity.Student;
+import com.example.repository.CollegeRepository;
 import com.example.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,14 +14,19 @@ import java.util.List;
 public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private CollegeRepository collegeRepository;
 
     public List<Student> findAll() {
         return studentRepository.findAll();
     }
 
-    public Student save(Student student) {
+    public Student save(Long collegeId,Student student) {
+    	College college = collegeRepository.findById(collegeId).orElseThrow(() -> new RuntimeException("College not found"));
+        student.setCollege(college);
         return studentRepository.save(student);
     }
+    
 
     public Student findById(Long id) {
         return studentRepository.findById(id).orElse(null);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getStudents } from '../../api';
+import { getStudentsByCollege } from '../../api';
 import './StudentList.css';
 
 const StudentList = () => {
@@ -7,7 +7,7 @@ const StudentList = () => {
 
     useEffect(() => {
         const fetchStudents = async () => {
-            const response = await getStudents();
+            const response = await getStudentsByCollege();
             setStudents(response.data);
         };
         fetchStudents();

@@ -18,8 +18,12 @@ public class CollegeService {
     }
 
     public College save(College college) {
-        return collegeRepository.save(college);
+    	
+        College singlecollege = collegeRepository.save(college);
+        System.out.println(singlecollege.toString());
+        return singlecollege;
     }
+    
 
     public College findById(Long id) {
         return collegeRepository.findById(id).orElse(null);

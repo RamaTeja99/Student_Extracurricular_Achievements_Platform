@@ -7,18 +7,18 @@ import './Login.css';
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState(''); 
     const navigate = useNavigate();
-    const [error, setError] = useState(null);
+    const [errors, setError] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await login(username, password, role);
+            const response = await login(username, password);
 
             if (response.status === 200 && response.data) {
                 console.log('Login successful:', response.data);
                 localStorage.setItem('role', response.data.role);
+                localStorage.setItem('roleSpecificId', response.data.roleSpecificId);
                 if (response.data.role === 'admin') {
                     navigate('/admin/dashboard');
                 } else if (response.data.role === 'college') {
@@ -33,7 +33,7 @@ const Login = () => {
             }
         } catch (error) {
             setError('Login failed. Please check your credentials.');
-            console.error('Login failed:', error);
+            console.error('Login failed:', errors,error);
         }
     };
 
@@ -58,12 +58,6 @@ const Login = () => {
                             placeholder="Password"
                             required
                         />
-                        <select value={role} onChange={(e) => setRole(e.target.value)} required>
-                            <option value="">Select Role</option>
-                            <option value="ADMIN">Admin</option>
-                            <option value="COLLEGE">College</option>
-                            <option value="STUDENT">Student</option>
-                        </select>
                         <button type="submit">Login</button>
                         
                     </form>

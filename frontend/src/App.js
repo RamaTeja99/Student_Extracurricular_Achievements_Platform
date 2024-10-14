@@ -9,6 +9,10 @@ import CollegeList from './components/Admin/CollegeList';
 import StudentList from './components/Admin/StudentList';
 import AddCollege from './components/Admin/AddCollege';
 import AchievementList from './components/Admin/AchievementList';
+import AddStudent from './components/College/AddStudent';
+import StudentListByCollege from './components/College/StudentListByCollege';
+import Achievements from './components/Student/StudentAchievements';
+import Portfolio from './components/Student/Portfolio';
 
 
 const App = () => {
@@ -23,8 +27,14 @@ const App = () => {
                     <Route path="achievements" element={<AchievementList />} />
                     <Route path="add-college" element={<AddCollege />} />
                 </Route>
-                <Route path="/college/dashboard" element={<CollegeDashboard />} />
-                <Route path="/student/dashboard" element={<StudentDashboard />} />
+                <Route path="/college/dashboard/*" element={<CollegeDashboard />} >
+                    <Route path="students" element={<StudentListByCollege />} />
+                    <Route path="add-student" element={<AddStudent />} />
+                </Route>
+                <Route path="/student/dashboard/*" element={<StudentDashboard />}>
+                    <Route path="achievements" element={<Achievements />} />
+                    <Route path="portfolio" element={<Portfolio />} />
+                </Route>
             </Routes>
         </Router>
     );

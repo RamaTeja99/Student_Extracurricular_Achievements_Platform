@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { addCollege } from '../../api';
-import {addCollegeUser} from '../../api'
+import { addCollegeUser } from '../../api';
 import './AddCollege.css';
 
 const AddCollege = () => {
@@ -13,17 +13,19 @@ const AddCollege = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const college = { name, location, username, password };
-            const user ={username,password,role:'college'};
-            await addCollege(college);
+            const college = { name, location };
+            const response = await addCollege(college);
+            const savedCollege = response.data; 
+            console.log('Saved College:', savedCollege); 
+            const user = { username, password, role: 'college',  roleSpecificId: savedCollege.id };
+            console.log('User to be added:', user); // Log the user object
             await addCollegeUser(user);
+
             setMessage({ type: 'success', text: 'College added successfully!' });
-            // Clear fields after submission
             setName('');
             setLocation('');
             setUsername('');
             setPassword('');
-            // Clear success message after 3 seconds
             setTimeout(() => setMessage(null), 3000);
         } catch (error) {
             setMessage({ type: 'error', text: 'Failed to add college. Please try again.' });

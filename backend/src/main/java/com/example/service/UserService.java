@@ -10,15 +10,17 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User findByUsernameAndRole(String username, String role) {
-        return userRepository.findByUsernameAndRole(username, role);
+    public User findByUsernameandPassword(String username,String password) {
+        return userRepository.findByUsernameAndPassword(username,password);
     }
-
     public User save(User user) {
-        return userRepository.save(user);
+    	System.out.println(user.toString());
+        User singleUser= userRepository.save(user);
+        System.out.println(singleUser.toString());
+        return singleUser;
     }
-    public User authenticate(String username, String password, String role) {
-        User user = findByUsernameAndRole(username, role);
+    public User authenticate(String username, String password) {
+        User user = findByUsernameandPassword(username,password);
         return (user != null && user.getPassword().equals(password)) ? user : null;
     }
 }

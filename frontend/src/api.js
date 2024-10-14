@@ -3,9 +3,9 @@ import axios from 'axios';
 const API_URL = 'http://localhost:8080/api'; // Adjust according to your backend URL
 
 // Authentication API
-export const login = async (username, password, role) => {
+export const login = async (username, password) => {
     try {
-        const response = await axios.post(`${API_URL}/auth/login`, { username, password, role });
+        const response = await axios.post(`${API_URL}/auth/login`, { username, password});
         return response;
     } catch (error) {
         console.error('API error:', error);
@@ -13,6 +13,8 @@ export const login = async (username, password, role) => {
     }
 };
 
+
+//Admin APIs
 export const getColleges = async () => {
     return await axios.get(`${API_URL}/admin/colleges`);
 };
@@ -33,11 +35,16 @@ export const getAllAchievements = async () => {
 
 // College APIs
 export const getStudentsByCollege = async () => {
-    return await axios.get(`${API_URL}/college/students`);
+    const collegeId = localStorage.getItem('roleSpecificId');
+    return await axios.get(`${API_URL}/colleges/${collegeId}/students`);
 };
 
 export const addStudent = async (student) => {
-    return await axios.post(`${API_URL}/college/students`, student);
+    const collegeId = localStorage.getItem('roleSpecificId');
+    return await axios.post(`${API_URL}/colleges/${collegeId}/students`, student);
+};
+export const addStudentUser = async(user) =>{
+    return await axios.post(`${API_URL}/colleges/addstudentuser`,user);
 };
 
 // Student APIs
