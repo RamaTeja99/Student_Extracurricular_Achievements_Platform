@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getStudents } from '../../api';
-import './StudentList.css';
+import { getStudents } from '../../api'; // Adjust the import path as necessary
+import './StudentList.css'; // Make sure this path is correct
 
 const StudentList = () => {
     const [students, setStudents] = useState([]);
@@ -11,6 +11,7 @@ const StudentList = () => {
         const fetchStudents = async () => {
             try {
                 const response = await getStudents();
+                console.log('Fetched students:', response.data);
                 setStudents(response.data);
             } catch (error) {
                 console.error('Failed to fetch students:', error);
@@ -48,7 +49,12 @@ const StudentList = () => {
                     <div key={student.id} className="student-card">
                         <div className="student-name">{student.name}</div>
                         <div className="student-info">Roll Number: {student.rollNumber}</div>
-                        <div className="student-info">College: {student.college}</div>
+                        <div className="student-info">
+                            College: {student.college ? student.college.name : 'N/A'}
+                        </div>
+                        <div className="student-info">
+                            Location: {student.college ? student.college.location : 'N/A'}
+                        </div>
                     </div>
                 ))}
             </div>

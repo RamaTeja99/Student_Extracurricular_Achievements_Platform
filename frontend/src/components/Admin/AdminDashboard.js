@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, Outlet } from 'react-router-dom';
 import './AdminDashboard.css';
+import Logout from '../Auth/Logout';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState({
@@ -57,6 +58,7 @@ const AdminDashboard = () => {
                     </div>
                 </div>
                 <Outlet /> {/* This will render the matched child route */}
+                <Logout />
             </div>
         </div>
     );

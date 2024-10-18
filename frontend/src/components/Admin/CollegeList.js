@@ -1,22 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { getColleges } from '../../api';
+import EditCollege from './EditCollege'; // Import the EditCollege component
 import './CollegeList.css';
 
 const CollegeList = () => {
     const [colleges, setColleges] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
+    const [selectedCollegeId, setSelectedCollegeId] = useState(null);
 
     useEffect(() => {
         const fetchColleges = async () => {
             try {
                 const response = await getColleges();
-                // Assuming the API returns college data with student and achievement counts
                 setColleges(response.data);
+                console.log('Fetched colleges:', response.data);
             } catch (error) {
                 console.error('Failed to fetch colleges:', error);
             }
         };
         fetchColleges();
     }, []);
+
+    const handleEditClick = (collegeId) => {
+        setSelectedCollegeId(collegeId);
+        setIsEditing(true);
+    };
+
+    const handleCloseEdit = () => {
+        setIsEditing(false);
+        setSelectedCollegeId(null);
+    };
 
     return (
         <div className="college-list-container">
@@ -28,19 +41,13 @@ const CollegeList = () => {
                     <div key={college.id} className="college-card">
                         <div className="college-name">{college.name}</div>
                         <div className="college-location">{college.location}</div>
-                        <div className="college-stats">
-                            <div className="stat">
-                                <div className="stat-value">{college.studentCount}</div>
-                                <div className="stat-label">Students</div>
-                            </div>
-                            <div className="stat">
-                                <div className="stat-value">{college.achievementCount}</div>
-                                <div className="stat-label">Achievements</div>
-                            </div>
-                        </div>
+                        <button onClick={() => handleEditClick(college.id)}>Edit</button>
                     </div>
                 ))}
             </div>
+            {isEditing && (
+                <EditCollege collegeId={selectedCollegeId} onClose={handleCloseEdit} />
+            )}
         </div>
     );
 };

@@ -13,7 +13,7 @@ import AddStudent from './components/College/AddStudent';
 import StudentListByCollege from './components/College/StudentListByCollege';
 import Achievements from './components/Student/StudentAchievements';
 import Portfolio from './components/Student/Portfolio';
-
+import EditCollege from './components/Admin/EditCollege';
 
 const App = () => {
     return (
@@ -26,6 +26,7 @@ const App = () => {
                     <Route path="students" element={<StudentList />} />
                     <Route path="achievements" element={<AchievementList />} />
                     <Route path="add-college" element={<AddCollege />} />
+                    <Route path="edit-college" element={<EditCollege />} />
                 </Route>
                 <Route path="/college/dashboard/*" element={<CollegeDashboard />} >
                     <Route path="students" element={<StudentListByCollege />} />

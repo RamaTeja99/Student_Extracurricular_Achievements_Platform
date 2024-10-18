@@ -16,9 +16,8 @@ const Login = () => {
             const response = await login(username, password);
 
             if (response.status === 200 && response.data) {
-                console.log('Login successful:', response.data);
-                localStorage.setItem('role', response.data.role);
-                localStorage.setItem('roleSpecificId', response.data.roleSpecificId);
+                sessionStorage.setItem('role', response.data.role);
+                sessionStorage.setItem('roleSpecificId', response.data.roleSpecificId);
                 if (response.data.role === 'admin') {
                     navigate('/admin/dashboard');
                 } else if (response.data.role === 'college') {
@@ -26,14 +25,11 @@ const Login = () => {
                 } else {
                     navigate('/student/dashboard');
                 }
-            }else {
-                // Handle when no data is returned in the response
-                console.error('No data returned in the response.');
+            } else {
                 setError('No data received. Please try again.');
             }
         } catch (error) {
-            setError('Login failed. Please check your credentials.');
-            console.error('Login failed:', errors,error);
+            setError('Login failed. Please check your credentials.',errors);
         }
     };
 
@@ -59,11 +55,10 @@ const Login = () => {
                             required
                         />
                         <button type="submit">Login</button>
-                        
                     </form>
                 </div>
             </div>
-            <button onClick={() => navigate("/")} className="back-button">Back</button> {/* Back button */}
+            <button onClick={() => navigate("/")} className="back-button">Back</button>
         </div>
     );
 };

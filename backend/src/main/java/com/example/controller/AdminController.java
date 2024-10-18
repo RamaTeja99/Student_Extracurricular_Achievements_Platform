@@ -42,7 +42,18 @@ public class AdminController {
     @GetMapping("/colleges")
     public List<College> getColleges() {
         return collegeService.findAll();
+        
     }
+    @GetMapping("/colleges/{id}")
+    public College getCollegeById(@PathVariable Long id) {
+        return collegeService.findById(id);
+    }
+    @GetMapping("/college-user/{collegeId}")
+    public User getCollegeUserByCollegeId(@PathVariable int collegeId) {
+        return userService.getCollegeUserByCollegeId(collegeId);
+    }
+
+    
 
     // Get All Students
     @GetMapping("/students")
@@ -60,6 +71,13 @@ public class AdminController {
     @PutMapping("/colleges/{id}")
     public College updateCollege(@PathVariable Long id, @RequestBody College college) {
         return collegeService.update(id, college);
+    }
+    @PutMapping("/update-college-credentials/{collegeId}")
+    public String updateCollegeCredentials(@PathVariable int collegeId,
+                                           @RequestParam String newUsername,
+                                           @RequestParam String newPassword) {
+        userService.updateCollegeCredentialsByAdmin(collegeId, newUsername, newPassword);
+        return "College credentials updated successfully";
     }
 
     // Delete College

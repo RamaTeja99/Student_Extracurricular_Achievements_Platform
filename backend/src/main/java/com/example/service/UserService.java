@@ -2,6 +2,9 @@ package com.example.service;
 
 import com.example.entity.User;
 import com.example.repository.UserRepository;
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,4 +26,26 @@ public class UserService {
         User user = findByUsernameandPassword(username,password);
         return (user != null && user.getPassword().equals(password)) ? user : null;
     }
+    public void updateCollegeCredentialsByAdmin(int collegeId, String newUsername, String newPassword) {
+        Optional<User> userOptional = userRepository.findByRoleSpecificIdAndRole(collegeId, "college");
+        
+        if (userOptional.isPresent()) {
+            User collegeUser = userOptional.get();
+            collegeUser.setUsername(newUsername);
+            collegeUser.setPassword(newPassword);
+            userRepository.save(collegeUser);
+        } else {
+            throw new IllegalArgumentException("College not found with ID: " + collegeId);
+        }
+    }
+    public User getCollegeUserByCollegeId(int collegeId) {
+        Optional<User> userOptional = userRepository.findByRoleSpecificIdAndRole(collegeId, "college");
+
+        if (userOptional.isPresent()) {
+            return userOptional.get(); // Return the college user
+        } else {
+            throw new IllegalArgumentException("College not found with ID: " + collegeId);
+        }
+    }
+
 }
