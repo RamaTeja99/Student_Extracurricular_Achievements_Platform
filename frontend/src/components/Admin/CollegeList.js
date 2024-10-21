@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getColleges } from '../../api';
-import EditCollege from './EditCollege'; // Import the EditCollege component
+import { getColleges, deleteCollege } from '../../api'; // import deleteCollege API
+import EditCollege from './EditCollege';
 import './CollegeList.css';
 
 const CollegeList = () => {
@@ -26,6 +26,18 @@ const CollegeList = () => {
         setIsEditing(true);
     };
 
+    const handleDeleteClick = async (collegeId) => {
+        if (window.confirm('Are you sure you want to delete this college?')) {
+            try {
+                await deleteCollege(collegeId);
+                setColleges(colleges.filter((college) => college.id !== collegeId));
+                console.log(`College with ID ${collegeId} deleted.`);
+            } catch (error) {
+                console.error(`Failed to delete college with ID ${collegeId}:`, error);
+            }
+        }
+    };
+
     const handleCloseEdit = () => {
         setIsEditing(false);
         setSelectedCollegeId(null);
@@ -42,6 +54,7 @@ const CollegeList = () => {
                         <div className="college-name">{college.name}</div>
                         <div className="college-location">{college.location}</div>
                         <button onClick={() => handleEditClick(college.id)}>Edit</button>
+                        <button onClick={() => handleDeleteClick(college.id)} className="delete-button">Delete</button>
                     </div>
                 ))}
             </div>

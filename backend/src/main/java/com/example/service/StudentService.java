@@ -75,4 +75,7 @@ public class StudentService {
         }
         return null; // Handle the case where the student doesn't exist
     }
+    public Student findByRollNumber(String rollNumber) {
+        return studentRepository.findByRollNumber(rollNumber);
+    }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation, Outlet } from 'react-router-dom';
 import './StudentDashboard.css';
+import Logout from '../Auth/Logout';
 
 const StudentDashboard = () => {
     const location = useLocation();
@@ -14,6 +15,7 @@ const StudentDashboard = () => {
             </nav>
             <div className="route-container">
                 <Outlet /> {/* This will render the matched child route */}
+                <Logout />
             </div>
         </div>
     );

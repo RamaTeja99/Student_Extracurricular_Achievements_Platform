@@ -80,9 +80,14 @@ public class AdminController {
         return "College credentials updated successfully";
     }
 
-    // Delete College
     @DeleteMapping("/colleges/{id}")
     public void deleteCollege(@PathVariable Long id) {
+        // First, delete the associated college user
+    	int collegeId = id.intValue();
+        userService.deleteCollegeUserByCollegeId(collegeId);
+
+        // Then, delete the college itself
         collegeService.delete(id);
     }
+
 }

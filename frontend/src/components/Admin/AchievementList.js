@@ -21,13 +21,23 @@ const AchievementList = () => {
         <div className="achievement-list">
             <h3 className="achievement-title">Achievements</h3>
             <div className="achievement-grid">
-                {achievements.map((achievement) => (
-                    <div key={achievement.id} className="achievement-card">
-                        <h4>{achievement.title}</h4>
-                        <p>{achievement.description}</p>
-                        <span className="achievement-date">{new Date(achievement.date).toLocaleDateString()}</span>
-                    </div>
-                ))}
+                {achievements.length > 0 ? (
+                    achievements.map((achievement) => (
+                        <div key={achievement.id} className="achievement-card">
+                            <h4>{achievement.activityName}</h4>
+                            <div class="content">
+                            <p><strong>Description:</strong>{achievement.activityDescription}</p>
+                            <p><strong>Category:</strong> {achievement.activityCategory}</p>
+                            {achievement.firstPosition && <p className="position">1st Place</p>}
+                            {achievement.secondPosition && <p className="position">2nd Place</p>}
+                            {achievement.thirdPosition && <p className="position">3rd Place</p>}
+                            {!achievement.firstPosition && !achievement.secondPosition && !achievement.thirdPosition && <p className="position">Participation</p>}
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p>No achievements found.</p>
+                )}
             </div>
         </div>
     );

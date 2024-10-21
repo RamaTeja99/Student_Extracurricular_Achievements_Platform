@@ -14,6 +14,7 @@ import StudentListByCollege from './components/College/StudentListByCollege';
 import Achievements from './components/Student/StudentAchievements';
 import Portfolio from './components/Student/Portfolio';
 import EditCollege from './components/Admin/EditCollege';
+import AddAchievement from './components/College/AddAchievement';
 
 const App = () => {
     return (
@@ -31,6 +32,7 @@ const App = () => {
                 <Route path="/college/dashboard/*" element={<CollegeDashboard />} >
                     <Route path="students" element={<StudentListByCollege />} />
                     <Route path="add-student" element={<AddStudent />} />
+                    <Route path="add-achievement" element={<AddAchievement />} />
                 </Route>
                 <Route path="/student/dashboard/*" element={<StudentDashboard />}>
                     <Route path="achievements" element={<Achievements />} />

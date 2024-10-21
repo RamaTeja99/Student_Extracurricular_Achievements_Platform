@@ -32,6 +32,7 @@ export const getColleges = async () => {
 export const getCollegeById = async (collegeId) => {
     return await axios.get(`${API_URL}/admin/colleges/${collegeId}`);
 };
+
 export const getCollegeUserByCollegeId = async (collegeId) => {
     return await axios.get(`${API_URL}/admin/college-user/${collegeId}`);
 };
@@ -62,6 +63,13 @@ export const deleteCollege = async (id) => {
     return await axios.delete(`${API_URL}/admin/colleges/${id}`);
 };
 
+export const getAllAchievements = async () => {
+    return await axios.get(`${API_URL}/admin/achievements`);
+};
+export const getStudents = async () => {
+    return await axios.get(`${API_URL}/admin/students`);
+};
+
 // College APIs
 export const getStudentsByCollege = async () => {
     const collegeId = sessionStorage.getItem('roleSpecificId');
@@ -77,36 +85,35 @@ export const addStudentUser = async (user) => {
     return await axios.post(`${API_URL}/colleges/addstudentuser`, user);
 };
 
-// Student APIs
-export const getAchievementsByStudent = async (studentId) => {
-    return await axios.get(`${API_URL}/students/${studentId}/achievements`);
+export const addAchievement = async (rollNumber, achievement) => {
+    return await axios.post(`${API_URL}/colleges/students/${rollNumber}/achievements/add`, achievement); // Corrected line
 };
-
-// Additional APIs for managing students and achievements (optional)
-export const getStudents = async () => {
-    return await axios.get(`${API_URL}/admin/students`);
+export const getAchievementsByStudent = async (rollNumber) => {
+    return await axios.get(`${API_URL}/colleges/students/${rollNumber}/achievements`);
 };
-
-export const getAllAchievements = async () => {
-    return await axios.get(`${API_URL}/admin/achievements`);
-};
-
 export const updateStudent = async (id, student) => {
-    return await axios.put(`${API_URL}/college/students/${id}`, student);
+    return await axios.put(`${API_URL}/colleges/students/${id}`, student);
 };
 
 export const deleteStudent = async (id) => {
-    return await axios.delete(`${API_URL}/college/students/${id}`);
+    return await axios.delete(`${API_URL}/colleges/students/${id}`);
 };
 
-export const addAchievement = async (achievement) => {
-    return await axios.post(`${API_URL}/achievements`, achievement);
+// Update an achievement by ID
+export const updateAchievement = async (achievementId, updatedAchievement) => {
+    return await axios.put(`${API_URL}/colleges/achievements/update/${achievementId}`, updatedAchievement);
 };
 
-export const updateAchievement = async (id, achievement) => {
-    return await axios.put(`${API_URL}/achievements/${id}`, achievement);
+// Delete an achievement by ID
+export const deleteAchievement = async (achievementId) => {
+    return await axios.delete(`${API_URL}/colleges/achievements/delete/${achievementId}`);
 };
 
-export const deleteAchievement = async (id) => {
-    return await axios.delete(`${API_URL}/achievements/${id}`);
-};
+// Student APIs
+
+
+
+
+
+
+

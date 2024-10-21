@@ -47,5 +47,15 @@ public class UserService {
             throw new IllegalArgumentException("College not found with ID: " + collegeId);
         }
     }
+    public void deleteCollegeUserByCollegeId(int collegeId) {
+        Optional<User> userOptional = userRepository.findByRoleSpecificIdAndRole(collegeId, "college");
+        
+        if (userOptional.isPresent()) {
+            userRepository.delete(userOptional.get());
+        } else {
+            throw new IllegalArgumentException("No user found with college ID: " + collegeId);
+        }
+    }
+
 
 }

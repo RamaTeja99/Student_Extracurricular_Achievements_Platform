@@ -1,7 +1,9 @@
 package com.example.controller;
 
+import com.example.entity.Achievement;
 import com.example.entity.Student;
 import com.example.entity.User;
+import com.example.service.AchievementService;
 import com.example.service.StudentService;
 import com.example.service.UserService;
 
@@ -16,6 +18,9 @@ import java.util.List;
 public class CollegeController {
     @Autowired
     private StudentService studentService;
+    
+    @Autowired
+    private AchievementService achievementService;
     
     @Autowired
     private UserService userService;
@@ -44,6 +49,39 @@ public class CollegeController {
     @DeleteMapping("/students/{id}")
     public void deleteStudent(@PathVariable Long id) {
         studentService.delete(id);
+    }
+    @PostMapping("/students/{rollNumber}/achievements/add")
+    public Achievement addAchievement(@PathVariable String rollNumber, @RequestBody Achievement achievement) {
+    	 Student student = studentService.findByRollNumber(rollNumber);
+         if (student != null) {
+             achievement.setStudent(student);
+             return achievementService.save(achievement);
+         } else {
+             throw new RuntimeException("Student not found with roll number: " + rollNumber);
+         }
+    }
+
+    // Get list of achievements for a student by roll number
+    @GetMapping("/students/{rollNumber}/achievements")
+    public List<Achievement> getAchievementsByStudentRollNumber(@PathVariable String rollNumber) {
+        Student student = studentService.findByRollNumber(rollNumber);
+        if (student != null) {
+            return achievementService.findByStudentId(student.getId());
+        } else {
+            throw new RuntimeException("Student not found with roll number: " + rollNumber);
+        }
+    }
+
+    // Update Achievement
+    @PutMapping("/achievements/update/{id}")
+    public Achievement updateAchievement(@PathVariable Long id, @RequestBody Achievement achievement) {
+        return achievementService.update(id, achievement);
+    }
+
+    // Delete Achievement
+    @DeleteMapping("/achievements/delete/{id}")
+    public void deleteAchievement(@PathVariable Long id) {
+        achievementService.delete(id);
     }
 
 }

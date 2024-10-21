@@ -46,17 +46,10 @@ public class AchievementService {
             if (achievement.getActivityCategory() != null) {
                 existingAchievement.setActivityCategory(achievement.getActivityCategory());
             }
-            if (achievement.getFirstPosition() != null) {
-                existingAchievement.setFirstPosition(achievement.getFirstPosition());
-            }
-            if (achievement.getSecondPosition() != null) {
-                existingAchievement.setSecondPosition(achievement.getSecondPosition());
-            }
-            if (achievement.getThirdPosition() != null) {
-                existingAchievement.setThirdPosition(achievement.getThirdPosition());
-            }
-            // Participation field can also be updated if provided
-            existingAchievement.setParticipation(achievement.getParticipation());
+            existingAchievement.setFirstPosition(achievement.isFirstPosition());
+            existingAchievement.setSecondPosition(achievement.isSecondPosition());
+            existingAchievement.setThirdPosition(achievement.isThirdPosition());
+            existingAchievement.setParticipation(achievement.isParticipation());
 
             return achievementRepository.save(existingAchievement);
         }

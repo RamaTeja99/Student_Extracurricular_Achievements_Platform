@@ -17,10 +17,10 @@ public class Achievement {
     private String activityName;
     private String activityDescription;
     private String activityCategory;
-    private String firstPosition;
-    private String secondPosition;
-    private String thirdPosition;
-    private String participation;
+    private boolean firstPosition;
+    private boolean secondPosition;
+    private boolean thirdPosition;
+    private boolean participation;
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "student_id", nullable = false)
@@ -49,35 +49,35 @@ public class Achievement {
 	public void setActivityCategory(String activityCategory) {
 		this.activityCategory = activityCategory;
 	}
-	public String getFirstPosition() {
-		return firstPosition;
-	}
-	public void setFirstPosition(String firstPosition) {
-		this.firstPosition = firstPosition;
-	}
-	public String getSecondPosition() {
-		return secondPosition;
-	}
-	public void setSecondPosition(String secondPosition) {
-		this.secondPosition = secondPosition;
-	}
-	public String getThirdPosition() {
-		return thirdPosition;
-	}
-	public void setThirdPosition(String thirdPosition) {
-		this.thirdPosition = thirdPosition;
-	}
-	public String getParticipation() {
-		return participation;
-	}
-	public void setParticipation(String participation) {
-		this.participation = participation;
-	}
 	public Student getStudent() {
 		return student;
 	}
 	public void setStudent(Student student) {
 		this.student = student;
+	}
+	public boolean isFirstPosition() {
+		return firstPosition;
+	}
+	public void setFirstPosition(boolean firstPosition) {
+		this.firstPosition = firstPosition;
+	}
+	public boolean isSecondPosition() {
+		return secondPosition;
+	}
+	public void setSecondPosition(boolean secondPosition) {
+		this.secondPosition = secondPosition;
+	}
+	public boolean isThirdPosition() {
+		return thirdPosition;
+	}
+	public void setThirdPosition(boolean thirdPosition) {
+		this.thirdPosition = thirdPosition;
+	}
+	public boolean isParticipation() {
+		return participation;
+	}
+	public void setParticipation(boolean participation) {
+		this.participation = participation;
 	}
 	
 
