@@ -28,7 +28,6 @@ export const getColleges = async () => {
     return await axios.get(`${API_URL}/admin/colleges`);
 };
 
-// Fetch a specific college by ID
 export const getCollegeById = async (collegeId) => {
     return await axios.get(`${API_URL}/admin/colleges/${collegeId}`);
 };
@@ -63,6 +62,11 @@ export const deleteCollege = async (id) => {
     return await axios.delete(`${API_URL}/admin/colleges/${id}`);
 };
 
+export const deleteCollegeUser = async (id) => {
+    return await axios.delete(`${API_URL}/admin/collegesuser/${id}`);
+}
+
+
 export const getAllAchievements = async () => {
     return await axios.get(`${API_URL}/admin/achievements`);
 };
@@ -72,7 +76,10 @@ export const getStudents = async () => {
 
 // College APIs
 export const getStudentsByCollege = async () => {
-    const collegeId = sessionStorage.getItem('roleSpecificId');
+    let collegeId =null;
+    if(sessionStorage.getItem('role') === 'college') {
+        collegeId = sessionStorage.getItem('roleSpecificId');
+    }
     return await axios.get(`${API_URL}/colleges/${collegeId}/students`);
 };
 
@@ -110,7 +117,13 @@ export const deleteAchievement = async (achievementId) => {
 };
 
 // Student APIs
-
+ export const getStudentAchievements = async () => {
+    let studentId =null;
+    if(sessionStorage.getItem('role') === 'student') {
+        studentId = sessionStorage.getItem('roleSpecificId');
+    }
+    return await axios.get(`${API_URL}/students/${studentId}/achievements`);
+};
 
 
 

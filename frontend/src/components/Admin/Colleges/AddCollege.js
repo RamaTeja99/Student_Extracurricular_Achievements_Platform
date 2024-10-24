@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { addCollege } from '../../api';
-import { addCollegeUser } from '../../api';
+import { addCollege } from '../../../api';
+import { addCollegeUser } from '../../../api';
 import './AddCollege.css';
 
 const AddCollege = () => {

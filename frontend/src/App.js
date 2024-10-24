@@ -5,16 +5,19 @@ import Login from './components/Auth/Login';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import CollegeDashboard from './components/College/CollegeDashboard';
 import StudentDashboard from './components/Student/StudentDashboard';
-import CollegeList from './components/Admin/CollegeList';
-import StudentList from './components/Admin/StudentList';
-import AddCollege from './components/Admin/AddCollege';
-import AchievementList from './components/Admin/AchievementList';
-import AddStudent from './components/College/AddStudent';
-import StudentListByCollege from './components/College/StudentListByCollege';
+import CollegeList from './components/Admin/Colleges/CollegeList';
+import StudentList from './components/Admin/Students/StudentList';
+import AddCollege from './components/Admin/Colleges/AddCollege';
+import AchievementList from './components/Admin/Achievements/AchievementList';
+import AddStudent from './components/College/Students/AddStudent';
+import StudentListByCollege from './components/College/Students/StudentListByCollege';
 import Achievements from './components/Student/StudentAchievements';
 import Portfolio from './components/Student/Portfolio';
-import EditCollege from './components/Admin/EditCollege';
-import AddAchievement from './components/College/AddAchievement';
+import EditCollege from './components/Admin/Colleges/EditCollege';
+import AddAchievement from './components/College/Achievements/AddAchievement';
+import EditAchievement from './components/College/Achievements/EditAchievement';
+import StudentDetail from './components/College/Students/StudentDetail';
+import EditStudent from './components/College/Students/EditStudent';
 
 const App = () => {
     return (
@@ -32,7 +35,10 @@ const App = () => {
                 <Route path="/college/dashboard/*" element={<CollegeDashboard />} >
                     <Route path="students" element={<StudentListByCollege />} />
                     <Route path="add-student" element={<AddStudent />} />
+                    <Route path="edit-student" element={<EditStudent />} />
                     <Route path="add-achievement" element={<AddAchievement />} />
+                    <Route path="edit-achievement" element={<EditAchievement />} />{}
+                    <Route path="student-detail" element={<StudentDetail />} />
                 </Route>
                 <Route path="/student/dashboard/*" element={<StudentDashboard />}>
                     <Route path="achievements" element={<Achievements />} />

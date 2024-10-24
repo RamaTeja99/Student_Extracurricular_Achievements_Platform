@@ -18,9 +18,9 @@ public class UserService {
     }
     public User save(User user) {
     	System.out.println(user.toString());
-        User singleUser= userRepository.save(user);
-        System.out.println(singleUser.toString());
-        return singleUser;
+        User User= userRepository.save(user);
+        //System.out.println(User.toString());
+        return User;
     }
     public User authenticate(String username, String password) {
         User user = findByUsernameandPassword(username,password);
@@ -56,6 +56,16 @@ public class UserService {
             throw new IllegalArgumentException("No user found with college ID: " + collegeId);
         }
     }
+    public void deleteStudentUserByStudentId(int studentId) {
+        Optional<User> userOptional = userRepository.findByRoleSpecificIdAndRole(studentId, "student");
+        
+        if (userOptional.isPresent()) {
+            userRepository.delete(userOptional.get());
+        } else {
+            throw new IllegalArgumentException("No user found with college ID: " + studentId);
+        }
+    }
+    
 
 
 }

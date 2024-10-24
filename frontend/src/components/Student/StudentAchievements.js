@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAchievementsByStudent } from '../../api';
+import { getStudentAchievements } from '../../api';
 import './StudentAchievements.css';
 
 const StudentAchievements = () => {
@@ -12,9 +12,7 @@ const StudentAchievements = () => {
 
     const fetchAchievements = async () => {
         try {
-            // Assuming we have the student ID stored in localStorage or context
-            const studentId = localStorage.getItem('studentId');
-            const response = await getAchievementsByStudent(studentId);
+            const response = await getStudentAchievements();
             setAchievements(response.data);
             setLoading(false);
         } catch (error) {
@@ -33,9 +31,11 @@ const StudentAchievements = () => {
                     {achievements.map((achievement) => (
                         <li key={achievement.id} className="achievement-item">
                             <div className="achievement-content">
-                                <h3>{achievement.title}</h3>
-                                <p>{achievement.description}</p>
-                                <span className="achievement-date">{new Date(achievement.date).toLocaleDateString()}</span>
+                                <p>Activity: {achievement.activityName}</p>
+                                <p>Position: {achievement.firstPosition ? 'First Position' : achievement.secondPosition ? 'Second Position' : achievement.thirdPosition ? 'Third Position' : 'Participation'}</p>
+                                <p>Category: {achievement.activityCategory}</p>
+                                <p>Date: {achievement.activityDate}</p>
+                                <p>Points: {achievement.activitypoints}</p>
                             </div>
                         </li>
                     ))}

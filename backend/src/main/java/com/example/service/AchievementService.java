@@ -1,7 +1,10 @@
 package com.example.service;
 
 import com.example.entity.Achievement;
+import com.example.entity.Student;
 import com.example.repository.AchievementRepository;
+import com.example.repository.StudentRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +14,9 @@ import java.util.List;
 public class AchievementService {
     @Autowired
     private AchievementRepository achievementRepository;
+    
+    @Autowired
+    private StudentRepository studentRepository;
 
     public List<Achievement> findAll() {
         return achievementRepository.findAll();
@@ -46,6 +52,13 @@ public class AchievementService {
             if (achievement.getActivityCategory() != null) {
                 existingAchievement.setActivityCategory(achievement.getActivityCategory());
             }
+            if (achievement.getActivityDate() != null) {
+                existingAchievement.setActivityDate(achievement.getActivityDate());
+            }
+            if(achievement.getActivitypoints() != 0) {
+            	existingAchievement.setActivitypoints(achievement.getActivitypoints());
+            }
+            
             existingAchievement.setFirstPosition(achievement.isFirstPosition());
             existingAchievement.setSecondPosition(achievement.isSecondPosition());
             existingAchievement.setThirdPosition(achievement.isThirdPosition());
@@ -55,4 +68,12 @@ public class AchievementService {
         }
         return null; // Handle the case where the achievement doesn't exist
     }
+    public void deleteAllByStudentId(Long studentId) {
+        List<Achievement> achievements = achievementRepository.findByStudentId(studentId);
+        for (Achievement achievement : achievements) {
+            achievementRepository.deleteById(achievement.getId());
+        }
+    }
+    
+    
 }

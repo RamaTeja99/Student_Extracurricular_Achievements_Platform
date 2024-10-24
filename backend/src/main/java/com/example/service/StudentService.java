@@ -5,9 +5,9 @@ import com.example.entity.College;
 import com.example.entity.Student;
 import com.example.repository.CollegeRepository;
 import com.example.repository.StudentRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -31,14 +31,12 @@ public class StudentService {
     public Student findById(Long id) {
         return studentRepository.findById(id).orElse(null);
     }
-
     public void delete(Long id) {
         studentRepository.deleteById(id);
     }
     public List<Student> findByCollegeId(Long collegeId) {
         return studentRepository.findByCollegeId(collegeId);
     }
-
     public Student update(Long id, Student student) {
         Student existingStudent = studentRepository.findById(id).orElse(null);
         if (existingStudent != null) {
@@ -78,4 +76,7 @@ public class StudentService {
     public Student findByRollNumber(String rollNumber) {
         return studentRepository.findByRollNumber(rollNumber);
     }
+
+
+
 }

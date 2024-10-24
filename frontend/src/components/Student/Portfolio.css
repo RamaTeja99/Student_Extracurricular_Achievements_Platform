@@ -7,6 +7,7 @@
     transition: all 0.3s ease;
     max-width: 1000px;
     margin: 0 auto;
+    overflow: hidden; /* Ensure contents stay within the container */
 }
 
 .student-portfolio:hover {
@@ -44,16 +45,20 @@
 
 .portfolio-content {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); /* Ensures responsiveness */
     gap: 2rem;
+    padding-bottom: 2rem; /* Ensure enough space for content */
 }
 
 .chart-container {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
-    padding: 1.5rem;
-    height: 300px;
+    padding: 2.5rem;
+    height: 350px; /* Increased height for proper chart rendering */
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .chart-container:hover {
@@ -69,11 +74,12 @@
 }
 
 .achievements-table {
-    grid-column: 1 / -1;
+    grid-column: 1 / -1; /* Spans across both columns */
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     padding: 1.5rem;
     overflow-x: auto;
+    height: auto; /* Allow table to adjust based on content */
 }
 
 .achievements-table h3 {

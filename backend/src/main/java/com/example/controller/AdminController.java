@@ -82,12 +82,15 @@ public class AdminController {
 
     @DeleteMapping("/colleges/{id}")
     public void deleteCollege(@PathVariable Long id) {
-        // First, delete the associated college user
-    	int collegeId = id.intValue();
-        userService.deleteCollegeUserByCollegeId(collegeId);
-
-        // Then, delete the college itself
+        System.out.println("Deleted College");
         collegeService.delete(id);
+        
     }
+    @DeleteMapping("/collegesuser/{id}")
+    public void deleteCollegeUser(@PathVariable Long id) {
+    	System.out.println("Deleted College User");
+    	userService.deleteCollegeUserByCollegeId(id.intValue());
+    }
+   
 
 }

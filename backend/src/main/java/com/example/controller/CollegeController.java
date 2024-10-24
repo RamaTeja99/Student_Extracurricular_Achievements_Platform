@@ -49,6 +49,8 @@ public class CollegeController {
     @DeleteMapping("/students/{id}")
     public void deleteStudent(@PathVariable Long id) {
         studentService.delete(id);
+        userService.deleteStudentUserByStudentId(id.intValue());
+        achievementService.deleteAllByStudentId(id);
     }
     @PostMapping("/students/{rollNumber}/achievements/add")
     public Achievement addAchievement(@PathVariable String rollNumber, @RequestBody Achievement achievement) {

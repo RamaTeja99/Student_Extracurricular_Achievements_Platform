@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getColleges, deleteCollege } from '../../api'; // import deleteCollege API
+import { getColleges, deleteCollege,deleteCollegeUser } from '../../../api'; // import deleteCollege API
 import EditCollege from './EditCollege';
 import './CollegeList.css';
 
@@ -29,6 +29,8 @@ const CollegeList = () => {
     const handleDeleteClick = async (collegeId) => {
         if (window.confirm('Are you sure you want to delete this college?')) {
             try {
+               
+                deleteCollegeUser(collegeId);
                 await deleteCollege(collegeId);
                 setColleges(colleges.filter((college) => college.id !== collegeId));
                 console.log(`College with ID ${collegeId} deleted.`);

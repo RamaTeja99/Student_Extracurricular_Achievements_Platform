@@ -1,5 +1,9 @@
 package com.example.entity;
 
+
+
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 public class Achievement {
@@ -17,7 +23,11 @@ public class Achievement {
     private String activityName;
     private String activityDescription;
     private String activityCategory;
-    private boolean firstPosition;
+    @Temporal(TemporalType.DATE)
+    private Date activityDate;
+    private int activitypoints;
+  
+	private boolean firstPosition;
     private boolean secondPosition;
     private boolean thirdPosition;
     private boolean participation;
@@ -79,7 +89,19 @@ public class Achievement {
 	public void setParticipation(boolean participation) {
 		this.participation = participation;
 	}
-	
+	public Date getActivityDate() {
+		return activityDate;
+	}
+	public void setActivityDate(Date activityDate) {
+		this.activityDate = activityDate;
+	}
+	public int getActivitypoints() {
+		return activitypoints;
+	}
+	public void setActivitypoints(int activitypoints) {
+		this.activitypoints = activitypoints;
+	}
+		
 
     
 }

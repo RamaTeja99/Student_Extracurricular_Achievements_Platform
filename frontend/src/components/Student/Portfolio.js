@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAchievementsByStudent } from '../../api';
+import { getStudentAchievements } from '../../api';
 import { Pie, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title } from 'chart.js';
 import './Portfolio.css';
@@ -16,9 +16,9 @@ const Portfolio = () => {
 
     const fetchAchievements = async () => {
         try {
-            const studentId = localStorage.getItem('studentId');
-            const response = await getAchievementsByStudent(studentId);
+            const response = await getStudentAchievements();
             setAchievements(response.data);
+            console.log(response.data);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching achievements:', error);
@@ -27,7 +27,17 @@ const Portfolio = () => {
     };
 
     const categoryData = achievements.reduce((acc, achievement) => {
-        acc[achievement.category] = (acc[achievement.category] || 0) + 1;
+        acc[achievement.activityCategory] = (acc[achievement.activityCategory] || 0) + 1;
+        return acc;
+    }, {});
+
+    // Aggregate data by activity name to ensure labels and points match correctly
+    const aggregatedData = achievements.reduce((acc, curr) => {
+        if (!acc[curr.activityName]) {
+            acc[curr.activityName] = curr.activitypoints;
+        } else {
+            acc[curr.activityName] += curr.activitypoints;
+        }
         return acc;
     }, {});
 
@@ -43,11 +53,11 @@ const Portfolio = () => {
     };
 
     const barChartData = {
-        labels: achievements.map(achievement => achievement.title),
+        labels: Object.keys(aggregatedData),
         datasets: [
             {
                 label: 'Achievement Points',
-                data: achievements.map(achievement => achievement.points),
+                data: Object.values(aggregatedData), // Use aggregated points
                 backgroundColor: 'rgba(75, 192, 192, 0.6)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1,
@@ -82,12 +92,12 @@ const Portfolio = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {achievements.map((achievement, index) => (
+                                {achievements.map((achievement) => (
                                     <tr key={achievement.id} className="achievement-row">
-                                        <td>{achievement.title}</td>
-                                        <td>{achievement.category}</td>
-                                        <td>{achievement.points}</td>
-                                        <td>{new Date(achievement.date).toLocaleDateString()}</td>
+                                        <td>{achievement.activityName}</td>
+                                        <td>{achievement.activityCategory}</td>
+                                        <td>{achievement.activitypoints}</td>
+                                        <td>{new Date(achievement.activityDate).toLocaleDateString()}</td>
                                     </tr>
                                 ))}
                             </tbody>

@@ -8,33 +8,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/api/students")
 @CrossOrigin
 public class StudentController {
 	@Autowired
     private AchievementService achievementService;
 
     // Get Achievements by Student
-    @GetMapping("/{studentId}/achievements")
-    public List<Achievement> getAchievementsByStudent(@PathVariable Long studentId) {
-        return achievementService.findByStudentId(studentId);
-    }
+	@GetMapping("/{studentId}/achievements")
+	public List<Achievement> getAchievementsByStudent(@PathVariable Long studentId) {
+	    System.out.println("Fetching achievements for student ID: " + studentId);
+	    List<Achievement> achievements = achievementService.findByStudentId(studentId);
+	    System.out.println("Achievements found: " + achievements);
+	    return achievements;
+	}
 
-    // Add Achievement
-    @PostMapping("/achievements")
-    public Achievement addAchievement(@RequestBody Achievement achievement) {
-        return achievementService.save(achievement);
-    }
-
-    // Update Achievement
-    @PutMapping("/achievements/{id}")
-    public Achievement updateAchievement(@PathVariable Long id, @RequestBody Achievement achievement) {
-        return achievementService.update(id, achievement);
-    }
-
-    // Delete Achievement
-    @DeleteMapping("/achievements/{id}")
-    public void deleteAchievement(@PathVariable Long id) {
-        achievementService.delete(id);
-    }
 }

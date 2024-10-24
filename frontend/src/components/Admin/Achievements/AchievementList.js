@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAllAchievements } from '../../api';
+import { getAllAchievements } from '../../../api';
 import './AchievementList.css';
 
 const AchievementList = () => {

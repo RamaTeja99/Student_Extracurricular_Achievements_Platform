@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getCollegeById, updateCollege, updateCollegeCredentials, getCollegeUserByCollegeId } from '../../api';
+import { getCollegeById, updateCollege, updateCollegeCredentials, getCollegeUserByCollegeId } from '../../../api';
 import './EditCollege.css'; // Reuse the same styles
 import { FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons from react-icons
 

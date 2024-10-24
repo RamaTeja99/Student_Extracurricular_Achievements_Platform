@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getStudents } from '../../api'; // Adjust the import path as necessary
+import { getStudents } from '../../../api'; // Adjust the import path as necessary
 import './StudentList.css'; // Make sure this path is correct
 
 const StudentList = () => {

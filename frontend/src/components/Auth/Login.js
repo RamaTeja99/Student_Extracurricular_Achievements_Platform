@@ -19,11 +19,11 @@ const Login = () => {
                 sessionStorage.setItem('role', response.data.role);
                 sessionStorage.setItem('roleSpecificId', response.data.roleSpecificId);
                 if (response.data.role === 'admin') {
-                    navigate('/admin/dashboard');
+                    navigate('/admin/dashboard/colleges');
                 } else if (response.data.role === 'college') {
-                    navigate('/college/dashboard');
+                    navigate('/college/dashboard/students');
                 } else {
-                    navigate('/student/dashboard');
+                    navigate('/student/dashboard/achievements');
                 }
             } else {
                 setError('No data received. Please try again.');
