@@ -1,9 +1,9 @@
 package com.example.service;
 
 import com.example.entity.Achievement;
-import com.example.entity.Student;
+
 import com.example.repository.AchievementRepository;
-import com.example.repository.StudentRepository;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,6 @@ public class AchievementService {
     @Autowired
     private AchievementRepository achievementRepository;
     
-    @Autowired
-    private StudentRepository studentRepository;
 
     public List<Achievement> findAll() {
         return achievementRepository.findAll();
@@ -68,12 +66,7 @@ public class AchievementService {
         }
         return null; // Handle the case where the achievement doesn't exist
     }
-    public void deleteAllByStudentId(Long studentId) {
-        List<Achievement> achievements = achievementRepository.findByStudentId(studentId);
-        for (Achievement achievement : achievements) {
-            achievementRepository.deleteById(achievement.getId());
-        }
-    }
+    
     
     
 }

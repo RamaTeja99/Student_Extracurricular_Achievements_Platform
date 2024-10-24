@@ -48,9 +48,18 @@ public class CollegeController {
     // Delete Student
     @DeleteMapping("/students/{id}")
     public void deleteStudent(@PathVariable Long id) {
+    	List<Achievement> achievements = achievementService.findByStudentId(id);
+        for (Achievement achievement : achievements) {
+            achievementService.delete(achievement.getId());
+        }
+    	System.out.println("deleted Student");
         studentService.delete(id);
-        userService.deleteStudentUserByStudentId(id.intValue());
-        achievementService.deleteAllByStudentId(id);
+    }
+    @DeleteMapping("/studentsuser/{id}")
+    public void deleteCollegeUser(@PathVariable Long id) {
+    	System.out.println("Deletes Student User");
+    	userService.deleteStudentUserByStudentId(id.intValue());
+    	
     }
     @PostMapping("/students/{rollNumber}/achievements/add")
     public Achievement addAchievement(@PathVariable String rollNumber, @RequestBody Achievement achievement) {

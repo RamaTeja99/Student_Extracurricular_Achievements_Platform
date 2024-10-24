@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { exp } from 'three/webgpu';
 
 const API_URL = 'http://localhost:8080/api'; // Adjust according to your backend URL
 
@@ -105,7 +106,9 @@ export const updateStudent = async (id, student) => {
 export const deleteStudent = async (id) => {
     return await axios.delete(`${API_URL}/colleges/students/${id}`);
 };
-
+export const deleteStudentUser = async (id) => {
+    return await axios.delete(`${API_URL}/colleges/studentsuser/${id}`);
+}
 // Update an achievement by ID
 export const updateAchievement = async (achievementId, updatedAchievement) => {
     return await axios.put(`${API_URL}/colleges/achievements/update/${achievementId}`, updatedAchievement);

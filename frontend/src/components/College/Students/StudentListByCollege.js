@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getStudentsByCollege, deleteStudent } from '../../../api';
+import { getStudentsByCollege, deleteStudent ,deleteStudentUser} from '../../../api';
 import { FaEdit, FaTrash, FaInfoCircle } from 'react-icons/fa'; // Importing icons
 import './StudentList.css';
 
@@ -31,13 +31,21 @@ const StudentList = () => {
             state: { student }, // Pass student data to edit page
         });
     };
+    const handleDeleteUser = async (studentId) => {
+        try {   
+            await deleteStudentUser(studentId);
+        } catch (error) {
+            console.error('Error deleting student:', error);
+        }
+    };
 
     const handleDeleteClick = async (studentId) => {
         const confirmDelete = window.confirm('Are you sure you want to delete this student?');
         if (confirmDelete) {
             try {
-                await deleteStudent(studentId);
                 
+                await deleteStudent(studentId);
+                await handleDeleteUser(studentId);
                 setStudents((prevStudents) => prevStudents.filter((student) => student.id !== studentId));
             } catch (error) {
                 console.error('Error deleting student:', error);

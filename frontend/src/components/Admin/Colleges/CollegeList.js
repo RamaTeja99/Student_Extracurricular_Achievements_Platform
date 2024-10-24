@@ -29,7 +29,6 @@ const CollegeList = () => {
     const handleDeleteClick = async (collegeId) => {
         if (window.confirm('Are you sure you want to delete this college?')) {
             try {
-               
                 deleteCollegeUser(collegeId);
                 await deleteCollege(collegeId);
                 setColleges(colleges.filter((college) => college.id !== collegeId));
