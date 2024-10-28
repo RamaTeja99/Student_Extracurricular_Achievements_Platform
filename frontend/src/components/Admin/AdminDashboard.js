@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, Outlet } from 'react-router-dom';
 import './AdminDashboard.css';
-import Logout from '../Auth/Logout';
+import ProfileDropdown from '../Auth/ProfileDropdown';
+import IdleTimer from '../Auth/IdleTimer';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState({
@@ -14,7 +15,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         // Simulating API call to get dashboard stats
         const fetchStats = async () => {
-            const response = await new Promise(resolve => 
+            const response = await new Promise(resolve =>
                 setTimeout(() => resolve({
                     colleges: 15,
                     students: 1200,
@@ -29,18 +30,20 @@ const AdminDashboard = () => {
 
     return (
         <div className="admin-dashboard">
+            <IdleTimer />
             <header className="admin-header">
                 <h2>Admin Dashboard</h2>
-            <nav className="admin-nav">
-                <Link to="/admin/dashboard/colleges" className={location.pathname === '/admin/dashboard/colleges' ? 'active' : ''}>Colleges</Link>
-                <Link to="/admin/dashboard/students" className={location.pathname === '/admin/dashboard/students' ? 'active' : ''}>Students</Link>
-                <Link to="/admin/dashboard/achievements" className={location.pathname === '/admin/dashboard/achievements' ? 'active' : ''}>Achievements</Link>
-                <Link to="/admin/dashboard/add-college" className={location.pathname === '/admin/dashboard/add-college' ? 'active' : ''}>Add College</Link>
-            </nav>
-                <div className="user-info">
-                    <div className="user-avatar"></div>
-                    <span>Admin User</span>
-                </div>
+                <nav className="admin-nav">
+                    <div className="nav-links">
+                        <Link to="/admin/dashboard/colleges" className={location.pathname === '/admin/dashboard/colleges' ? 'active' : ''}>Colleges</Link>
+                        <Link to="/admin/dashboard/students" className={location.pathname === '/admin/dashboard/students' ? 'active' : ''}>Students</Link>
+                        <Link to="/admin/dashboard/achievements" className={location.pathname === '/admin/dashboard/achievements' ? 'active' : ''}>Achievements</Link>
+                        <Link to="/admin/dashboard/add-college" className={location.pathname === '/admin/dashboard/add-college' ? 'active' : ''}>Add College</Link>
+                    </div>
+                </nav>
+                    <div className="profile-section">
+                        <ProfileDropdown dashboardType="admin"/>
+                    </div>
             </header>
             <div className="admin-content">
                 <div className="dashboard-stats">
@@ -57,8 +60,8 @@ const AdminDashboard = () => {
                         <p>{stats.achievements}</p>
                     </div>
                 </div>
-                <Outlet /> {/* This will render the matched child route */}
-                <Logout />
+                <Outlet />
+                
             </div>
         </div>
     );

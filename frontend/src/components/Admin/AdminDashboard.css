@@ -1,7 +1,7 @@
 :root {
   --primary-color: #4a90e2; /* Bright blue for primary actions */
   --secondary-color: #50e3c2; /* Soft teal for accents */
-  --background-color: #ffffff; /* Clean white background */
+  --background-color: #071630; /* Clean white background */
   --text-color: #333333; /* Dark gray for text */
   --hover-color: rgba(74, 144, 226, 0.2); /* Light hover effect */
 }
@@ -22,16 +22,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px; /* Reduced margin for a more compact look */
-  padding: 10px 0; /* Reduced padding for less height */
-  background: rgba(255, 255, 255, 0.9); /* Slight background for header */
-  border-radius: 8px; /* Rounded corners for modern look */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  transition: background 0.3s ease; /* Smooth background transition */
+  margin-bottom: 30px;
+  padding: 10px 20px; /* Added horizontal padding */
+  background: rgba(147, 223, 246, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease;
+  position: relative; /* Add this */
 }
 
 .admin-header:hover {
-  background: rgba(255, 255, 255, 1); /* Full white on hover */
+  background: rgb(5, 164, 228); /* Full white on hover */
 }
 
 .admin-header h2 {
@@ -46,6 +47,7 @@
 .admin-header .user-info {
   display: flex;
   align-items: center;
+  right:2px;
   animation: slideInRight 0.8s ease-out;
 }
 
@@ -56,11 +58,12 @@
   margin-right: 10px;
   background-color: var(--secondary-color);
 }
-
 .admin-nav {
   display: flex;
-  justify-content: center;
-  margin-bottom: 20px; /* Reduced margin for a more compact look */
+  justify-content: flex-start; /* Change from center to flex-start */
+  align-items: center;
+  flex-grow: 0; /* Change from 1 to 0 */
+  margin-right: 350px;/* Add some space from the title */
   animation: fadeInUp 0.8s ease-out;
 }
 
@@ -83,10 +86,7 @@
   left: 50%;
   width: 0;
   height: 0;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: all 0.5s ease;
+ 
 }
 
 .admin-nav a:hover::before {
@@ -97,7 +97,7 @@
 .admin-nav a:hover {
   background-color: var(--primary-color);
   transform: translateY(-3px) scale(1.05); /* Scale effect on hover */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
 }
 
 .admin-content {
@@ -210,4 +210,12 @@
   .dashboard-stats {
       grid-template-columns: 1fr;
   }
+}
+
+.profile-section {
+  position: absolute; /* Add this */
+  right: 20px; /* Add this */
+  top: -65px; /* Add this */
+  transform: translateY(-50%); /* Add this */
+  z-index: 100;
 }

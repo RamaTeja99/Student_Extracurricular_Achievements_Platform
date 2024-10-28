@@ -1,7 +1,37 @@
 import axios from 'axios';
-import { exp } from 'three/webgpu';
+import { getTokenInfo } from './utils/tokenUtils';
+
+
 
 const API_URL = 'http://localhost:8080/api'; // Adjust according to your backend URL
+
+// Add axios interceptor
+axios.interceptors.request.use(
+    config => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    error => {
+        return Promise.reject(error);
+    }
+);
+
+// Add axios response interceptor to handle token expiration
+axios.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.response && error.response.status === 401) {
+            // Clear local storage and redirect to login
+            localStorage.removeItem('token');
+            localStorage.removeItem('lastActivity');
+            window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+);
 
 // Authentication API
 export const login = async (username, password) => {
@@ -77,15 +107,17 @@ export const getStudents = async () => {
 
 // College APIs
 export const getStudentsByCollege = async () => {
-    let collegeId =null;
-    if(sessionStorage.getItem('role') === 'college') {
-        collegeId = sessionStorage.getItem('roleSpecificId');
+    const tokenInfo = getTokenInfo();
+    let collegeId = null;
+    if(tokenInfo && tokenInfo.role === 'college') {
+        collegeId = tokenInfo.roleSpecificId;
     }
     return await axios.get(`${API_URL}/colleges/${collegeId}/students`);
 };
 
 export const addStudent = async (student) => {
-    const collegeId = sessionStorage.getItem('roleSpecificId');
+    const tokenInfo = getTokenInfo();
+    const collegeId = tokenInfo.roleSpecificId;
     return await axios.post(`${API_URL}/colleges/${collegeId}/students`, student);
 };
 
@@ -120,11 +152,14 @@ export const deleteAchievement = async (achievementId) => {
 };
 
 // Student APIs
- export const getStudentAchievements = async () => {
-    let studentId =null;
-    if(sessionStorage.getItem('role') === 'student') {
-        studentId = sessionStorage.getItem('roleSpecificId');
+export const getStudentAchievements = async () => {
+    const tokenInfo = getTokenInfo();
+    let studentId = null;
+    if(tokenInfo && tokenInfo.role === 'student') {
+        studentId = tokenInfo.roleSpecificId;
+        
     }
+    console.log(studentId);
     return await axios.get(`${API_URL}/students/${studentId}/achievements`);
 };
 

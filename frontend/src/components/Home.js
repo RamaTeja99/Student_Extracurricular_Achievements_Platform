@@ -1,8 +1,27 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { getTokenInfo } from '../utils/tokenUtils';
 import './Home.css';
 
 const Home = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const tokenInfo = getTokenInfo();
+        
+        if (tokenInfo && tokenInfo.exp * 1000 > Date.now()) {
+            const redirectPath = {
+                admin: '/admin/dashboard/colleges',
+                college: '/college/dashboard/students',
+                student: '/student/dashboard/achievements'
+            }[tokenInfo.role];
+
+            if (redirectPath) {
+                navigate(redirectPath);
+            }
+        }
+    }, [navigate]);
+
     return (
         <div className="home-container">
             <header className="home-header">

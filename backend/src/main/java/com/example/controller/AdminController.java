@@ -32,6 +32,7 @@ public class AdminController {
         return collegeService.save(college);
         
     }
+    // Add College User
     @PostMapping("/addcollegeuser")
     public User addCollegeUser(@RequestBody User user) {
     	  System.out.println("Admin "+user);
@@ -44,10 +45,12 @@ public class AdminController {
         return collegeService.findAll();
         
     }
+    // Get College By ID
     @GetMapping("/colleges/{id}")
     public College getCollegeById(@PathVariable Long id) {
         return collegeService.findById(id);
     }
+    // Get College User By ID
     @GetMapping("/college-user/{collegeId}")
     public User getCollegeUserByCollegeId(@PathVariable int collegeId) {
         return userService.getCollegeUserByCollegeId(collegeId);
@@ -72,6 +75,7 @@ public class AdminController {
     public College updateCollege(@PathVariable Long id, @RequestBody College college) {
         return collegeService.update(id, college);
     }
+    // Update College User Credentials
     @PutMapping("/update-college-credentials/{collegeId}")
     public String updateCollegeCredentials(@PathVariable int collegeId,
                                            @RequestParam String newUsername,
@@ -79,16 +83,30 @@ public class AdminController {
         userService.updateCollegeCredentialsByAdmin(collegeId, newUsername, newPassword);
         return "College credentials updated successfully";
     }
-
+    //Delete College Based on ID
     @DeleteMapping("/colleges/{id}")
     public void deleteCollege(@PathVariable Long id) {
-        System.out.println("Deleted College");
+    	System.out.println("Deleted College and Students and Achievements");
+    	List<Student> students = studentService.findByCollegeId(id);
+        for (Student student : students) {
+            List<Achievement> achievements = achievementService.findByStudentId(student.getId());
+            for (Achievement achievement : achievements) {
+                achievementService.delete(achievement.getId());
+            }
+            studentService.delete(student.getId());
+        }
         collegeService.delete(id);
         
+        
     }
+    //Delete College User Based on ID
     @DeleteMapping("/collegesuser/{id}")
     public void deleteCollegeUser(@PathVariable Long id) {
-    	System.out.println("Deleted College User");
+    	System.out.println("Deleted College User and Student User");
+    	List<Student> students = studentService.findByCollegeId(id);
+    	for (Student student : students) {
+    		userService.deleteStudentUserByStudentId(student.getId().intValue());
+    	}
     	userService.deleteCollegeUserByCollegeId(id.intValue());
     }
    

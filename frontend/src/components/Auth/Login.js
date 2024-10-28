@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../api';
 import Background3D from './Background3D';
+import { getTokenInfo } from '../../utils/tokenUtils';
 import './Login.css';
 
 const Login = () => {
@@ -16,29 +17,42 @@ const Login = () => {
             const response = await login(username, password);
 
             if (response.status === 200 && response.data) {
-                sessionStorage.setItem('role', response.data.role);
-                sessionStorage.setItem('roleSpecificId', response.data.roleSpecificId);
-                if (response.data.role === 'admin') {
-                    navigate('/admin/dashboard/colleges');
-                } else if (response.data.role === 'college') {
-                    navigate('/college/dashboard/students');
-                } else {
-                    navigate('/student/dashboard/achievements');
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('lastActivity', new Date().getTime());
+
+                const tokenInfo = getTokenInfo();
+                if (tokenInfo) {
+                    switch (tokenInfo.role) {
+                        case 'admin':
+                            navigate('/admin/dashboard/colleges');
+                            break;
+                        case 'college':
+                            navigate('/college/dashboard/students');
+                            break;
+                        case 'student':
+                            navigate('/student/dashboard/achievements');
+                            break;
+                        default:
+                            break;
+                    }
                 }
-            } else {
-                setError('No data received. Please try again.');
             }
         } catch (error) {
-            setError('Login failed. Please check your credentials.',errors);
+            setError('Login failed. Please check your credentials.');
+            localStorage.removeItem('token');
+            localStorage.removeItem('lastActivity');
         }
     };
 
     return (
         <div className="login-container">
+            <div className="login-background">
             <Background3D />
+            </div>
             <div className="login-box-wrapper">
                 <div className="login-box">
                     <h2>Login</h2>
+                    {errors && <div className="error-message">{errors}</div>}
                     <form onSubmit={handleSubmit}>
                         <input
                             type="text"

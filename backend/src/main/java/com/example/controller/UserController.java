@@ -2,11 +2,13 @@ package com.example.controller;
 
 import com.example.entity.User;
 import com.example.service.UserService;
-
-import jakarta.servlet.http.HttpSession;
+import com.example.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.HashMap;
+import java.util.Map;
+import io.jsonwebtoken.Claims;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -16,39 +18,57 @@ public class UserController {
     @Autowired
     private UserService userService;
     
+    @Autowired
+    private JwtUtil jwtUtil;
+    
     
     
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody User loginData, HttpSession session) {
-        String username = loginData.getUsername();
-        String password = loginData.getPassword();
-        User authenticatedUser = userService.authenticate(username, password);
+    public ResponseEntity<?> login(@RequestBody User loginData) {
+        User authenticatedUser = userService.authenticate(loginData.getUsername(), loginData.getPassword());
 
         if (authenticatedUser != null) {
-        	System.out.println(authenticatedUser.getRole());
-            session.setAttribute("username", authenticatedUser.getUsername());
-            session.setAttribute("role", authenticatedUser.getRole());
-            session.setAttribute("roleSpecificId", authenticatedUser.getRoleSpecificId());
-            return ResponseEntity.ok(authenticatedUser);
-        } else {
-            return ResponseEntity.status(401).body(null);
+            String token = jwtUtil.generateToken(
+                authenticatedUser.getUsername(),
+                String.valueOf(authenticatedUser.getRole()),
+                String.valueOf(authenticatedUser.getRoleSpecificId())  // Add missing third parameter
+            );
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("username", authenticatedUser.getUsername());
+            response.put("role", authenticatedUser.getRole());
+            response.put("roleSpecificId", authenticatedUser.getRoleSpecificId());
+
+            return ResponseEntity.ok(response);
         }
+        return ResponseEntity.status(401).body("Invalid credentials");
+    }
+
+    @PostMapping("/validate-token")
+    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+            try {
+                if (jwtUtil.validateToken(token)) {
+                    Claims claims = jwtUtil.getClaims(token);
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("valid", true);
+                    response.put("username", claims.getSubject());
+                    response.put("role", claims.get("role"));
+                    response.put("roleSpecificId", claims.get("roleSpecificId"));
+                    return ResponseEntity.ok(response);
+                }
+            } catch (Exception e) {
+                // Token validation failed
+            }
+        }
+        return ResponseEntity.status(401).body(Map.of("valid", false));
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpSession session) {
-        session.invalidate();
+    public ResponseEntity<String> logout() {
         return ResponseEntity.ok("Logged out successfully");
-    }
-
-    @GetMapping("/check-session")
-    public ResponseEntity<String> checkSession(HttpSession session) {
-    	
-        if (session.getAttribute("username") != null) {
-            return ResponseEntity.ok("Session active");
-        } else {
-            return ResponseEntity.status(401).body("Session expired");
-        }
     }
 }

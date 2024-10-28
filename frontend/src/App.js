@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import { getTokenInfo } from './utils/tokenUtils';
 import Home from './components/Home';
 import Login from './components/Auth/Login';
 import AdminDashboard from './components/Admin/AdminDashboard';
@@ -19,28 +20,73 @@ import EditAchievement from './components/College/Achievements/EditAchievement';
 import StudentDetail from './components/College/Students/StudentDetail';
 import EditStudent from './components/College/Students/EditStudent';
 
+const ProtectedRoute = ({ children, allowedRole }) => {
+    const location = useLocation();
+    const tokenInfo = getTokenInfo();
+
+    if (!tokenInfo) {
+        return <Navigate to="/login" state={{ from: location }} replace />;
+    }
+
+    if (tokenInfo.role !== allowedRole) {
+        const redirectPath = {
+            admin: '/admin/dashboard/colleges',
+            college: '/college/dashboard/students',
+            student: '/student/dashboard/achievements'
+        }[tokenInfo.role];
+
+        return <Navigate to={redirectPath} replace />;
+    }
+
+    // Check token expiration
+    if (tokenInfo.exp * 1000 < Date.now()) {
+        localStorage.removeItem('token');
+        return <Navigate to="/login" state={{ from: location }} replace />;
+    }
+
+    return children;
+};
+
 const App = () => {
     return (
         <Router>
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/admin/dashboard/*" element={<AdminDashboard />}>
+                
+                {/* Admin Routes */}
+                <Route path="/admin/dashboard/*" element={
+                    <ProtectedRoute allowedRole="admin">
+                        <AdminDashboard />
+                    </ProtectedRoute>
+                }>
                     <Route path="colleges" element={<CollegeList />} />
                     <Route path="students" element={<StudentList />} />
                     <Route path="achievements" element={<AchievementList />} />
                     <Route path="add-college" element={<AddCollege />} />
                     <Route path="edit-college" element={<EditCollege />} />
                 </Route>
-                <Route path="/college/dashboard/*" element={<CollegeDashboard />} >
+
+                {/* College Routes */}
+                <Route path="/college/dashboard/*" element={
+                    <ProtectedRoute allowedRole="college">
+                        <CollegeDashboard />
+                    </ProtectedRoute>
+                }>
                     <Route path="students" element={<StudentListByCollege />} />
                     <Route path="add-student" element={<AddStudent />} />
                     <Route path="edit-student" element={<EditStudent />} />
                     <Route path="add-achievement" element={<AddAchievement />} />
-                    <Route path="edit-achievement" element={<EditAchievement />} />{}
+                    <Route path="edit-achievement" element={<EditAchievement />} />
                     <Route path="student-detail" element={<StudentDetail />} />
                 </Route>
-                <Route path="/student/dashboard/*" element={<StudentDashboard />}>
+
+                {/* Student Routes */}
+                <Route path="/student/dashboard/*" element={
+                    <ProtectedRoute allowedRole="student">
+                        <StudentDashboard />
+                    </ProtectedRoute>
+                }>
                     <Route path="achievements" element={<Achievements />} />
                     <Route path="portfolio" element={<Portfolio />} />
                 </Route>
