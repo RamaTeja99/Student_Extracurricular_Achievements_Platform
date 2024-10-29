@@ -9,7 +9,7 @@ const IdleTimer = () => {
     const [showWarning, setShowWarning] = useState(false);
     const [remainingTime, setRemainingTime] = useState(0);
     
-    const IDLE_TIME = 30 * 60 * 1000; // 30 minutes
+    const IDLE_TIME = 2 * 60 * 1000; // 30 minutes
     const WARNING_TIME = 1 * 60 * 1000; // 1 minute warning
 
     const logout = () => {
@@ -73,7 +73,6 @@ const IdleTimer = () => {
             {showWarning && (
                 <IdleWarningModal
                     remainingTime={remainingTime}
-                    onContinue={resetTimer}
                     onLogout={logout}
                 />
             )}
