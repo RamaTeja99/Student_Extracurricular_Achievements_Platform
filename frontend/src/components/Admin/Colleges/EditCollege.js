@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getCollegeById, updateCollege, updateCollegeCredentials, getCollegeUserByCollegeId } from '../../../api';
-import './EditCollege.css'; 
-import { FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa'; 
+import { FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa';
+import './EditCollege.css';
 
 const EditCollege = ({ collegeId, onClose }) => {
     const [name, setName] = useState('');
@@ -69,68 +69,72 @@ const EditCollege = ({ collegeId, onClose }) => {
     };
 
     return (
-        <div className="add-college-container">
-            <form onSubmit={handleUpdate} className="add-college-form">
-                <div className="form-header">
-                    <h2>Edit College</h2>
-                    <FaTimes className="close-icon" onClick={onClose} />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="name">College Name</label>
+        <div className={`editcollege-container`}>
+            <form onSubmit={handleUpdate} className="editcollege-form">
+                <h2 className="editcollege-form-header">Edit College</h2>
+                <FaTimes className="close-icon" onClick={onClose} />
+                
+                <div className="editcollege-form-group">
+                    <label htmlFor="name" className="editcollege-form-label">College Name</label>
                     <input 
                         type="text" 
                         id="name"
                         value={name} 
                         onChange={(e) => setName(e.target.value)} 
                         required 
+                        className="editcollege-form-input"
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="location">Location</label>
+                <div className="editcollege-form-group">
+                    <label htmlFor="location" className="editcollege-form-label">Location</label>
                     <input 
                         type="text" 
                         id="location"
                         value={location} 
                         onChange={(e) => setLocation(e.target.value)} 
                         required 
+                        className="editcollege-form-input"
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
+                <div className="editcollege-form-group">
+                    <label htmlFor="email" className="editcollege-form-label">Email</label>
                     <input 
                         type="email" 
                         id="email"
                         value={email} 
                         onChange={(e) => setEmail(e.target.value)} 
                         required 
+                        className="editcollege-form-input"
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="username">Username</label>
+                <div className="editcollege-form-group">
+                    <label htmlFor="username" className="editcollege-form-label">Username</label>
                     <input 
                         type="text" 
                         id="username"
                         value={username} 
                         onChange={(e) => setUsername(e.target.value)} 
                         required 
+                        className="editcollege-form-input"
                     />
                 </div>
-                <div className="form-group password-group">
-                    <label htmlFor="password">Password</label>
+                <div className="editcollege-form-group">
+                    <label htmlFor="password" className="editcollege-form-label">Password</label>
                     <input 
                         type={isPasswordVisible ? 'text' : 'password'}
                         id="password"
                         value={password} 
                         onChange={(e) => setPassword(e.target.value)} 
                         required 
+                        className="editcollege-form-input"
                     />
                     <span className="toggle-password-icon" onClick={togglePasswordVisibility}>
                         {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
                     </span>
                 </div>
-                <button type="submit">Update College</button>
+                <button type="submit" className="editcollege-submit-button">Update College</button>
                 {message && (
-                    <div className={`${message.type}-message`}>
+                    <div className={`editcollege-${message.type}-message`}>
                         {message.text}
                     </div>
                 )}

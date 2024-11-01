@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { addCollege } from '../../../api';
-import { addCollegeUser } from '../../../api';
+import { useSelector } from 'react-redux';
+import { addCollege, addCollegeUser } from '../../../api';
 import './AddCollege.css';
 
 const AddCollege = () => {
+    const isDarkMode = useSelector((state) => state.theme.isDarkMode); // Access theme state
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
     const [email, setEmail] = useState('');
@@ -14,7 +15,6 @@ const AddCollege = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        // Validate username and password length
         if (username.length < 8) {
             setMessage({ type: 'error', text: 'Username must be exactly 8 characters long.' });
             return;
@@ -29,7 +29,7 @@ const AddCollege = () => {
         try {
             const college = { name, location, email };
             const response = await addCollege(college);
-            const savedCollege = response.data; 
+            const savedCollege = response.data;
             const user = { username, password, role: 'college', roleSpecificId: savedCollege.id };
             await addCollegeUser(user);
 
@@ -47,62 +47,67 @@ const AddCollege = () => {
     };
 
     return (
-        <div className="add-college-container">
-            <form onSubmit={handleSubmit} className="add-college-form">
-                <h2>Add New College</h2>
-                <div className="form-group">
-                    <label htmlFor="name">College Name</label>
+        <div className={`addcollege-container ${isDarkMode ? 'dark' : 'light'}`}>
+            <form onSubmit={handleSubmit} className="addcollege-form">
+                <h2 className="addcollege-form-header">Add New College</h2>
+                <div className="addcollege-form-group">
+                    <label htmlFor="name" className="addcollege-form-label">College Name</label>
                     <input 
                         type="text" 
                         id="name"
                         value={name} 
                         onChange={(e) => setName(e.target.value)} 
                         required 
+                        className="addcollege-form-input"
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="location">Location</label>
+                <div className="addcollege-form-group">
+                    <label htmlFor="location" className="addcollege-form-label">Location</label>
                     <input 
                         type="text" 
                         id="location"
                         value={location} 
                         onChange={(e) => setLocation(e.target.value)} 
                         required 
+                        className="addcollege-form-input"
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
+                <div className="addcollege-form-group">
+                    <label htmlFor="email" className="addcollege-form-label">Email</label>
                     <input 
                         type="email" 
                         id="email"
                         value={email} 
                         onChange={(e) => setEmail(e.target.value)} 
                         required 
+                        className="addcollege-form-input"
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="username">Username</label>
+                <div className="addcollege-form-group">
+                    <label htmlFor="username" className="addcollege-form-label">Username</label>
                     <input 
                         type="text" 
                         id="username"
                         value={username} 
                         onChange={(e) => setUsername(e.target.value)} 
                         required 
+                        className="addcollege-form-input"
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
+                <div className="addcollege-form-group">
+                    <label htmlFor="password" className="addcollege-form-label">Password</label>
                     <input 
                         type="password" 
                         id="password"
                         value={password} 
                         onChange={(e) => setPassword(e.target.value)} 
                         required 
+                        className="addcollege-form-input"
                     />
                 </div>
-                <button type="submit">Add College</button>
+                <button type="submit" className="addcollege-submit-button">Add College</button>
                 {message && (
-                    <div className={`${message.type}-message`}>
+                    <div className={`addcollege-${message.type}-message`}>
                         {message.text}
                     </div>
                 )}

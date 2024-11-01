@@ -1,96 +1,152 @@
-.college-dashboard {
-    background: linear-gradient(45deg, #1a1a2e, #16213e);
-    color: #e94560;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-  }
-  
-  .college-dashboard:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-  }
-  
-  .college-dashboard h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    animation: glow 2s ease-in-out infinite alternate;
-  }
-  
-  @keyframes glow {
-    from {
-      text-shadow: 0 0 5px #e94560, 0 0 10px #e94560;
-    }
-    to {
-      text-shadow: 0 0 10px #e94560, 0 0 20px #e94560;
-    }
-  }
-  
-  .college-dashboard nav {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-  
-  .college-dashboard nav a {
-    background-color: #0f3460;
-    color: #e94560;
-    padding: 0.75rem 1.5rem;
-    border-radius: 25px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .college-dashboard nav a::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: all 0.5s ease;
-  }
-  
-  .college-dashboard nav a:hover::before {
-    left: 100%;
-  }
-  
-  .college-dashboard nav a:hover {
-    background-color: #e94560;
-    color: #0f3460;
-    transform: scale(1.05);
-  }
-  
-  .route-container {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-    border-radius: 10px;
-    animation: fadeIn 0.5s ease-out;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-  .profile-dropdown-college {
-    position: absolute;
-    top: 255px;
-    transform: translateY(-50%); /* Add this */
-    z-index: 100;
+:root {
+  /* Dark theme colors */
+  --college-dark-primary: #F9A828;
+  --college-dark-secondary: #ECECEB;
+  --college-dark-background: #181C14;
+  --college-dark-text: #E2E2B6;        
+  --college-dark-surface: #6EACDA;       
+  --college-dark-sky-blue: #07617D;    
+  --college-dark-text-white: #fff;
+  --college-dark-content: #6EACDA;
+  --college-dark-backgrounds: #8ca1aa;
+
+  /* Light theme colors */
+  --college-light-primary: #F8F8F8;
+  --college-light-secondary: #F5E1DA;
+  --college-light-background: #F8F8F8;
+  --college-light-text: #222831;        
+  --college-light-surface: rgba(255, 255, 255, 0.9); 
+  --college-light-sky-blue: #49BEB7;     
+  --college-light-content: #f7e8bb;  
+  --college-light-text-black: #000;
+  --college-light-content: #f7e8bb;
+  --college-light-backgrounds: #9fadb0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.dark {
+  --college-primary-color: var(--college-dark-primary);
+  --college-secondary-color: var(--college-dark-secondary);
+  --college-background-color: var(--college-dark-background);
+  --college-text-color: var(--college-dark-text);
+  --college-surface-color: var(--college-dark-surface);
+  --college-sky-blue: var(--college-dark-sky-blue);
+  --college-content-color: var(--college-dark-content);
+  --college-text: var(--college-dark-text-white);
+  --college-background-colors: var(--college-dark-backgrounds);
+}
+
+.light {
+  --college-primary-color: var(--college-light-primary);
+  --college-secondary-color: var(--college-light-secondary);
+  --college-background-color: var(--college-light-background);
+  --college-text-color: var(--college-light-text);
+  --college-surface-color: var(--college-light-surface);
+  --college-sky-blue: var(--college-light-sky-blue);
+  --college-content-color: var(--college-light-content);
+  --college-text: var(--college-light-text-black);
+  --college-background-colors: var(--college-light-backgrounds);
+}
+
+.college-dashboard {
+  min-height: 100vh;
+  background: var(--college-background-color);
+  color: var(--college-text-color);
+  font-family: 'Poppins', sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.college-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 10px 20px;
+  background: var(--college-background-colors);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease;
+}
+.college-header:hover {
+  background: var(--surface-colors);
+}
+
+.college-header h2 {
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  margin: 0;
+  transition: color 0.3s ease;
+  color: var(--college-text-color);
+  margin-right: 100px;
+}
+
+.college-nav {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.nav-links :nth-last-child(1){
+  margin-right: 60px;
+}
+
+.college-nav a {
+  color: var(--college-text-color);
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 25px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.college-nav a:hover {
+  background-color: var(--college-primary-color);
+  transform: translateY(-3px) scale(1.05);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Content styling */
+.college-content {
+  flex-grow: 1;
+  background-color: var(--college-content-color);
+  border-radius: 10px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

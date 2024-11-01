@@ -1,96 +1,113 @@
-.achievement-list {
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+.admin-achievement-list {
     padding: 20px;
-    background-color: #1a1a2e; /* Dark background for contrast */
-    color: #fff; /* White text for readability */
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Poppins', sans-serif;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
-.achievement-title {
-    font-size: 2.5rem; /* Larger title */
-    margin-bottom: 30px; /* Space below title */
-    text-align: center; /* Center the title */
-    background: linear-gradient(45deg, #00b4d8, #48cae4); /* Gradient effect */
-    -webkit-background-clip: text; /* Gradient text */
+.admin-achievement-title {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    background: linear-gradient(45deg, var(--sky-blue), var(--secondary-color));
     background-clip: text;
-    -webkit-text-fill-color: transparent; /* Make text transparent */
-    color: transparent; /* Override default color */
+    -webkit-background-clip: text;
+    color: transparent;
 }
 
-.achievement-grid {
-    display: grid; /* Grid layout */
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
-    gap: 20px; /* Space between grid items */
+.admin-achievement-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
 }
 
-.achievement-card {
-    background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
-    display: flex;
-    flex-direction: column; /* Change to column to stack title on top */
-    border-radius: 10px; /* Rounded corners */
-    padding: 20px; /* Inner padding */
-    transition: all 0.3s ease; /* Smooth transition for hover effects */
-    cursor: pointer; /* Pointer cursor on hover */
-    overflow: hidden; /* Hide overflow */
-    position: relative; /* Position for pseudo-element */
-    animation: fadeIn 0.5s ease forwards; /* Fade-in animation */
-    opacity: 0; /* Initially invisible for animation */
+.admin-achievement-table th, .admin-achievement-table td {
+    padding: 10px;
+    text-align: left;
+    transition: background 0.3s ease;
 }
 
-/* Position for each card effect */
-.achievement-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
-    transform: rotate(45deg);
-    transition: all 0.5s ease; /* Transition for hover effect */
-    opacity: 0; /* Initially hidden */
+.admin-achievement-table th {
+    background-color: var(--surface-color);
+    color: var(--text);
 }
 
-.achievement-card:hover {
-    transform: translateY(-5px); /* Raise card on hover */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Shadow effect */
+.admin-achievement-table tr:hover {
+    background-color: var(--surface-color);
 }
 
-.achievement-card:hover::before {
-    opacity: 1; /* Show the overlay on hover */
+.admin-achievement-table th:nth-child(1),
+.admin-achievement-table td:nth-child(1) {
+    width: 20%; /* Increased width for Student Name */
 }
 
-.achievement-card h4 {
-    font-size: 1.2rem; /* Title size */
-    margin-bottom: 10px; /* Space below title */
-    color: #48cae4; /* Title color */
-    align-self: flex-start; /* Align title to top left */
+.admin-achievement-table th:nth-child(2),
+.admin-achievement-table td:nth-child(2) {
+    width: 10%; /* College column */
 }
 
-.achievement-card p {
-    font-size: 0.9rem; /* Description size */
-    margin: 0; /* Remove margin */
-}
-.achievement-card .content {
-    display: flex; /* Use flex to arrange description and date */
-    flex-direction: row; /* Arrange in a row */
-    justify-content: space-between; /* Space between description and date */
-    width: 100%; /* Full width */
+.admin-achievement-table th:nth-child(3),
+.admin-achievement-table td:nth-child(3) {
+    width: 15%; /* Activity column */
 }
 
-.position {
-    font-weight: bold; /* Bold text for positions */
-    color: #48cae4; /* Color for position indication */
+.admin-achievement-table th:nth-child(4),
+.admin-achievement-table td:nth-child(4) {
+    width: 25%; /* Reduced width for Description column */
 }
 
+.admin-achievement-table th:nth-child(5),
+.admin-achievement-table td:nth-child(5) {
+    width: 10%; /* Date column */
+}
 
+.admin-achievement-table th:nth-child(6),
+.admin-achievement-table td:nth-child(6) {
+    width: 5%; /* Reduced width for Certificate column */
+}
 
-/* Animation keyframes for fade-in effect */
-@keyframes fadeIn {
-    from { 
-        opacity: 0; 
-        transform: translateY(20px); 
-    }
-    to { 
-        opacity: 1; 
-        transform: translateY(0); 
-    }
+.admin-achievement-row {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.admin-achievement-row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.admin-expanded-row {
+    padding: 10px 0;
+    background-color: var(--background-color);
+}
+
+.admin-subtable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-subtable th, .admin-subtable td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--sky-blue);
+}
+
+.admin-subtable tr:hover {
+    background-color: rgba(74, 144, 226, 0.1);
+}
+
+/* Add animations for buttons */
+.download-icon {
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.download-icon:hover {
+    transform: scale(1.2);
 }

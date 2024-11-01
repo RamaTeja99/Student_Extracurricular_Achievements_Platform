@@ -1,21 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
 :root {
-  --primary-color: #4a90e2; /* Bright blue for primary actions */
-  --secondary-color: #50e3c2; /* Soft teal for accents */
-  --background-color: #071630; /* Clean white background */
-  --text-color: #333333; /* Dark gray for text */
-  --hover-color: rgba(74, 144, 226, 0.2); /* Light hover effect */
+  /* Dark theme colors */
+  --dark-primary: #021526;      
+  --dark-secondary: #03346E;    
+  --dark-background: #021526;    
+  --dark-text: #E2E2B6;         
+  --dark-surface: #6EACDA;      
+  --dark-sky-blue: #6EACDA;    
+  --dark-content: #6EACDA;
+  --dark-text-whiite:#fff;
+
+  /* Light theme colors */
+  --light-primary: #F2E5BF;      
+  --light-secondary: #257180;    
+  --light-background: #FAFAF6;    
+  --light-text: #222831;         
+  --light-surface: rgba(255, 255, 255, 0.9); 
+  --light-sky-blue: #FD8B51;     
+  --light-content: #f7e8bb;  
+  --light-text-black: #000;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Theme specific styles */
+.dark {
+  --primary-color: var(--dark-primary);
+  --secondary-color: var(--dark-secondary);
+  --background-color: var(--dark-background);
+  --text-color: var(--dark-text);
+  --surface-color: var(--dark-surface);
+  --sky-blue: var(--dark-sky-blue);
+  --content-color: var(--dark-content);
+  --text:var(--dark-text-whiite);
+}
+
+.light {
+  --primary-color: var(--light-primary);
+  --secondary-color: var(--light-secondary);
+  --background-color: var(--light-background);
+  --text-color: var(--light-text);
+  --surface-color: var(--light-surface);
+  --sky-blue: var(--light-sky-blue);
+  --content-color: var(--light-content);
+  --text:var(--light-text-black);
 }
 
 .admin-dashboard {
   min-height: 100vh;
-  background: var(--background-color);
-  color: var(--text-color);
-  font-family: 'Roboto', sans-serif;
+  background: var(--background-color); /* Default to light theme */
+  color: var(--text-color); /* Default to light theme */
+  font-family: 'Poppins', sans-serif;
   padding: 20px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  transition: background-color 0.5s ease, transform 0.3s ease; /* Added transform for dynamic feel */
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .admin-header {
@@ -23,88 +70,101 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-  padding: 10px 20px; /* Added horizontal padding */
-  background: rgba(147, 223, 246, 0.9);
+  padding: 10px 20px;
+  background: var(--surface-colors);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   transition: background 0.3s ease;
-  position: relative; /* Add this */
+  position: relative;
 }
 
 .admin-header:hover {
-  background: rgb(5, 164, 228); /* Full white on hover */
+  background: var(--surface-color);
 }
 
 .admin-header h2 {
-  font-size: 2rem; /* Slightly smaller font size */
-  font-weight: 400; /* Adjusted weight for modern look */
-  letter-spacing: 1px; /* Reduced letter spacing */
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 1px;
   margin: 0;
   animation: slideInLeft 0.8s ease-out;
-  transition: color 0.3s ease; /* Smooth color transition */
+  transition: color 0.3s ease;
+  color: var(--text-color);
 }
 
 .admin-nav {
   display: flex;
   justify-content: flex-start; /* Aligns items to the start */
-  align-items: center; /* Aligns items vertically in the center */
-  flex-grow: 0; /* Change from 1 to 0 */
-  margin-right: 20px; /* Adjust as needed to give space for profile dropdown */
+  align-items: center;
+  margin-right: 20px;
   animation: fadeInUp 0.8s ease-out;
+  flex-wrap: wrap; /* Allows items to wrap to the next line if needed */
 }
 
 .nav-links {
-  display: flex; /* Use flexbox for nav links */
-  align-items: center; /* Center align nav links vertically */
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Set a base gap between items */
 }
 
 .admin-nav a {
   color: var(--text-color);
   text-decoration: none;
-  padding: 8px 15px; /* Reduced padding for a sleeker look */
-  margin: 0 5px; /* Reduced margin for compactness */
-  background-color: rgba(74, 144, 226, 0.1); /* Lighter background for links */
-  border-radius: 25px; /* Rounded corners for modern look */
-  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Enhanced transitions */
+  padding: 8px 15px;
+  margin: 0; /* Remove margin from links */
+  background-color: rgba(74, 144, 226, 0.1);
+  border-radius: 25px;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
-.admin-nav a::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
+/* Add specific margins for different links for varied gaps */
+.admin-nav a:nth-child(1) {
+  margin-left: 50px;
+  margin-right: 5px; /* More space after the first link */
 }
 
-.admin-nav a:hover::before {
-  width: 300px;
-  height: 300px;
+.admin-nav a:nth-child(2) {
+  margin-right: 5px; /* Medium space after the second link */
+}
+
+.admin-nav a:nth-child(3) {
+  margin-right: 5px; /* Less space after the third link */
+}
+
+.header-actions {
+  display: flex;               /* Use flexbox for alignment */
+  align-items: center;        /* Center items vertically */
+  gap: 20px;                  /* Set a base gap between actions */
+}
+
+/* Add specific margins for different actions for varied gaps */
+.header-actions > *:nth-child(1) {
+  margin-left: 110px;
+  margin-right: 42px; /* More space after the first action */
 }
 
 .admin-nav a:hover {
   background-color: var(--primary-color);
-  transform: translateY(-3px) scale(1.05); /* Scale effect on hover */
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .admin-content {
   flex-grow: 1;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--content-color);
   border-radius: 10px;
   padding: 20px;
   backdrop-filter: blur(10px);
   animation: fadeIn 1s ease-out;
-  transition: all 0.3s ease; /* Added background transition */
+  transition: all 0.3s ease;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .admin-content:hover {
-  transform: translateY(-5px); /* Only vertical movement */
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
-  background-color: rgba(255, 255, 255, 0.1); /* Light background on hover */
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
 .dashboard-stats {
@@ -119,51 +179,20 @@
   border-radius: 10px;
   padding: 20px;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Enhanced transitions */
-  animation: fadeInUp 0.5s ease-out; /* Animation for stat cards */
-}
-
-.stat-card:hover {
-  transform: translateY(-5px) scale(1.05) rotate(2deg); /* Added rotation for hover effect */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeInUp 0.5s ease-out;
 }
 
 .stat-card h3 {
   font-size: 1.2rem;
   margin-bottom: 10px;
-  transition: color 0.3s ease; /* Smooth color transition */
+  transition: color 0.3s ease;
 }
 
 .stat-card p {
   font-size: 2rem;
   font-weight: bold;
-  transition: transform 0.3s ease; /* Smooth transform transition */
-}
-
-.stat-card:hover p {
-  transform: scale(1.1); /* Slightly enlarge text on hover */
-}
-
-@keyframes slideInLeft {
-  from {
-      opacity: 0;
-      transform: translateX(-50px);
-  }
-  to {
-      opacity: 1;
-      transform: translateX(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-      opacity: 0;
-      transform: translateX(50px);
-  }
-  to {
-      opacity: 1;
-      transform: translateX(0);
-  }
+  transition: transform 0.3s ease;
 }
 
 @keyframes fadeInUp {
@@ -184,6 +213,28 @@
   to {
       opacity: 1;
   }
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+  background: var(--dark-background);
+  color: var(--dark-text);
+}
+
+.dark-mode .admin-header {
+  background: var(--dark-surface);
+}
+
+.dark-mode .admin-nav a {
+  color: var(--dark-text);
+}
+
+.dark-mode .admin-nav a:hover {
+  background-color: var(--dark-primary);
+}
+
+.dark-mode .stat-card {
+  background: linear-gradient(135deg, var(--dark-primary), var(--dark-secondary));
 }
 
 /* Responsive design */

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getColleges, deleteCollege,deleteCollegeUser } from '../../../api'; // import deleteCollege API
+import { getColleges, deleteCollege, deleteCollegeUser } from '../../../api';
 import EditCollege from './EditCollege';
 import './CollegeList.css';
 
@@ -45,20 +45,23 @@ const CollegeList = () => {
     };
 
     return (
-        <div className="college-list-container">
-            <div className="college-list-header">
-                <h3>Colleges</h3>
+        <div className="collegelist-container">
+            <div className="collegelist-header">
+                <h3 className="collegelist-title">Colleges</h3>
             </div>
-            <div className="college-grid">
+            <ul className="collegelist">
                 {colleges.map((college) => (
-                    <div key={college.id} className="college-card">
-                        <div className="college-name">{college.name}</div>
-                        <div className="college-location">{college.location}</div>
-                        <button onClick={() => handleEditClick(college.id)}>Edit</button>
-                        <button onClick={() => handleDeleteClick(college.id)} className="delete-button">Delete</button>
-                    </div>
+                    <li key={college.id} className="collegelist-item">
+                        <div className="collegelist-info">
+                            <span className="collegelist-name">{college.name}</span>
+                        </div>
+                        <div className="collegelist-actions">
+                            <button onClick={() => handleEditClick(college.id)} className="collegelist-edit-button">Edit</button>
+                            <button onClick={() => handleDeleteClick(college.id)} className="collegelist-delete-button">Delete</button>
+                        </div>
+                    </li>
                 ))}
-            </div>
+            </ul>
             {isEditing && (
                 <EditCollege collegeId={selectedCollegeId} onClose={handleCloseEdit} />
             )}

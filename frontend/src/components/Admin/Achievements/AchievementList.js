@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAllAchievements } from '../../../api';
 import CertificateGenerator from '../../College/Achievements/CertificateGenerator'; // Adjust import as necessary
+import { FaDownload } from 'react-icons/fa';
 import './AchievementList.css';
 
 const AchievementList = () => {
@@ -20,7 +21,6 @@ const AchievementList = () => {
         fetchAchievements();
     }, []);
 
-    // Group achievements by student
     const groupedAchievements = achievements.reduce((acc, achievement) => {
         const studentId = achievement.student.id;
         if (!acc[studentId]) {
@@ -33,7 +33,6 @@ const AchievementList = () => {
         return acc;
     }, {});
 
-    // Get only the most recent achievement for each student
     const recentAchievements = Object.values(groupedAchievements).map(({ student, achievements }) => {
         const mostRecent = achievements.sort((a, b) => new Date(b.activityDate) - new Date(a.activityDate))[0];
         return { student, achievement: mostRecent };
@@ -42,7 +41,7 @@ const AchievementList = () => {
     const handleStudentClick = (studentId) => {
         setExpandedStudents((prev) => ({
             ...prev,
-            [studentId]: !prev[studentId], // Toggle expansion state
+            [studentId]: !prev[studentId],
         }));
     };
 
@@ -50,22 +49,12 @@ const AchievementList = () => {
         setSelectedAchievement(achievement);
     };
 
-    const handleDownloadAll = (achievements) => {
-        achievements.forEach((achievement) => {
-            // This could be enhanced to create multiple PDFs in one action or add a function to download multiple files
-            setSelectedAchievement(achievement);
-            // Trigger download for the current achievement
-            // Wait for a short moment to ensure the PDF is generated before moving to the next one
-            setTimeout(() => {
-                setSelectedAchievement(null); // Reset to avoid continuous downloads
-            }, 500);
-        });
-    };
+    
 
     return (
-        <div className="achievement-list">
-            <h3 className="achievement-title">Achievements</h3>
-            <table className="achievement-table">
+        <div className="admin-achievement-list">
+            <h3 className="admin-achievement-title">Achievements</h3>
+            <table className="admin-achievement-table">
                 <thead>
                     <tr>
                         <th>Student Name</th>
@@ -73,34 +62,36 @@ const AchievementList = () => {
                         <th>Activity</th>
                         <th>Description</th>
                         <th>Date</th>
-                        <th>Download Certificate</th>
+                        <th>Certificate</th>
                     </tr>
                 </thead>
                 <tbody>
                     {recentAchievements.map(({ student, achievement }) => (
                         <React.Fragment key={student.id}>
-                            <tr onClick={() => handleStudentClick(student.id)} style={{ cursor: 'pointer' }}>
+                            <tr onClick={() => handleStudentClick(student.id)} className="admin-achievement-row">
                                 <td>{student.name}</td>
                                 <td>{student.college.name}</td>
                                 <td>{achievement.activityName}</td>
                                 <td>{achievement.activityDescription}</td>
                                 <td>{achievement.activityDate}</td>
                                 <td>
-                                    <button onClick={(e) => { e.stopPropagation(); handleDownload(achievement); }}>
-                                        Download
-                                    </button>
-                                </td>
+                                <FaDownload 
+                                        className="download-icon" 
+                                        onClick={(e) => { e.stopPropagation(); handleDownload(achievement); }} 
+                                    />
+                            </td>
+
                             </tr>
                             {expandedStudents[student.id] && achievement && (
                                 <tr>
-                                    <td colSpan="6" style={{ padding: '10px' }}>
-                                        <table style={{ width: '100%' }}>
+                                    <td colSpan="6" className="admin-expanded-row">
+                                        <table className="admin-subtable">
                                             <thead>
                                                 <tr>
                                                     <th>Activity</th>
                                                     <th>Description</th>
                                                     <th>Date</th>
-                                                    <th>Download</th>
+                                                    <th>Certificate</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -110,23 +101,17 @@ const AchievementList = () => {
                                                         <td>{ach.activityDescription}</td>
                                                         <td>{ach.activityDate}</td>
                                                         <td>
-                                                            <button onClick={(e) => { e.stopPropagation(); handleDownload(ach); }}>
-                                                                Download
-                                                            </button>
-                                                        </td>
+                                                        <FaDownload 
+                                        className="download-icon" 
+                                        onClick={(e) => { e.stopPropagation(); handleDownload(achievement); }} 
+                                    />
+                                                    </td>
+
                                                     </tr>
                                                 ))}
                                             </tbody>
                                         </table>
-                                        <button 
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleDownloadAll(groupedAchievements[student.id].achievements);
-                                            }}
-                                            style={{ marginTop: '10px' }}
-                                        >
-                                            Download All Achievements
-                                        </button>
+                                       
                                     </td>
                                 </tr>
                             )}
