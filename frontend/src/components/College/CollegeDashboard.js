@@ -16,7 +16,7 @@ const CollegeDashboard = () => {
                 <Link to="/college/dashboard/add-student" className={location.pathname === '/college/dashboard/add-student' ? 'active' : ''}>Add Student</Link>
                 <Link to="/college/dashboard/add-achievement" className={location.pathname === '/college/dashboard/add-achievement' ? 'active' : ''}>Add Achievement</Link>
             </nav>
-                <div className="profile-dropdown">
+                <div className="profile-dropdown-college">
                 <ProfileDropdown dashboardType="college"/>
                 </div>
             <div className="route-container">

@@ -162,6 +162,64 @@ export const getStudentAchievements = async () => {
     console.log(studentId);
     return await axios.get(`${API_URL}/students/${studentId}/achievements`);
 };
+export const getStudentProfile = async () => {
+    const tokenInfo = getTokenInfo();
+    let studentId = null;
+    if(tokenInfo && tokenInfo.role === 'student') {
+        studentId = tokenInfo.roleSpecificId;
+    }
+    return await axios.get(`${API_URL}/students/${studentId}`);
+};
+
+// Student APIs
+export const updateStudentProfile = async (studentId, studentData) => {
+    return await axios.put(`${API_URL}/students/${studentId}`, studentData);
+};
+
+// Add these new endpoints to your existing api.js file
+
+export const verifyStudentPassword = async (credentials) => {
+    return await axios.post(`${API_URL}/auth/verify-password`, credentials);
+};
+
+export const verifyCollegeUserPassword = async (credentials) => {
+    return await axios.post(`${API_URL}/auth/verify-password`, credentials);
+};
+export const updateStudentPassword = async (studentId, newPassword) => {
+    return await axios.put(`${API_URL}/auth/update-student-password/${studentId}`, 
+        { newPassword }); // wrap in an object
+    };
+export const updateCollegeUserPassword = async (collegeId, newPassword) => {
+    return await axios.put(`${API_URL}/auth/update-college-password/${collegeId}`, 
+    { newPassword }); // wrap in an object
+};
+
+export const updateStudentProfilePhoto = async (studentId, formData) => {
+    return await axios.post(`${API_URL}/auth/update-student-profile-photo/${studentId}`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+};
+
+export const updateCollegeUserProfilePhoto = async (collegeId, formData) => {
+    return await axios.post(`${API_URL}/auth/update-college-profile-photo/${collegeId}`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+};
+export const getStudentProfilePhoto = async (studentId) => {
+    return await axios.get(`${API_URL}/auth/get-student-profile-photo/${studentId}`, {
+        responseType: 'blob', // Ensure the response is in blob format
+    });
+};
+
+export const getCollegeProfilePhoto = async (collegeId) => {
+    return await axios.get(`${API_URL}/auth/get-college-profile-photo/${collegeId}`, {
+        responseType: 'blob', // Ensure the response is in blob format
+    });
+};
 
 
 

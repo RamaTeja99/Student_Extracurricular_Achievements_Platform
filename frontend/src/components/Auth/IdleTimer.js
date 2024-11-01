@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import IdleWarningModal from './IdleWarningModel';
 
@@ -9,16 +9,16 @@ const IdleTimer = () => {
     const [showWarning, setShowWarning] = useState(false);
     const [remainingTime, setRemainingTime] = useState(0);
     
-    const IDLE_TIME = 2 * 60 * 1000; // 30 minutes
+    const IDLE_TIME = 30 * 60 * 1000; // 30 minutes
     const WARNING_TIME = 1 * 60 * 1000; // 1 minute warning
 
-    const logout = () => {
+    const logout = useCallback(() => {
         localStorage.removeItem('token');
         localStorage.removeItem('lastActivity');
         navigate('/login');
-    };
+    }, [navigate]);
 
-    const resetTimer = () => {
+    const resetTimer = useCallback(() => {
         if (idleTimeout.current) clearTimeout(idleTimeout.current);
         if (warningTimeout.current) clearTimeout(warningTimeout.current);
         setShowWarning(false);
@@ -41,7 +41,7 @@ const IdleTimer = () => {
 
             idleTimeout.current = setTimeout(logout, WARNING_TIME);
         }, IDLE_TIME - WARNING_TIME);
-    };
+    }, [logout,WARNING_TIME,IDLE_TIME]); // Add logout and WARNING_TIME as dependencies
 
     useEffect(() => {
         const events = [
@@ -66,7 +66,7 @@ const IdleTimer = () => {
                 document.removeEventListener(event, resetTimer);
             });
         };
-    }, []);
+    }, [resetTimer]); // Include resetTimer in dependencies
 
     return (
         <>
@@ -81,4 +81,3 @@ const IdleTimer = () => {
 };
 
 export default IdleTimer;
-

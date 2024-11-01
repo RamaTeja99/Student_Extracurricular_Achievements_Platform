@@ -39,11 +39,11 @@ const AdminDashboard = () => {
                         <Link to="/admin/dashboard/students" className={location.pathname === '/admin/dashboard/students' ? 'active' : ''}>Students</Link>
                         <Link to="/admin/dashboard/achievements" className={location.pathname === '/admin/dashboard/achievements' ? 'active' : ''}>Achievements</Link>
                         <Link to="/admin/dashboard/add-college" className={location.pathname === '/admin/dashboard/add-college' ? 'active' : ''}>Add College</Link>
+
+                    
                     </div>
-                </nav>
-                    <div className="profile-section">
                         <ProfileDropdown dashboardType="admin"/>
-                    </div>
+                </nav>
             </header>
             <div className="admin-content">
                 <div className="dashboard-stats">

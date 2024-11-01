@@ -44,27 +44,18 @@
   transition: color 0.3s ease; /* Smooth color transition */
 }
 
-.admin-header .user-info {
-  display: flex;
-  align-items: center;
-  right:2px;
-  animation: slideInRight 0.8s ease-out;
-}
-
-.user-avatar {
-  width: 35px; /* Slightly smaller avatar */
-  height: 35px; /* Slightly smaller avatar */
-  border-radius: 50%;
-  margin-right: 10px;
-  background-color: var(--secondary-color);
-}
 .admin-nav {
   display: flex;
-  justify-content: flex-start; /* Change from center to flex-start */
-  align-items: center;
+  justify-content: flex-start; /* Aligns items to the start */
+  align-items: center; /* Aligns items vertically in the center */
   flex-grow: 0; /* Change from 1 to 0 */
-  margin-right: 350px;/* Add some space from the title */
+  margin-right: 20px; /* Adjust as needed to give space for profile dropdown */
   animation: fadeInUp 0.8s ease-out;
+}
+
+.nav-links {
+  display: flex; /* Use flexbox for nav links */
+  align-items: center; /* Center align nav links vertically */
 }
 
 .admin-nav a {
@@ -86,7 +77,6 @@
   left: 50%;
   width: 0;
   height: 0;
- 
 }
 
 .admin-nav a:hover::before {
@@ -210,12 +200,4 @@
   .dashboard-stats {
       grid-template-columns: 1fr;
   }
-}
-
-.profile-section {
-  position: absolute; /* Add this */
-  right: 20px; /* Add this */
-  top: -65px; /* Add this */
-  transform: translateY(-50%); /* Add this */
-  z-index: 100;
 }

@@ -15,8 +15,6 @@ const Logout = () => {
             sessionStorage.clear();
             localStorage.clear();
             
-            
-            
             setTimeout(() => {
                 navigate('/login');
             }, 600);
@@ -27,12 +25,9 @@ const Logout = () => {
     };
 
     return (
-        <a 
-            href="#"
-            onClick={(e) => {
-                e.preventDefault();
-                handleLogout();
-            }}
+        <button 
+            type="button"
+            onClick={handleLogout}
             className={`logout-link ${isHovered ? 'hovered' : ''} ${isClicked ? 'clicked' : ''}`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => {
@@ -41,7 +36,7 @@ const Logout = () => {
             }}
         >
             <span className={isHovered ? 'hovered' : ''}>Logout</span>
-        </a>
+        </button>
     );
 };
 

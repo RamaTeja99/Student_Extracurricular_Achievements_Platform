@@ -1,4 +1,5 @@
 package com.example.entity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,9 +11,10 @@ public class College {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
     private String name;
     private String location;
+    @Column(unique = true)
+    private String email;
 	public Long getId() {
 		return id;
 	}
@@ -30,6 +32,13 @@ public class College {
 	}
 	public void setLocation(String location) {
 		this.location = location;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	@Override
 	public String toString() {

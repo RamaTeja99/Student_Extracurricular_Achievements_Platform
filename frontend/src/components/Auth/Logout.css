@@ -27,7 +27,7 @@
   box-shadow: 0 15px 30px rgba(255, 0, 0, 0.3);
   background-color: rgba(255, 0, 0, 0.8);
   border: 2px solid rgba(255, 0, 0, 0.8);
-  animation: pulse 2s infinite;
+  animation: pulse 5s infinite;
 }
 
 .logout-link.clicked {
@@ -67,4 +67,3 @@
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
-

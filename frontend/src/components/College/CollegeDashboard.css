@@ -88,8 +88,9 @@
     }
   }
 
-  .profile-dropdown {
+  .profile-dropdown-college {
     position: absolute;
-    top:75px;
-    right:25px;
+    top: 255px;
+    transform: translateY(-50%); /* Add this */
+    z-index: 100;
   }

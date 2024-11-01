@@ -1,6 +1,112 @@
 import React, { useState } from 'react';
+import Select from 'react-select';
 import { addStudent, addStudentUser } from '../../../api';
 import './AddStudent.css';
+import Papa from 'papaparse';
+
+const degreeOptions = [
+    { value: 'BSc', label: 'Bachelor of Science (BSc)' },
+    { value: 'BA', label: 'Bachelor of Arts (BA)' },
+    { value: 'BCom', label: 'Bachelor of Commerce (BCom)' },
+    { value: 'BTech', label: 'Bachelor of Technology (BTech)' },
+    { value: 'MSc', label: 'Master of Science (MSc)' },
+    { value: 'MA', label: 'Master of Arts (MA)' },
+    { value: 'MCom', label: 'Master of Commerce (MCom)' },
+    { value: 'MTech', label: 'Master of Technology (MTech)' },
+];
+
+const branchOptionsMap = {
+    BSc: [
+        { value: 'CS', label: 'Computer Science' },
+        { value: 'Bio', label: 'Biology' },
+        { value: 'Chem', label: 'Chemistry' },
+        { value: 'Phy', label: 'Physics' },
+    ],
+    BA: [
+        { value: 'Eng', label: 'English' },
+        { value: 'Hist', label: 'History' },
+        { value: 'Psy', label: 'Psychology' },
+    ],
+    BCom: [
+        { value: 'Acct', label: 'Accounting' },
+        { value: 'Fin', label: 'Finance' },
+        { value: 'Econ', label: 'Economics' },
+    ],
+    BTech: [
+        { value: 'CS', label: 'Computer Science Engineering' },
+        { value: 'ECE', label: 'Electronics and Communication Engineering' },
+        { value: 'ME', label: 'Mechanical Engineering' },
+        { value: 'CE', label: 'Civil Engineering' },
+    ],
+    MSc: [
+        { value: 'CS', label: 'Computer Science' },
+        { value: 'Bio', label: 'Biology' },
+        { value: 'Chem', label: 'Chemistry' },
+        { value: 'Phy', label: 'Physics' },
+    ],
+    MA: [
+        { value: 'Eng', label: 'English' },
+        { value: 'Hist', label: 'History' },
+        { value: 'Psy', label: 'Psychology' },
+    ],
+    MCom: [
+        { value: 'Acct', label: 'Accounting' },
+        { value: 'Fin', label: 'Finance' },
+        { value: 'Econ', label: 'Economics' },
+    ],
+    MTech: [
+        { value: 'CS', label: 'Computer Science Engineering' },
+        { value: 'ECE', label: 'Electronics and Communication Engineering' },
+        { value: 'ME', label: 'Mechanical Engineering' },
+        { value: 'CE', label: 'Civil Engineering' },
+    ],
+};
+
+const customSelectStyles = {
+    control: (base, state) => ({
+        ...base,
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: '25px',
+        width: 'calc(100% + 1.5rem)',
+        bottom: '3px',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        boxShadow: state.isFocused ? '0 0 5px #e94560' : 'none',
+        transition: 'all 0.3s ease',
+        color: '#e94560',
+        '&:hover': {
+            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        },
+    }),
+    singleValue: (base) => ({
+        ...base,
+        color: '#e94560',
+    }),
+    placeholder: (base) => ({
+        ...base,
+        color: 'rgba(233, 69, 96, 0.7)',
+    }),
+    option: (base, state) => ({
+        ...base,
+        backgroundColor: state.isSelected ? '#e94560' : 'transparent',
+        color: state.isSelected ? '#1a1a2e' : '#e94560',
+        cursor: 'pointer',
+        '&:hover': {
+            backgroundColor: '#ff6b6b',
+            color: '#1a1a2e',
+        },
+    }),
+    menu: (base) => ({
+        ...base,
+        backgroundColor: '#16213e',
+        borderRadius: '15px',
+        marginTop: '0.5rem',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+    }),
+    menuList: (base) => ({
+        ...base,
+        padding: '0',
+    }),
+};
 
 const AddStudent = () => {
     const [name, setName] = useState('');
@@ -8,50 +114,205 @@ const AddStudent = () => {
     const [dob, setDob] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [degree, setDegree] = useState(null);
+    const [degreeYear, setDegreeYear] = useState('');
+    const [branch, setBranch] = useState(null);
     const [message, setMessage] = useState(null);
+    const [isManual, setIsManual] = useState(true);
+    const [csvData, setCsvData] = useState([]); // State to store parsed CSV data
+
+    const handleDegreeChange = (selectedDegree) => {
+        setDegree(selectedDegree);
+        setBranch(null);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const student = { name, rollNumber, dob, email, phoneNumber };
+            const student = {
+                name,
+                rollNumber,
+                dob,
+                email,
+                phoneNumber,
+                degree: degree.value,
+                degreeYear,
+                branch: branch.value,
+            };
             const response = await addStudent(student);
-            const savedStudent = response.data; 
-            console.log('Saved Student:', savedStudent);
-            const reversedDob = dob.split('-').reverse().join('');
-            const user ={username: rollNumber,password: reversedDob,role:'student',roleSpecificId:savedStudent.id};
-            console.log('User to be added:', user);
+            const savedStudent = response.data;
+
+            const nameParts = name.trim().split(' ');
+            let passwordBase = '';
+    
+            for (const part of nameParts) {
+                if (passwordBase.length < 2) {
+                    passwordBase += part; 
+                } else {
+                    break; 
+                }
+            }
+    
+            
+            while (passwordBase.length < 2 && nameParts.length) {
+                passwordBase += nameParts.shift(); 
+            }
+    
+            const rollNumberDigits = rollNumber.slice(-5);
+            const password = `${passwordBase}${rollNumberDigits}@`;
+            
+            const user = {
+                username: rollNumber,
+                password: password,
+                role: 'student',
+                roleSpecificId: savedStudent.id,
+            };
+
             await addStudentUser(user);
             setMessage({ type: 'success', text: 'Student added successfully!' });
-            // Clear fields after submission
+
+            // Reset form fields
             setName('');
             setRollNumber('');
             setDob('');
             setEmail('');
             setPhoneNumber('');
+            setDegree(null);
+            setDegreeYear('');
+            setBranch(null);
             setTimeout(() => setMessage(null), 3000);
         } catch (error) {
             setMessage({ type: 'error', text: 'Failed to add student. Please try again.' });
-            // Clear error message after 3 seconds
             setTimeout(() => setMessage(null), 3000);
         }
+    };
+
+    const handleCsvUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            parseCsv(file);
+        }
+    };
+
+    const parseCsv = (file) => {
+        Papa.parse(file, {
+            header: true,
+            complete: (results) => {
+                setCsvData(results.data); // Store parsed data in state
+                setMessage({ type: 'success', text: 'CSV file parsed successfully. Ready to save students.' });
+                setTimeout(() => setMessage(null), 3000);
+            },
+            error: (error) => {
+                setMessage({ type: 'error', text: 'Failed to process CSV. Please try again.' });
+                setTimeout(() => setMessage(null), 3000);
+            }
+        });
+    };
+
+    const saveStudentsFromCsv = async () => {
+        for (const studentData of csvData) {
+            try {
+                const response = await addStudent(studentData);
+                const savedStudent = response.data;
+
+                const rollNumberDigits = studentData.rollNumber.slice(-5);
+                const password = `${studentData.name}${rollNumberDigits}@`;
+
+                const user = {
+                    username: studentData.rollNumber,
+                    password: password,
+                    role: 'student',
+                    roleSpecificId: savedStudent.id,
+                };
+
+                await addStudentUser(user);
+            } catch (error) {
+                console.error('Failed to save student:', studentData, error);
+            }
+        }
+        setMessage({ type: 'success', text: 'Students added successfully!' });
+        setTimeout(() => setMessage(null), 3000);
+        setCsvData([]); // Clear CSV data after saving
+    };
+
+    const filteredBranchOptions = degree ? branchOptionsMap[degree.value] : [];
+
+    const handleToggle = (mode) => {
+        setIsManual(mode === 'manual');
     };
 
     return (
         <form className="add-student-form" onSubmit={handleSubmit}>
             <h2 className="form-title">Add New Student</h2>
-            <label>Student Name</label>
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
-            <label>Roll Number</label>
-            <input type="text" value={rollNumber} onChange={(e) => setRollNumber(e.target.value)} required />
-            <label>Date of Birth</label>
-            <input type="date" value={dob} onChange={(e) => setDob(e.target.value)} required />
-            <label>Email</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            <label>Phone Number</label>
-            <input type="text" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
-            <button type="submit">Add Student</button>
+            <div className="toggle-buttons">
+                <button type="button" className={isManual ? 'active' : ''} onClick={() => handleToggle('manual')}>Manual Entry</button>
+                <button type="button" className={!isManual ? 'active' : ''} onClick={() => handleToggle('csv')}>Upload CSV</button>
+            </div>
+
+            {isManual && (
+                <>
+                    {/* Manual entry form fields */}
+                    <label>Student Name</label>
+                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+
+                    <label>Roll Number</label>
+                    <input type="text" value={rollNumber} onChange={(e) => setRollNumber(e.target.value)} required />
+
+                    <label>Date of Birth</label>
+                    <input type="date" value={dob} onChange={(e) => setDob(e.target.value)} required />
+
+                    <label>Email</label>
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+
+                    <label>Phone Number</label>
+                    <input type="text" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
+
+                    <label>Degree</label>
+                    <Select
+                        className="custom-select"
+                        options={degreeOptions}
+                        value={degree}
+                        onChange={handleDegreeChange}
+                        isSearchable
+                        placeholder="Select Degree"
+                        required
+                        styles={customSelectStyles}
+                    />
+
+                    <label>Degree Year</label>
+                    <input type="text" value={degreeYear} onChange={(e) => setDegreeYear(e.target.value)} required />
+
+                    <label>Branch</label>
+                    <Select
+                        className="custom-select"
+                        options={filteredBranchOptions}
+                        value={branch}
+                        onChange={(selectedOption) => setBranch(selectedOption)}
+                        isSearchable
+                        placeholder="Select Branch"
+                        required
+                        isDisabled={!degree}
+                        styles={customSelectStyles}
+                    />
+
+                    <button type="submit" className="submit-button">Add Student</button>
+                </>
+            )}
+
+            {!isManual && (
+                <div className="upload-csv">
+                    <label>Upload CSV</label>
+                    <input type="file" accept=".csv" onChange={handleCsvUpload} />
+                    {csvData.length > 0 && (
+                        <button type="button" className="save-button" onClick={saveStudentsFromCsv}>
+                            Save Students
+                        </button>
+                    )}
+                </div>
+            )}
+
             {message && (
-                <div className={`${message.type}-message`}>
+                <div className={`message ${message.type}`}>
                     {message.text}
                 </div>
             )}

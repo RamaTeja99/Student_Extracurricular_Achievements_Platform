@@ -13,6 +13,19 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate username and password length
+        if (username.length < 8) {
+            setError('Username must be exactly 8 characters long.');
+            return;
+        }
+
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!passwordRegex.test(password)) {
+            setError('Password must be at least 8 characters long and include letters, numbers, and symbols.');
+            return;
+        }
+
         try {
             const response = await login(username, password);
 
@@ -47,7 +60,7 @@ const Login = () => {
     return (
         <div className="login-container">
             <div className="login-background">
-            <Background3D />
+                <Background3D />
             </div>
             <div className="login-box-wrapper">
                 <div className="login-box">

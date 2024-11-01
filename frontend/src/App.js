@@ -19,7 +19,10 @@ import AddAchievement from './components/College/Achievements/AddAchievement';
 import EditAchievement from './components/College/Achievements/EditAchievement';
 import StudentDetail from './components/College/Students/StudentDetail';
 import EditStudent from './components/College/Students/EditStudent';
-
+import StudentEdit from './components/Student/StudentEdit';
+import StudentSettings from './components/Student/StudentSettings';
+import CollegeEditProfile from './components/College/CollegeEditProfile';
+import CollegeSettings from './components/College/CollegeSettings';
 const ProtectedRoute = ({ children, allowedRole }) => {
     const location = useLocation();
     const tokenInfo = getTokenInfo();
@@ -79,6 +82,8 @@ const App = () => {
                     <Route path="add-achievement" element={<AddAchievement />} />
                     <Route path="edit-achievement" element={<EditAchievement />} />
                     <Route path="student-detail" element={<StudentDetail />} />
+                    <Route path="edit-profile" element={<CollegeEditProfile />} />
+                    <Route path="settings" element={<CollegeSettings />} />
                 </Route>
 
                 {/* Student Routes */}
@@ -89,6 +94,8 @@ const App = () => {
                 }>
                     <Route path="achievements" element={<Achievements />} />
                     <Route path="portfolio" element={<Portfolio />} />
+                    <Route path="edit-profile" element={<StudentEdit />} />
+                    <Route path="settings" element={<StudentSettings />} />
                 </Route>
             </Routes>
         </Router>

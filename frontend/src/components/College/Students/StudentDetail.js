@@ -1,10 +1,9 @@
-// src/components/StudentDetail.js
-
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getAchievementsByStudent, deleteAchievement } from '../../../api';
 import './StudentDetail.css';
 import { FaTimes } from 'react-icons/fa'; // Import a close icon
+import CertificateGenerator from '../Achievements/CertificateGenerator'; // Import the new component
 
 const StudentDetail = () => {
     const location = useLocation();
@@ -12,6 +11,7 @@ const StudentDetail = () => {
     const student = location.state.student; // Get the student data from the navigation state
     const [achievements, setAchievements] = useState([]);
     const [showAchievements, setShowAchievements] = useState(false);
+    const [selectedAchievement, setSelectedAchievement] = useState(null); // State for selected achievement
 
     useEffect(() => {
         const fetchAchievements = async () => {
@@ -42,6 +42,10 @@ const StudentDetail = () => {
 
     const handleClose = () => {
         navigate(-1); // Go back to the previous page
+    };
+
+    const handleGenerateCertificate = (achievement) => {
+        setSelectedAchievement(achievement); // Set the selected achievement for certificate generation
     };
 
     return (
@@ -86,6 +90,7 @@ const StudentDetail = () => {
                                     <td>
                                         <button onClick={() => handleEditClick(achievement)}>Edit</button>
                                         <button onClick={() => handleDeleteClick(achievement.id)}>Delete</button>
+                                        <button onClick={() => handleGenerateCertificate(achievement)}>Generate Certificate</button> {/* Button to generate certificate */}
                                     </td>
                                 </tr>
                             ))}
@@ -93,6 +98,8 @@ const StudentDetail = () => {
                     </table>
                 </div>
             )}
+
+            {selectedAchievement && <CertificateGenerator achievement={selectedAchievement} />} {/* Render the certificate generator */}
         </div>
     );
 };

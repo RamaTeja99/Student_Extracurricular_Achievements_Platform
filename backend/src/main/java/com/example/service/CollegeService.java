@@ -18,7 +18,9 @@ public class CollegeService {
     }
 
     public College save(College college) {
-    	
+    	if (collegeRepository.findByEmail(college.getEmail()) != null) {
+            throw new RuntimeException("Roll Number already exists");
+        }
         College singlecollege = collegeRepository.save(college);
         System.out.println(singlecollege.toString());
         return singlecollege;
@@ -35,10 +37,14 @@ public class CollegeService {
     }
     
     public College update(Long id, College college) {
+    	if (collegeRepository.findByEmail(college.getEmail()) != null) {
+            throw new RuntimeException("Roll Number already exists");
+        }
         College existingCollege = collegeRepository.findById(id).orElse(null);
         if (existingCollege != null) {
             existingCollege.setName(college.getName());
             existingCollege.setLocation(college.getLocation());
+            existingCollege.setEmail(college.getEmail());
             return collegeRepository.save(existingCollege);
         }
         return null;

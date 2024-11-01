@@ -1,5 +1,6 @@
 package com.example.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -15,9 +16,12 @@ public class Student {
     private Long id;
     
     private String name;
+    @Column(unique = true)
     private String rollNumber;
     private String dob;
+    @Column(unique = true)
     private String email;
+    @Column(unique = true)
     private String phoneNumber;
     private String branch;
     private String degree;

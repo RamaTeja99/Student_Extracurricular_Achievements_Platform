@@ -22,6 +22,15 @@ public class StudentService {
     }
 
     public Student save(Long collegeId,Student student) {
+    	  if (studentRepository.findByRollNumber(student.getRollNumber()) != null) {
+              throw new RuntimeException("Roll Number already exists");
+          }
+          if (studentRepository.findByEmail(student.getEmail()) != null) {
+              throw new RuntimeException("Email already exists");
+          }
+          if (studentRepository.findByPhoneNumber(student.getPhoneNumber()) != null) {
+              throw new RuntimeException("Phone Number already exists");
+          }
     	College college = collegeRepository.findById(collegeId).orElseThrow(() -> new RuntimeException("College not found"));
         student.setCollege(college);
         return studentRepository.save(student);

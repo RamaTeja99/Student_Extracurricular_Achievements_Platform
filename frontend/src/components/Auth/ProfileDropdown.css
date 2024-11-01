@@ -3,6 +3,17 @@
   display: inline-block;
   cursor: pointer;
 }
+/* Add this to your existing CSS styles for ProfileDropdown */
+
+/* Profile image styles */
+.profile-image {
+  width: 100%;  /* Full width of the container */
+  height: 100%; /* Full height of the container */
+  border-radius: 50%; /* Circular image */
+  object-fit: cover; /* Ensures the image covers the circle without distortion */
+  /* Optional: Add a border to the image */
+  border: 2px solid #fff; /* White border */
+}
 
 .profile-icon {
   width: 40px;
