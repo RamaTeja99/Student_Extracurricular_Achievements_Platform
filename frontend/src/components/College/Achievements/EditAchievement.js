@@ -4,6 +4,7 @@ import React, {  useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'; // Add React Router for navigation
 import { updateAchievement } from '../../../api'; // Adjust the path as needed
 import './EditAchievement.css'; // Optional CSS for styling
+import { FaTimes } from 'react-icons/fa';
 
 const EditAchievement = () => {
     const navigate = useNavigate();
@@ -19,6 +20,9 @@ const EditAchievement = () => {
             [name]: type === 'checkbox' ? checked : value,
         });
     };
+    const handleClose = () => {
+        navigate(-1); // Go back to the previous page
+    };
 
     const handleEditSubmit = async (e) => {
         e.preventDefault();
@@ -33,8 +37,8 @@ const EditAchievement = () => {
 
     return (
         <div className="edit-achievement-container">
-            <button className="close-button" onClick={() => navigate(-1)}>
-                &times; {/* Close icon */}
+            <button className="close-icon" onClick={handleClose}>
+                <FaTimes />
             </button>
             <h5>Edit Achievement</h5>
             <form onSubmit={handleEditSubmit}>
@@ -45,6 +49,7 @@ const EditAchievement = () => {
                         name="activityName"
                         value={editAchievementData.activityName}
                         onChange={handleChangeEdit}
+                        className='edit-achievement-input'
                         required
                     />
                 </div>
@@ -54,6 +59,7 @@ const EditAchievement = () => {
                         type="date"
                         name="activityDate"
                         value={editAchievementData.activityDate}
+                        className='edit-achievement-input'
                         onChange={handleChangeEdit}
                     />
                 </div>
@@ -63,6 +69,7 @@ const EditAchievement = () => {
                         type="number"
                         name="activitypoints"
                         value={editAchievementData.activitypoints}
+                        className='edit-achievement-input'
                         onChange={handleChangeEdit}
                         required
                     />
@@ -73,6 +80,7 @@ const EditAchievement = () => {
                             type="checkbox"
                             name="firstPosition"
                             checked={editAchievementData.firstPosition}
+                            className='edit-achievement-input'
                             onChange={handleChangeEdit}
                         />
                         First Position
@@ -82,6 +90,7 @@ const EditAchievement = () => {
                             type="checkbox"
                             name="secondPosition"
                             checked={editAchievementData.secondPosition}
+                            className='edit-achievement-input'
                             onChange={handleChangeEdit}
                         />
                         Second Position
@@ -91,6 +100,7 @@ const EditAchievement = () => {
                             type="checkbox"
                             name="thirdPosition"
                             checked={editAchievementData.thirdPosition}
+                            className='edit-achievement-input'
                             onChange={handleChangeEdit}
                         />
                         Third Position
@@ -100,12 +110,13 @@ const EditAchievement = () => {
                             type="checkbox"
                             name="participation"
                             checked={editAchievementData.participation}
+                            className='edit-achievement-input'
                             onChange={handleChangeEdit}
                         />
                         Participation
                     </label>
                 </div>
-                <button type="submit">Save Changes</button>
+                <button type="submit" className='edit-achievement-submit-button'>Save Changes</button>
             </form>
         </div>
     );

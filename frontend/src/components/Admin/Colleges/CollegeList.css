@@ -70,17 +70,17 @@
 }
 
 .collegelist-edit-button {
-  background-color: var(--secondary-color);
+  background-color: transparent;
 }
 
 .collegelist-delete-button {
-  background-color: var(--error-color);
+  background-color: transparent;
 }
 
 .collegelist-edit-button:hover {
-  background-color: var(--secondary-color);
+  background-color: transparent;
 }
 
 .collegelist-delete-button:hover {
-  background-color: var(--error-color);
+  background-color: transparent;
 }

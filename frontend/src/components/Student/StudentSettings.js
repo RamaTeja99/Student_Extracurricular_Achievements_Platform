@@ -203,14 +203,14 @@ const StudentSettings = () => {
                         <div className="settings-card">
                             <h2>Change Profile Photo</h2>
                             <div className="photo-upload-container">
-                                <div className="photo-preview">
+                                <div className="photo-preview-student">
                                     {profilePhoto ? (
                                         <img 
                                             src={URL.createObjectURL(profilePhoto)} 
                                             alt="Preview" 
                                         />
                                     ) : (
-                                        <i className="fas fa-user-circle"></i>
+                                        <i className="fas fa-user-circle" ></i>
                                     )}
                                 </div>
                                 <div className="upload-controls">

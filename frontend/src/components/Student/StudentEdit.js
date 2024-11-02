@@ -63,7 +63,7 @@ const StudentEdit = () => {
     return (
         <div className="container">
            
-                <h2>Edit Profile</h2>
+                <h2 className='studentedit-title'>Edit Profile</h2>
             
             <div className="card">
                 <div className="card-body">

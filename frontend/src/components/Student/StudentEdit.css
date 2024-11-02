@@ -9,7 +9,7 @@
 }
 
 .card-header {
-  background-color: #0f0f0f;
+  background-color: var(--student-background-color);
   font-size: 1.5rem;
   font-weight: bold;
   padding: 1rem;
@@ -25,23 +25,32 @@
   margin-bottom: 1.5rem;
 }
 
-.form-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: red; /* Changed to red */
-}
+
 
 .form-control {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid #ccc;
+  background-color: #ffffff;
   border-radius: 4px;
 }
-
-.form-control[readonly] {
-  background-color: #120606;
+.studentedit-title{
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;  
+  color: var(--college-text);
 }
+.form-control[readonly] {
+  background-color: var(--student-navbar-color);
 
+}
+.form-control{
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid var(--college-content-color);
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
+}
 .btn-primary {
   background-color: #007bff;
   color: white;

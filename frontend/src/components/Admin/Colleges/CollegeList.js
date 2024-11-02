@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { getColleges, deleteCollege, deleteCollegeUser } from '../../../api';
 import EditCollege from './EditCollege';
+import { FaUserEdit } from "react-icons/fa";
+import { AiOutlineUserDelete } from "react-icons/ai";
 import './CollegeList.css';
 
 const CollegeList = () => {
@@ -56,8 +58,8 @@ const CollegeList = () => {
                             <span className="collegelist-name">{college.name}</span>
                         </div>
                         <div className="collegelist-actions">
-                            <button onClick={() => handleEditClick(college.id)} className="collegelist-edit-button">Edit</button>
-                            <button onClick={() => handleDeleteClick(college.id)} className="collegelist-delete-button">Delete</button>
+                            <button onClick={() => handleEditClick(college.id)} className="collegelist-edit-button"><FaUserEdit className='edit-icon'/></button>
+                            <button onClick={() => handleDeleteClick(college.id)} className="collegelist-delete-button"><AiOutlineUserDelete className='delete-icon'/></button>
                         </div>
                     </li>
                 ))}

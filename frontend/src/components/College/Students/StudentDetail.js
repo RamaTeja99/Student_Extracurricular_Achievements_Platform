@@ -2,16 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getAchievementsByStudent, deleteAchievement } from '../../../api';
 import './StudentDetail.css';
-import { FaTimes } from 'react-icons/fa'; // Import a close icon
-import CertificateGenerator from '../Achievements/CertificateGenerator'; // Import the new component
+import { FaTimes, FaTrash, FaDownload } from 'react-icons/fa'; 
+import { FiEdit3 } from "react-icons/fi";
+
+import CertificateGenerator from '../Achievements/CertificateGenerator';
 
 const StudentDetail = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const student = location.state.student; // Get the student data from the navigation state
+    const student = location.state.student;
     const [achievements, setAchievements] = useState([]);
     const [showAchievements, setShowAchievements] = useState(false);
-    const [selectedAchievement, setSelectedAchievement] = useState(null); // State for selected achievement
+    const [selectedAchievement, setSelectedAchievement] = useState(null);
 
     useEffect(() => {
         const fetchAchievements = async () => {
@@ -41,16 +43,15 @@ const StudentDetail = () => {
     };
 
     const handleClose = () => {
-        navigate(-1); // Go back to the previous page
+        navigate(-1);
     };
 
     const handleGenerateCertificate = (achievement) => {
-        setSelectedAchievement(achievement); // Set the selected achievement for certificate generation
+        setSelectedAchievement(achievement);
     };
 
     return (
-        <div className="student-detail-container">
-            {/* Close icon button */}
+        <div className={`student-detail-container ${showAchievements ? 'show-achievements' : ''}`}>
             <button className="close-icon" onClick={handleClose}>
                 <FaTimes />
             </button>
@@ -59,6 +60,10 @@ const StudentDetail = () => {
             <p>Roll Number: {student.rollNumber}</p>
             <p>Email: {student.email}</p>
             <p>Phone: {student.phoneNumber}</p>
+            <p>Branch: {student.branch}</p>
+            <p>Degree: {student.degree}</p>
+            <p>Degree Year: {student.degreeYear}</p>
+            <p>Date of Birth: {new Date(student.dob).toLocaleDateString()}</p>
 
             <h5 className="achievements-toggle" onClick={() => setShowAchievements(!showAchievements)}>
                 {showAchievements ? 'Hide Achievements' : 'Show Achievements'}
@@ -88,9 +93,15 @@ const StudentDetail = () => {
                                          achievement.thirdPosition ? 'Third Position' : 'Participation'}
                                     </td>
                                     <td>
-                                        <button onClick={() => handleEditClick(achievement)}>Edit</button>
-                                        <button onClick={() => handleDeleteClick(achievement.id)}>Delete</button>
-                                        <button onClick={() => handleGenerateCertificate(achievement)}>Generate Certificate</button> {/* Button to generate certificate */}
+                                        <button onClick={() => handleEditClick(achievement)} className="icon-button">
+                                        <FiEdit3 />
+                                        </button>
+                                        <button onClick={() => handleDeleteClick(achievement.id)} className="delete-icon-button">
+                                            <FaTrash title="Delete" />
+                                        </button>
+                                        <button onClick={() => handleGenerateCertificate(achievement)} className="download-icon-button">
+                                            <FaDownload title="Download Certificate" />
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
@@ -99,7 +110,7 @@ const StudentDetail = () => {
                 </div>
             )}
 
-            {selectedAchievement && <CertificateGenerator achievement={selectedAchievement} />} {/* Render the certificate generator */}
+            {selectedAchievement && <CertificateGenerator achievement={selectedAchievement} />}
         </div>
     );
 };

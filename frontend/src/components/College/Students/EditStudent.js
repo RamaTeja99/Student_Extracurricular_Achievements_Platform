@@ -77,7 +77,7 @@ const customSelectStyles = {
     }),
     singleValue: (base) => ({
         ...base,
-        color: '#e94560', // Set single value text color
+        color: 'var(--college-text)', // Set single value text color
     }),
     placeholder: (base) => ({
         ...base,

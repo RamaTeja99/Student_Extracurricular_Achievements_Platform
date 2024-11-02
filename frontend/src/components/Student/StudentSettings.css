@@ -104,12 +104,12 @@
     gap: 1.5rem;
 }
 
-.photo-preview {
+.photo-preview-student {
     width: 150px;
     height: 150px;
     border-radius: 50%;
     overflow: hidden;
-    background: #f8f9fa;
+    background: var(--student-background-color);
     display: flex;
     align-items: center;
     justify-content: center;

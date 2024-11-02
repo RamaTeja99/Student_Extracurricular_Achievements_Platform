@@ -128,6 +128,7 @@ const AddAchievement = () => {
                                 name="studentRollNumber"
                                 value={studentRollNumber}
                                 onChange={(e) => setStudentRollNumber(e.target.value)}
+                                className='achievement-input'
                                 required
                             />
                         </div>
@@ -138,6 +139,7 @@ const AddAchievement = () => {
                                 name="activityName"
                                 value={achievementData.activityName}
                                 onChange={handleChange}
+                                className='achievement-input'
                                 required
                             />
                         </div>
@@ -171,6 +173,8 @@ const AddAchievement = () => {
                                 name="activityDate"
                                 value={achievementData.activityDate}
                                 onChange={handleChange}
+                                className='achievement-input'
+                                required
                             />
                         </div>
                         <div>
@@ -180,6 +184,7 @@ const AddAchievement = () => {
                                 name="activitypoints"
                                 value={achievementData.activitypoints}
                                 onChange={handleChange}
+                                className='achievement-input'
                                 required
                             />
                         </div>

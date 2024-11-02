@@ -64,21 +64,22 @@ const branchOptionsMap = {
 const customSelectStyles = {
     control: (base, state) => ({
         ...base,
-        backgroundColor: 'var(--college-background-color)', // Make the control background transparent
+        backgroundColor: 'transparent', // Make the control background transparent
         borderRadius: '25px',
-        
-        width: 'calc(100% + 1.35rem)',
-        padding:'0.1px',
+        borderStyle: 'none',
+        width: '98.5%',
+        paddingTop:'0rem',
         boxShadow: state.isFocused ? '0 0 5px #e94560' : 'none',
         transition: 'all 0.3s ease',
-        color: '#e94560',
+        color: 'var(--college-text)',
+        border: '1px  var(--college-content-color)',
         '&:hover': {
             backgroundColor: 'rgba(255, 255, 255, 0.1)', // Slight hover effect
         },
     }),
     singleValue: (base) => ({
         ...base,
-        color: '#e94560', // Set single value text color
+        color: 'var(--college-text)', // Set single value text color
     }),
     placeholder: (base) => ({
         ...base,
@@ -105,6 +106,7 @@ const customSelectStyles = {
         ...base,
         padding: '0',
     }),
+
     // Additional styles to hide unwanted elements
     container: (base) => ({
         ...base,
@@ -302,7 +304,6 @@ const AddStudent = () => {
                         isSearchable
                         placeholder="Select Branch"
                         required
-                        isDisabled={!degree}
                         styles={customSelectStyles}
                     />
 

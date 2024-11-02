@@ -40,7 +40,7 @@
   height: 150px;
   border-radius: 50%;
   overflow: hidden;
-  background: #f8f9fa;
+  background:var(--college-background-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,7 +65,7 @@
 
 .file-input-label,
 .primary-button {
-  padding: 0.8rem 1.5rem;
+  padding: 0.8rem 1rem;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -87,16 +87,22 @@
 .primary-button {
   background: #007bff;
   color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
   border: none;
+  cursor: pointer;
 }
 
 .primary-button:disabled {
   background: #ccc;
+  border-radius: 4px;
+  padding: 0.8rem 1rem 1rem;
   cursor: not-allowed;
 }
 
 .primary-button:hover:not(:disabled) {
   background: #0056b3;
+  
 }
 
 .message-toast {

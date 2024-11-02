@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getStudentsByCollege, deleteStudent, deleteStudentUser } from '../../../api';
-import { FaEdit, FaTrash, FaInfoCircle } from 'react-icons/fa';
+import { LiaUserEditSolid } from "react-icons/lia";
+import { AiOutlineUserDelete } from "react-icons/ai";
+import { BiSolidUserDetail } from "react-icons/bi";
 import './StudentListByCollege.css';
 
 const StudentListByCollege = () => {
@@ -54,7 +56,6 @@ const StudentListByCollege = () => {
         }
     };
 
-    // Updated to filter by rollNumber
     const filteredStudents = students.filter(student =>
         student.rollNumber.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -80,9 +81,9 @@ const StudentListByCollege = () => {
                             {student.rollNumber}
                         </span>
                         <div className="icon-container">
-                            <FaInfoCircle onClick={() => handleStudentClick(student)} className="details-icon" />
-                            <FaEdit onClick={() => handleEditClick(student)} className="edit-icon" />
-                            <FaTrash onClick={() => handleDeleteClick(student.id)} className="delete-icon" />
+                            <BiSolidUserDetail onClick={() => handleStudentClick(student)} className="details-icon" />
+                            <LiaUserEditSolid onClick={() => handleEditClick(student)} className="edit-icon" />
+                            <AiOutlineUserDelete onClick={() => handleDeleteClick(student.id)} className="delete-icon" />
                         </div>
                     </li>
                 ))}

@@ -30,12 +30,13 @@
 }
 
 .add-student-form input {
-  width: 100%;
+  width: 95%;
 
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 25px;
-  background-color: var(--college-input-background);
+  background-color: var(--college-background-color);
+  border: 1px solid var(--college-content-color);
   color: var(--college-text);
   font-size: 1rem;
   transition: all 0.3s ease;
@@ -45,7 +46,7 @@
 
 .add-student-form input:focus {
   outline: none;
-  background-color: var(--college-input-hover);
+  background-color: var(--college-background-color);
   box-shadow: 0 0 10px var(--college-input-focus-shadow);
 }
 
