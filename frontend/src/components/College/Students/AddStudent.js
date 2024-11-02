@@ -61,43 +61,42 @@ const branchOptionsMap = {
         { value: 'CE', label: 'Civil Engineering' },
     ],
 };
-
 const customSelectStyles = {
     control: (base, state) => ({
         ...base,
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        backgroundColor: 'var(--college-background-color)', // Make the control background transparent
         borderRadius: '25px',
-        width: 'calc(100% + 1.5rem)',
-        bottom: '3px',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
+        
+        width: 'calc(100% + 1.35rem)',
+        padding:'0.1px',
         boxShadow: state.isFocused ? '0 0 5px #e94560' : 'none',
         transition: 'all 0.3s ease',
         color: '#e94560',
         '&:hover': {
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)', // Slight hover effect
         },
     }),
     singleValue: (base) => ({
         ...base,
-        color: '#e94560',
+        color: '#e94560', // Set single value text color
     }),
     placeholder: (base) => ({
         ...base,
-        color: 'rgba(233, 69, 96, 0.7)',
+        color: 'rgba(233, 69, 96, 0.7)', // Placeholder text color
     }),
     option: (base, state) => ({
         ...base,
-        backgroundColor: state.isSelected ? '#e94560' : 'transparent',
-        color: state.isSelected ? '#1a1a2e' : '#e94560',
+        backgroundColor: state.isSelected ? '#e94560' : 'transparent', // Selected option background
+        color: state.isSelected ? '#1a1a2e' : '#e94560', // Selected option text color
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: '#ff6b6b',
-            color: '#1a1a2e',
+            backgroundColor: '#ff6b6b', // Hover option background
+            color: '#1a1a2e', // Hover option text color
         },
     }),
     menu: (base) => ({
         ...base,
-        backgroundColor: '#16213e',
+        backgroundColor: 'var(--college-secondary-color)', // Dropdown menu background
         borderRadius: '15px',
         marginTop: '0.5rem',
         boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
@@ -106,7 +105,19 @@ const customSelectStyles = {
         ...base,
         padding: '0',
     }),
+    // Additional styles to hide unwanted elements
+    container: (base) => ({
+        ...base,
+        backgroundColor: 'transparent', // Make the container background transparent
+    }),
 };
+
+// You may also add this CSS to your stylesheet if necessary
+// .css-b62m3t-container, .css-1f43avz-a11yText-A11yText {
+//     background-color: transparent !important;
+//     display: none; // You can hide these elements if they are not needed
+// }
+
 
 const AddStudent = () => {
     const [name, setName] = useState('');

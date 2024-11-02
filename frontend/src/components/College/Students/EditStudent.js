@@ -3,8 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { updateStudent } from '../../../api';
 import Select from 'react-select';
 import { FaTimes } from 'react-icons/fa';
-
-
+import './EditStudent.css';
 const degreeOptions = [
     { value: 'BSc', label: 'Bachelor of Science (BSc)' },
     { value: 'BA', label: 'Bachelor of Arts (BA)' },
@@ -62,6 +61,62 @@ const branchOptionsMap = {
         { value: 'CE', label: 'Civil Engineering' },
     ],
 };
+const customSelectStyles = {
+    control: (base, state) => ({
+        ...base,
+        backgroundColor: 'var(--college-background-color)', // Make the control background transparent
+        borderRadius: '25px',
+        width: '100% ',
+        border: '2px solid var(--college-background-colors)',
+        boxShadow: state.isFocused ? '0 0 5px #e94560' : 'none',
+        transition: 'all 0.3s ease',
+        color: '#e94560',
+        '&:hover': {
+            backgroundColor: 'rgba(255, 255, 255, 0.1)', // Slight hover effect
+        },
+    }),
+    singleValue: (base) => ({
+        ...base,
+        color: '#e94560', // Set single value text color
+    }),
+    placeholder: (base) => ({
+        ...base,
+        color: 'rgba(233, 69, 96, 0.7)', // Placeholder text color
+    }),
+    option: (base, state) => ({
+        ...base,
+        backgroundColor: state.isSelected ? '#e94560' : 'transparent', // Selected option background
+        color: state.isSelected ? '#1a1a2e' : '#e94560', // Selected option text color
+        cursor: 'pointer',
+        '&:hover': {
+            backgroundColor: '#ff6b6b', // Hover option background
+            color: '#1a1a2e', // Hover option text color
+        },
+    }),
+    menu: (base) => ({
+        ...base,
+        backgroundColor: 'var(--college-secondary-color)', // Dropdown menu background
+        borderRadius: '15px',
+        marginTop: '0.5rem',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+    }),
+    menuList: (base) => ({
+        ...base,
+        padding: '0',
+    }),
+    // Additional styles to hide unwanted elements
+    container: (base) => ({
+        ...base,
+        backgroundColor: 'transparent', // Make the container background transparent
+    }),
+};
+
+// You may also add this CSS to your stylesheet if necessary
+// .css-b62m3t-container, .css-1f43avz-a11yText-A11yText {
+//     background-color: transparent !important;
+//     display: none; // You can hide these elements if they are not needed
+// }
+
 
 const EditStudent = () => {
     const location = useLocation();
@@ -119,7 +174,7 @@ const EditStudent = () => {
             </button>
             <h5>Edit Student</h5>
 
-            <div className="form-group">
+            <div className="edit-form-group">
                 <label htmlFor="name">Student Name</label>
                 <input
                     type="text"
@@ -131,7 +186,7 @@ const EditStudent = () => {
                 />
             </div>
 
-            <div className="form-group">
+            <div className="edit-form-group">
                 <label htmlFor="rollNumber">Roll Number</label>
                 <input
                     type="text"
@@ -143,7 +198,7 @@ const EditStudent = () => {
                 />
             </div>
 
-            <div className="form-group">
+            <div className="edit-form-group">
                 <label htmlFor="dob">Date of Birth</label>
                 <input
                     type="date"
@@ -154,7 +209,7 @@ const EditStudent = () => {
                 />
             </div>
 
-            <div className="form-group">
+            <div className="edit-form-group">
                 <label htmlFor="email">Email</label>
                 <input
                     type="email"
@@ -166,7 +221,7 @@ const EditStudent = () => {
                 />
             </div>
 
-            <div className="form-group">
+            <div className="edit-form-group">
                 <label htmlFor="phoneNumber">Phone Number</label>
                 <input
                     type="text"
@@ -178,7 +233,7 @@ const EditStudent = () => {
                 />
             </div>
 
-            <div className="form-group">
+            <div className="edit-form-group">
                 <label htmlFor="degree">Degree</label>
                 <Select
                     id="degree"
@@ -187,11 +242,12 @@ const EditStudent = () => {
                     onChange={handleDegreeChange}
                     isSearchable
                     placeholder="Select Degree"
+                    styles={customSelectStyles}
                     required
                 />
             </div>
 
-            <div className="form-group">
+            <div className="edit-form-group">
                 <label htmlFor="degreeYear">Degree Year</label>
                 <input
                     type="text"
@@ -203,7 +259,7 @@ const EditStudent = () => {
                 />
             </div>
 
-            <div className="form-group">
+            <div className="edit-form-group">
                 <label htmlFor="branch">Branch</label>
                 <Select
                     id="branch"
@@ -212,6 +268,7 @@ const EditStudent = () => {
                     onChange={(selectedOption) => setBranch(selectedOption)}
                     isSearchable
                     placeholder="Select Branch"
+                    styles={customSelectStyles}
                     required
                     isDisabled={!degree} // Disable if no degree is selected
                 />
