@@ -101,7 +101,18 @@ public class UserService {
             collegeUser.setPassword(newPassword);
             userRepository.save(collegeUser);
         } else {
-            throw new IllegalArgumentException("Student not found with ID: " + collegeId);
+            throw new IllegalArgumentException("College not found with ID: " + collegeId);
+        }
+    }
+    public void updateAdminPassword(int adminId, String newPassword) {
+        Optional<User> userOptional = userRepository.findByRoleSpecificIdAndRole(adminId, "admin");
+        
+        if (userOptional.isPresent()) {
+            User adminUser = userOptional.get();
+            adminUser.setPassword(newPassword);
+            userRepository.save(adminUser);
+        } else {
+            throw new IllegalArgumentException("Admin not found with ID: " + adminId);
         }
     }
     public void updateStudentProfilePhoto(int studentId, String photoPath) {
@@ -119,11 +130,22 @@ public class UserService {
         Optional<User> userOptional = userRepository.findByRoleSpecificIdAndRole(collegeId, "college");
     
         if (userOptional.isPresent()) {
-            User studentUser = userOptional.get();
-            studentUser.setProfilePhoto(photoPath);
-            userRepository.save(studentUser);
+            User collegeUser = userOptional.get();
+            collegeUser.setProfilePhoto(photoPath);
+            userRepository.save(collegeUser);
         } else {
-            throw new IllegalArgumentException("Student not found with ID: " + collegeId);
+            throw new IllegalArgumentException("College not found with ID: " + collegeId);
+        }
+    }
+    public void updateAdminProfilePhoto(int adminId, String photoPath) {
+        Optional<User> userOptional = userRepository.findByRoleSpecificIdAndRole(adminId, "admin");
+    
+        if (userOptional.isPresent()) {
+            User adminUser = userOptional.get();
+            adminUser.setProfilePhoto(photoPath);
+            userRepository.save(adminUser);
+        } else {
+            throw new IllegalArgumentException("Admin not found with ID: " + adminId);
         }
     }
     public String getStudentProfilePhotoPath(int studentId) {
@@ -141,7 +163,16 @@ public class UserService {
         if (userOptional.isPresent()) {
             return userOptional.get().getProfilePhoto(); // Returns stored path of profile photo
         } else {
-            throw new IllegalArgumentException("Student not found with ID: " + collegeId);
+            throw new IllegalArgumentException("College not found with ID: " + collegeId);
+        }
+    }
+    public String getAdminProfilePhotoPath(int adminId) {
+        Optional<User> userOptional = userRepository.findByRoleSpecificIdAndRole(adminId, "admin");
+    
+        if (userOptional.isPresent()) {
+            return userOptional.get().getProfilePhoto(); // Returns stored path of profile photo
+        } else {
+            throw new IllegalArgumentException("Admin not found with ID: " + adminId);
         }
     }
     

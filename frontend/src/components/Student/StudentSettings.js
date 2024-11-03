@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getTokenInfo } from '../../utils/tokenUtils';
-import { verifyStudentPassword, updateStudentPassword, updateStudentProfilePhoto } from '../../api';
+import { verifyUserPassword, updateStudentPassword, updateStudentProfilePhoto } from '../../api';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaArrowLeft } from 'react-icons/fa';
 import './StudentSettings.css';
@@ -21,7 +21,7 @@ const StudentSettings = () => {
         e.preventDefault();
         setIsLoading(true);
         try {
-            const response = await verifyStudentPassword({
+            const response = await verifyUserPassword({
                 username: tokenInfo.username,
                 password: currentPassword
             });

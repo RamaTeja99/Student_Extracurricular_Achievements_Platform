@@ -39,7 +39,7 @@
   position: absolute;
   top: 50px; /* Adjust if needed to align with icon */
   right: 0;
-  background-color: #fff;
+  background-color: var(--background-color);
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -55,37 +55,6 @@
 .profile-dropdown .dropdown-menu.open {
   opacity: 1; /* Fully visible */
   transform: translateY(0); /* Back to original position */
-}
-
-/* Admin styles */
-.admin .dropdown-menu {
-  background-color: #ffffff; /* Admin background */
-  color: #000000; /* Admin text color */
-}
-
-.admin .dropdown-item {
-  color: #060606; /* Admin item color */
-}
-
-/* College styles */
-.college .dropdown-menu {
-  background-color: #ffffff; /* College background */
-  color: #000000; /* College text color */
-}
-
-.college .dropdown-item {
-  color: #000000; /* College item color */
-}
-
-/* Student styles */
-.student .dropdown-menu {
-  background-color:#ffffff;
-  /* Student background */
-  color: #000000; /* Student text color */
-}
-
-.student .dropdown-item {
-  color: #000000; /* Student item color */
 }
 
 /* Common styles */
@@ -117,12 +86,9 @@
   padding: 10px 16px;
   text-decoration: none;
   display: block;
-  transition: background-color 0.2s; /* Smooth hover transition */
+  transition: var(--background-color) 0.2s; /* Smooth hover transition */
 }
 
-.dropdown-item:hover {
-  background-color: rgba(0, 0, 0, 0.1); /* Subtle hover effect */
-}
 
 .logout-button {
   padding: 10px 16px;

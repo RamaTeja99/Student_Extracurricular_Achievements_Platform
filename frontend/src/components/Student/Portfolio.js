@@ -18,7 +18,6 @@ const Portfolio = () => {
         try {
             const response = await getStudentAchievements();
             setAchievements(response.data);
-            console.log(response.data);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching achievements:', error);

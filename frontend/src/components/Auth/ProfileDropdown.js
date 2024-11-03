@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { getTokenInfo } from '../../utils/tokenUtils';
 import Logout from './Logout';
-import { getStudentProfilePhoto ,getCollegeProfilePhoto} from '../../api'; // Import your API function
+import { getStudentProfilePhoto ,getCollegeProfilePhoto,getAdminProfilePhoto} from '../../api'; // Import your API function
 import './ProfileDropdown.css';
 
 const ProfileDropdown = ({ dashboardType }) => {
@@ -27,6 +27,9 @@ const ProfileDropdown = ({ dashboardType }) => {
             } 
             else if (tokenInfo.role === 'college') {
              response = await getCollegeProfilePhoto(tokenInfo.roleSpecificId, { responseType: 'blob' });
+            }
+            else if(tokenInfo.role === 'admin'){
+                response = await getAdminProfilePhoto(tokenInfo.roleSpecificId, { responseType: 'blob' });            
             }
             const url = URL.createObjectURL(response.data); // Create a URL from the Blob
             setProfilePhotoUrl(url);

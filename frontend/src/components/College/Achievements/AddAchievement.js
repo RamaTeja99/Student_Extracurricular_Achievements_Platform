@@ -96,7 +96,6 @@ const AddAchievement = () => {
     const saveAchievementsFromCsv = async () => {
         for (const achievement of csvData) {
             try {
-                console.log(achievement.studentRollNumber);
                 await addAchievement(achievement.studentRollNumber, achievement);
             } catch (error) {
                 console.error('Failed to save achievement:', achievement, error);

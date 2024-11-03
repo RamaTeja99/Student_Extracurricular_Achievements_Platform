@@ -23,10 +23,11 @@ import StudentEdit from './components/Student/StudentEdit';
 import StudentSettings from './components/Student/StudentSettings';
 import CollegeEditProfile from './components/College/CollegeEditProfile';
 import CollegeSettings from './components/College/CollegeSettings';
+import AdminEditProfile from './components/Admin/AdminEditProfile';
+import AdminSettings from './components/Admin/AdminSettings';
 const ProtectedRoute = ({ children, allowedRole }) => {
     const location = useLocation();
     const tokenInfo = getTokenInfo();
-
     if (!tokenInfo) {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
@@ -68,6 +69,8 @@ const App = () => {
                     <Route path="achievements" element={<AchievementList />} />
                     <Route path="add-college" element={<AddCollege />} />
                     <Route path="edit-college" element={<EditCollege />} />
+                    <Route path="edit-profile" element={<AdminEditProfile />} />
+                    <Route path="settings" element={<AdminSettings />} />
                 </Route>
 
                 {/* College Routes */}

@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { getStudentAchievements } from '../../api';
 import './StudentAchievements.css';
 import CertificateGenerator from '../College/Achievements/CertificateGenerator';
-import { HiOutlineDocumentDownload } from 'react-icons/hi'; // Importing the icon
+import { HiOutlineDocumentDownload } from 'react-icons/hi';
 
 const StudentAchievements = () => {
     const [achievements, setAchievements] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedAchievement, setSelectedAchievement] = useState(null);
+    const [isGenerating, setIsGenerating] = useState(false);
 
     useEffect(() => {
         fetchAchievements();
@@ -16,7 +17,6 @@ const StudentAchievements = () => {
     const fetchAchievements = async () => {
         try {
             const response = await getStudentAchievements();
-            console.log(response.data);
             setAchievements(response.data);
             setLoading(false);
         } catch (error) {
@@ -26,7 +26,15 @@ const StudentAchievements = () => {
     };
 
     const handleGenerateCertificate = (achievement) => {
-        setSelectedAchievement(achievement);
+        if (!isGenerating) {
+            setIsGenerating(true);
+            setSelectedAchievement(achievement);
+        }
+    };
+
+    const handleGenerationComplete = () => {
+        setSelectedAchievement(null);
+        setIsGenerating(false);
     };
 
     return (
@@ -42,16 +50,27 @@ const StudentAchievements = () => {
                                 <h3>Activity: {achievement.activityName}</h3>
                                 <p>Date: {new Date(achievement.activityDate).toLocaleDateString()}</p>
                                 <p>Points: {achievement.activitypoints}</p>
-                                <p>Position: {achievement.firstPosition ? 'First' : achievement.secondPosition ? 'Second' : achievement.thirdPosition ? 'Third' : 'Participation'}</p>
+                                <p>Position: {achievement.firstPosition ? 'First' : 
+                                           achievement.secondPosition ? 'Second' : 
+                                           achievement.thirdPosition ? 'Third' : 'Participation'}</p>
                             </div>
-                            <button onClick={() => handleGenerateCertificate(achievement)} className="generate-certificate-button">
-                                <HiOutlineDocumentDownload  className='download-icon'/> 
+                            <button 
+                                onClick={() => handleGenerateCertificate(achievement)} 
+                                className="generate-certificate-button"
+                                disabled={isGenerating}
+                            >
+                                <HiOutlineDocumentDownload className='download-icon'/> 
                             </button>
                         </li>
                     ))}
                 </ul>
             )}
-            {selectedAchievement && <CertificateGenerator achievement={selectedAchievement} />} {/* Render the certificate generator */}
+            {selectedAchievement && (
+                <CertificateGenerator 
+                    achievement={selectedAchievement} 
+                    onComplete={handleGenerationComplete}
+                />
+            )}
         </div>
     );
 };

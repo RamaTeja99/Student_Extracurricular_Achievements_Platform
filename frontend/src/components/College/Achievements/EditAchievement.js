@@ -27,9 +27,8 @@ const EditAchievement = () => {
     const handleEditSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await updateAchievement(editAchievementData.id, editAchievementData);
-            console.log('Achievement updated:', response.data);
-            navigate(-1); // Navigate back to the previous page (list of achievements)
+            await updateAchievement(editAchievementData.id, editAchievementData);
+            navigate(-1); 
         } catch (error) {
             console.error('Error updating achievement:', error);
         }

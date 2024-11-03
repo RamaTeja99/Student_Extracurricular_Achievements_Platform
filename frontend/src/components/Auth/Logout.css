@@ -2,7 +2,7 @@
 .logout-link {
   background: none;
   text-decoration: none;
-  color: #000000;
+  color: var(--text);
   cursor: pointer;
   padding: 12px 24px;
   font-size: 16px;

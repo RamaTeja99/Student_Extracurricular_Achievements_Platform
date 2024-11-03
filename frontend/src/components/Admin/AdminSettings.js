@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getTokenInfo } from '../../utils/tokenUtils';
-import { verifyUserPassword, updateCollegeUserPassword } from '../../api';
+import { verifyUserPassword, updateAdminUserPassword } from '../../api';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaArrowLeft } from 'react-icons/fa';
-import './CollegeUserSettings.css';
 
-const CollegeSettings = () => {
+
+const AdminSettings = () => {
     const navigate = useNavigate();
     const tokenInfo = getTokenInfo();
     const [currentPassword, setCurrentPassword] = useState('');
@@ -42,7 +42,7 @@ const CollegeSettings = () => {
         e.preventDefault();
         setIsLoading(true);
         try {
-            const response = await updateCollegeUserPassword(tokenInfo.roleSpecificId, newPassword);
+            const response = await updateAdminUserPassword(tokenInfo.roleSpecificId, newPassword);
 
             if (response.data) {
                 setMessage('Password updated successfully.');
@@ -66,14 +66,14 @@ const CollegeSettings = () => {
         }, 2000);
     };
 
-    if (!tokenInfo || tokenInfo.role !== 'college') {
+    if (!tokenInfo || tokenInfo.role !== 'admin') {
         return <div className="container mt-4">Unauthorized access</div>;
     }
 
     return (
         <div className="settings-container">
             <div className="d-flex justify-content-between align-items-center mb-3">
-                <button onClick={() => navigate('/college/dashboard/students')}>
+                <button onClick={() => navigate('/admin/dashboard')}>
                     <FaArrowLeft />
                 </button>
             </div>
@@ -145,4 +145,4 @@ const CollegeSettings = () => {
     );
 };
 
-export default CollegeSettings;
+export default AdminSettings;

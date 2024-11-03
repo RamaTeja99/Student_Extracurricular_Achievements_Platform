@@ -34,7 +34,8 @@ public class UserController {
     
     private static final String STUDENT_IMAGE_DIRECTORY = System.getProperty("user.dir") + "/images/studentprofile/";
     private static final String COLLEGE_IMAGE_DIRECTORY = System.getProperty("user.dir") + "/images/collegeprofile/";
-
+    private static final String ADMIN_IMAGE_DIRECTORY = System.getProperty("user.dir")+"/images/adminprofile/";
+    
     // Authentication and Token Management
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User loginData) {
@@ -95,6 +96,7 @@ public class UserController {
     }
 
     // Password Management
+    
     @PutMapping("/update-student-password/{studentId}")
     public ResponseEntity<?> updateStudentPassword(@PathVariable int studentId, @RequestBody Map<String, String> body) {
         String newPassword = body.get("newPassword");
@@ -116,20 +118,35 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    @PutMapping("/update-admin-password/{adminId}")
+    public ResponseEntity<?> updateAdminPassword(@PathVariable int adminId, @RequestBody Map<String, String> body) {
+        String newPassword = body.get("newPassword");
+        try {
+            userService.updateAdminPassword(adminId, newPassword);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
 
     // Profile Photo Management
     @PostMapping("/update-student-profile-photo/{studentId}")
     public ResponseEntity<?> updateStudentProfilePhoto(@PathVariable int studentId, @RequestParam("photo") MultipartFile photo, @RequestParam("username") String username) {
-        return handleProfilePhotoUpload(studentId, username, photo, STUDENT_IMAGE_DIRECTORY, true);
+        return handleProfilePhotoUpload(studentId, username, photo, STUDENT_IMAGE_DIRECTORY, true,false,false);
     }
 
     @PostMapping("/update-college-profile-photo/{collegeId}")
     public ResponseEntity<?> updateCollegeProfilePhoto(@PathVariable int collegeId, @RequestParam("photo") MultipartFile photo, @RequestParam("username") String username) {
-        return handleProfilePhotoUpload(collegeId, username, photo, COLLEGE_IMAGE_DIRECTORY, false);
+        return handleProfilePhotoUpload(collegeId, username, photo, COLLEGE_IMAGE_DIRECTORY, false,true,false);
+    }
+    @PostMapping("/update-admin-profile-photo/{adminId}")
+    public ResponseEntity<?> updateAdminProfilePhoto(@PathVariable int adminId, @RequestParam("photo") MultipartFile photo, @RequestParam("username") String username) {
+        return handleProfilePhotoUpload(adminId, username, photo,ADMIN_IMAGE_DIRECTORY, false,false,true);
     }
 
-    private ResponseEntity<?> handleProfilePhotoUpload(int id, String username, MultipartFile photo, String directory, boolean isStudent) {
-        makeDirectoryIfNotExist(directory);
+    private ResponseEntity<?> handleProfilePhotoUpload(int id, String username, MultipartFile photo, String directory, boolean isStudent,boolean isCollege,boolean isAdmin) {
+    	makeDirectoryIfNotExist(directory);
 
         String fileName = username + ".jpg";
         Path filePath = Paths.get(directory, fileName);
@@ -143,8 +160,12 @@ public class UserController {
 
             if (isStudent) {
                 userService.updateStudentProfilePhoto(id, filePath.toString());
-            } else {
+            } 
+            if(isCollege){
                 userService.updateCollegeProfilePhoto(id, filePath.toString());
+            } 
+            if(isAdmin) {
+            	userService.updateAdminProfilePhoto(id, filePath.toString());
             }
 
             System.out.println("Uploaded Photo");
@@ -166,22 +187,38 @@ public class UserController {
     // Retrieve Profile Photo
     @GetMapping("/get-student-profile-photo/{studentId}")
     public ResponseEntity<?> getStudentProfilePhoto(@PathVariable int studentId) {
-        return getProfilePhoto(studentId, true);
+        return getProfilePhoto(studentId, true,false,false);
     }
 
     @GetMapping("/get-college-profile-photo/{collegeId}")
     public ResponseEntity<?> getCollegeProfilePhoto(@PathVariable int collegeId) {
-        return getProfilePhoto(collegeId, false);
+        return getProfilePhoto(collegeId, false,true,false);
+    }
+    @GetMapping("/get-admin-profile-photo/{adminId}")
+    public ResponseEntity<?> getAdminProfilePhoto(@PathVariable int adminId) {
+    	System.out.println("Admin Profile Photo");
+        return getProfilePhoto(adminId, false,false,true);
     }
 
-    private ResponseEntity<?> getProfilePhoto(int id, boolean isStudent) {
+    private ResponseEntity<?> getProfilePhoto(int id, boolean isStudent,boolean isCollege,boolean isAdmin) {
         try {
-            String photoPath = isStudent ? userService.getStudentProfilePhotoPath(id) : userService.getCollegeProfilePhotoPath(id);
+            String photoPath = "";
+            		if(isStudent) {
+            			photoPath=userService.getStudentProfilePhotoPath(id);
+            		}
+            		if(isCollege) {
+            		    photoPath=userService.getCollegeProfilePhotoPath(id);
+            		}
+            		if(isAdmin) {
+            			photoPath=userService.getAdminProfilePhotoPath(id);
+            		}
             File photoFile = new File(photoPath);
 
             if (!photoFile.exists()) {
+            	System.out.println("PhotoPathNull");
                 return ResponseEntity.notFound().build();
             }
+            
 
             byte[] photoBytes = Files.readAllBytes(photoFile.toPath());
             return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(photoBytes);

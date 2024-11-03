@@ -15,7 +15,7 @@ const CollegeList = () => {
             try {
                 const response = await getColleges();
                 setColleges(response.data);
-                console.log('Fetched colleges:', response.data);
+                
             } catch (error) {
                 console.error('Failed to fetch colleges:', error);
             }
@@ -34,7 +34,6 @@ const CollegeList = () => {
                 deleteCollegeUser(collegeId);
                 await deleteCollege(collegeId);
                 setColleges(colleges.filter((college) => college.id !== collegeId));
-                console.log(`College with ID ${collegeId} deleted.`);
             } catch (error) {
                 console.error(`Failed to delete college with ID ${collegeId}:`, error);
             }

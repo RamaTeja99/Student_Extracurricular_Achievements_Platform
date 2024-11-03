@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAllAchievements } from '../../../api';
-import CertificateGenerator from '../../College/Achievements/CertificateGenerator'; // Adjust import as necessary
+import CertificateGenerator from '../../College/Achievements/CertificateGenerator';
 import { FaDownload } from 'react-icons/fa';
 import './AchievementList.css';
 
@@ -8,6 +8,7 @@ const AchievementList = () => {
     const [achievements, setAchievements] = useState([]);
     const [expandedStudents, setExpandedStudents] = useState({});
     const [selectedAchievement, setSelectedAchievement] = useState(null);
+    const [isGenerating, setIsGenerating] = useState(false);
 
     useEffect(() => {
         const fetchAchievements = async () => {
@@ -34,7 +35,9 @@ const AchievementList = () => {
     }, {});
 
     const recentAchievements = Object.values(groupedAchievements).map(({ student, achievements }) => {
-        const mostRecent = achievements.sort((a, b) => new Date(b.activityDate) - new Date(a.activityDate))[0];
+        const mostRecent = achievements.sort((a, b) => 
+            new Date(b.activityDate) - new Date(a.activityDate)
+        )[0];
         return { student, achievement: mostRecent };
     });
 
@@ -45,11 +48,18 @@ const AchievementList = () => {
         }));
     };
 
-    const handleDownload = (achievement) => {
-        setSelectedAchievement(achievement);
+    const handleDownload = (achievement, e) => {
+        e.stopPropagation(); // Prevent row expansion when clicking download
+        if (!isGenerating) {
+            setIsGenerating(true);
+            setSelectedAchievement(achievement);
+        }
     };
 
-    
+    const handleGenerationComplete = () => {
+        setSelectedAchievement(null);
+        setIsGenerating(false);
+    };
 
     return (
         <div className="admin-achievement-list">
@@ -73,16 +83,27 @@ const AchievementList = () => {
                                 <td>{student.college.name}</td>
                                 <td>{achievement.activityName}</td>
                                 <td>{achievement.activityDescription}</td>
-                                <td>{achievement.activityDate}</td>
                                 <td>
-                                <FaDownload 
-                                        className="download-icon" 
-                                        onClick={(e) => { e.stopPropagation(); handleDownload(achievement); }} 
-                                    />
-                            </td>
-
+                                    {new Date(achievement.activityDate).toLocaleDateString('en-GB', {
+                                        day: 'numeric',
+                                        month: 'long',
+                                        year: 'numeric'
+                                    })}
+                                </td>
+                                <td>
+                                    <button 
+                                        className="download-button"
+                                        onClick={(e) => handleDownload(achievement, e)}
+                                        disabled={isGenerating}
+                                    >
+                                        <FaDownload 
+                                            className="download-icon"
+                                            title="Download Certificate"
+                                        />
+                                    </button>
+                                </td>
                             </tr>
-                            {expandedStudents[student.id] && achievement && (
+                            {expandedStudents[student.id] && (
                                 <tr>
                                     <td colSpan="6" className="admin-expanded-row">
                                         <table className="admin-subtable">
@@ -91,27 +112,45 @@ const AchievementList = () => {
                                                     <th>Activity</th>
                                                     <th>Description</th>
                                                     <th>Date</th>
+                                                    <th>Position</th>
                                                     <th>Certificate</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {groupedAchievements[student.id].achievements.map((ach) => (
-                                                    <tr key={ach.id}>
-                                                        <td>{ach.activityName}</td>
-                                                        <td>{ach.activityDescription}</td>
-                                                        <td>{ach.activityDate}</td>
-                                                        <td>
-                                                        <FaDownload 
-                                        className="download-icon" 
-                                        onClick={(e) => { e.stopPropagation(); handleDownload(achievement); }} 
-                                    />
-                                                    </td>
-
-                                                    </tr>
-                                                ))}
+                                                {groupedAchievements[student.id].achievements
+                                                    .sort((a, b) => new Date(b.activityDate) - new Date(a.activityDate))
+                                                    .map((ach) => (
+                                                        <tr key={ach.id}>
+                                                            <td>{ach.activityName}</td>
+                                                            <td>{ach.activityDescription}</td>
+                                                            <td>
+                                                                {new Date(ach.activityDate).toLocaleDateString('en-GB', {
+                                                                    day: 'numeric',
+                                                                    month: 'long',
+                                                                    year: 'numeric'
+                                                                })}
+                                                            </td>
+                                                            <td>
+                                                                {ach.firstPosition ? 'First Position' :
+                                                                 ach.secondPosition ? 'Second Position' :
+                                                                 ach.thirdPosition ? 'Third Position' : 'Participation'}
+                                                            </td>
+                                                            <td>
+                                                                <button 
+                                                                    className="download-button"
+                                                                    onClick={(e) => handleDownload(ach, e)}
+                                                                    disabled={isGenerating}
+                                                                >
+                                                                    <FaDownload 
+                                                                        className="download-icon"
+                                                                        title="Download Certificate"
+                                                                    />
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
                                             </tbody>
                                         </table>
-                                       
                                     </td>
                                 </tr>
                             )}
@@ -119,8 +158,12 @@ const AchievementList = () => {
                     ))}
                 </tbody>
             </table>
+
             {selectedAchievement && (
-                <CertificateGenerator achievement={selectedAchievement} />
+                <CertificateGenerator 
+                    achievement={selectedAchievement}
+                    onComplete={handleGenerationComplete}
+                />
             )}
         </div>
     );

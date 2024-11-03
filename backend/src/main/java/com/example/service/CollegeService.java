@@ -12,6 +12,9 @@ import java.util.List;
 public class CollegeService {
     @Autowired
     private CollegeRepository collegeRepository;
+    public long count() {
+        return collegeRepository.count();
+    }
 
     public List<College> findAll() {
         return collegeRepository.findAll();

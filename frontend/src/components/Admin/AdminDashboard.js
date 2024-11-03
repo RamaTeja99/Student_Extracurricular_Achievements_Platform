@@ -5,6 +5,7 @@ import { getTokenInfo } from '../../utils/tokenUtils';
 import ProfileDropdown from '../Auth/ProfileDropdown';
 import ThemeToggle from '../ThemeToggle';
 import IdleTimer from '../Auth/IdleTimer';
+import { fetchCollegeCount, fetchStudentCount, fetchAchievementCount } from '../../api'; // Import the new functions
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -18,23 +19,29 @@ const AdminDashboard = () => {
     const isDarkMode = useSelector((state) => state.theme.isDarkMode);
 
     useEffect(() => {
-        // Simulating API call to get dashboard stats
         const fetchStats = async () => {
-            const response = await new Promise((resolve) =>
-                setTimeout(() => resolve({
-                    colleges: 15,
-                    students: 1200,
-                    achievements: 350,
-                }), 1000)
-            );
-            setStats(response);
+            try {
+                const [collegeCount, studentCount, achievementCount] = await Promise.all([
+                    fetchCollegeCount(),
+                    fetchStudentCount(),
+                    fetchAchievementCount(),
+                ]);
+
+                setStats({
+                    colleges: collegeCount.data,
+                    students: studentCount.data,
+                    achievements: achievementCount.data,
+                });
+            } catch (error) {
+                console.error("Failed to fetch stats:", error);
+            }
         };
 
         fetchStats();
 
         const tokenInfo = getTokenInfo();
         if (!tokenInfo || tokenInfo.exp * 1000 <= Date.now()) {
-            navigate('/login'); // Redirect to login if token is invalid
+            navigate('/login');
         }
     }, [navigate]);
 

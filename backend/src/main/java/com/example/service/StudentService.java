@@ -16,6 +16,10 @@ public class StudentService {
     private StudentRepository studentRepository;
     @Autowired
     private CollegeRepository collegeRepository;
+    
+    public long count() {
+        return studentRepository.count();
+    }
 
     public List<Student> findAll() {
         return studentRepository.findAll();

@@ -159,7 +159,6 @@ export const getStudentAchievements = async () => {
         studentId = tokenInfo.roleSpecificId;
         
     }
-    console.log(studentId);
     return await axios.get(`${API_URL}/students/${studentId}/achievements`);
 };
 export const getStudentProfile = async () => {
@@ -178,11 +177,9 @@ export const updateStudentProfile = async (studentId, studentData) => {
 
 // Add these new endpoints to your existing api.js file
 
-export const verifyStudentPassword = async (credentials) => {
-    return await axios.post(`${API_URL}/auth/verify-password`, credentials);
-};
 
-export const verifyCollegeUserPassword = async (credentials) => {
+
+export const verifyUserPassword = async (credentials) => {
     return await axios.post(`${API_URL}/auth/verify-password`, credentials);
 };
 export const updateStudentPassword = async (studentId, newPassword) => {
@@ -191,6 +188,10 @@ export const updateStudentPassword = async (studentId, newPassword) => {
     };
 export const updateCollegeUserPassword = async (collegeId, newPassword) => {
     return await axios.put(`${API_URL}/auth/update-college-password/${collegeId}`, 
+    { newPassword }); // wrap in an object
+};
+export const updateAdminUserPassword = async (adminId, newPassword) => {
+    return await axios.put(`${API_URL}/auth/update-admin-password/${adminId}`, 
     { newPassword }); // wrap in an object
 };
 
@@ -209,6 +210,13 @@ export const updateCollegeUserProfilePhoto = async (collegeId, formData) => {
         }
     });
 };
+export const updateAdminUserProfilePhoto = async (adminId, formData) => {
+    return await axios.post(`${API_URL}/auth/update-admin-profile-photo/${adminId}`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+};
 export const getStudentProfilePhoto = async (studentId) => {
     return await axios.get(`${API_URL}/auth/get-student-profile-photo/${studentId}`, {
         responseType: 'blob', // Ensure the response is in blob format
@@ -220,7 +228,27 @@ export const getCollegeProfilePhoto = async (collegeId) => {
         responseType: 'blob', // Ensure the response is in blob format
     });
 };
+export const getAdminProfilePhoto = async (adminId) => {
+    return await axios.get(`${API_URL}/auth/get-admin-profile-photo/${adminId}`, {
+        responseType: 'blob', // Ensure the response is in blob format
+    });
+};
 
+
+// Fetch total number of colleges
+export const fetchCollegeCount = async () => {
+    return await axios.get(`${API_URL}/admin/colleges/count`);
+};
+
+// Fetch total number of students
+export const fetchStudentCount = async () => {
+    return await axios.get(`${API_URL}/admin/students/count`);
+};
+
+// Fetch total number of achievements
+export const fetchAchievementCount = async () => {
+    return await axios.get(`${API_URL}/admin/achievements/count`);
+};
 
 
 

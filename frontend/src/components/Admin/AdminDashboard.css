@@ -5,11 +5,12 @@
   --dark-primary: #021526;      
   --dark-secondary: #03346E;    
   --dark-background: #021526;    
-  --dark-text: #E2E2B6;         
+  --dark-text: #ffff00;         
   --dark-surface: #6EACDA;      
   --dark-sky-blue: #6EACDA;    
   --dark-content: #6EACDA;
   --dark-text-whiite:#fff;
+  --dark-navbar-shadow:  rgba(255, 255, 255, 0.1);
 
   /* Light theme colors */
   --light-primary: #F2E5BF;      
@@ -20,6 +21,7 @@
   --light-sky-blue: #FD8B51;     
   --light-content: #f7e8bb;  
   --light-text-black: #000;
+  --light-navbar-shadow:  rgba(0, 0, 0, 0.1);
 }
 
 body {
@@ -40,6 +42,7 @@ body {
   --sky-blue: var(--dark-sky-blue);
   --content-color: var(--dark-content);
   --text:var(--dark-text-whiite);
+  --navbar-shadow: var(--dark-navbar-shadow);
 }
 
 .light {
@@ -51,6 +54,7 @@ body {
   --sky-blue: var(--light-sky-blue);
   --content-color: var(--light-content);
   --text:var(--light-text-black);
+  --navbar-shadow: var(--light-navbar-shadow);
 }
 
 .admin-dashboard {
@@ -73,7 +77,7 @@ body {
   padding: 10px 20px;
   background: var(--background-color);
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px var(--navbar-shadow);
   transition: background 0.3s ease;
   position: relative;
 }

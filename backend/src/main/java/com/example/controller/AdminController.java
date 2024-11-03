@@ -25,6 +25,25 @@ public class AdminController {
     private AchievementService achievementService;
 	@Autowired
 	private UserService userService;
+	
+	// Get total college count
+	@GetMapping("/colleges/count")
+	public long getCollegeCount() {
+	    return collegeService.count();
+	}
+
+	// Get total student count
+	@GetMapping("/students/count")
+	public long getStudentCount() {
+	    return studentService.count();
+	}
+
+	// Get total achievement count
+	@GetMapping("/achievements/count")
+	public long getAchievementCount() {
+	    return achievementService.count();
+	}
+
 
     // Add College
     @PostMapping("/colleges")
@@ -109,6 +128,7 @@ public class AdminController {
     	}
     	userService.deleteCollegeUserByCollegeId(id.intValue());
     }
+    
    
 
 }

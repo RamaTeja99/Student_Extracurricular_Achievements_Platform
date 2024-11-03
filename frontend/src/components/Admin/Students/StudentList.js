@@ -12,7 +12,6 @@ const StudentList = () => {
         const fetchStudents = async () => {
             try {
                 const response = await getStudents();
-                console.log('Fetched students:', response.data);
                 setStudents(response.data);
             } catch (error) {
                 console.error('Failed to fetch students:', error);

@@ -15,7 +15,9 @@ public class AchievementService {
     @Autowired
     private AchievementRepository achievementRepository;
     
-
+    public long count() {
+        return achievementRepository.count();
+    }
     public List<Achievement> findAll() {
         return achievementRepository.findAll();
     }

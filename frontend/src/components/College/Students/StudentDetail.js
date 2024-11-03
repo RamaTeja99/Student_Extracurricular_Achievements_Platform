@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getAchievementsByStudent, deleteAchievement } from '../../../api';
 import './StudentDetail.css';
-import { FaTimes, FaTrash, FaDownload } from 'react-icons/fa'; 
+import { FaTimes, FaTrash, FaDownload } from 'react-icons/fa';
 import { FiEdit3 } from "react-icons/fi";
-
 import CertificateGenerator from '../Achievements/CertificateGenerator';
 
 const StudentDetail = () => {
@@ -14,6 +13,7 @@ const StudentDetail = () => {
     const [achievements, setAchievements] = useState([]);
     const [showAchievements, setShowAchievements] = useState(false);
     const [selectedAchievement, setSelectedAchievement] = useState(null);
+    const [isGenerating, setIsGenerating] = useState(false);
 
     useEffect(() => {
         const fetchAchievements = async () => {
@@ -47,7 +47,15 @@ const StudentDetail = () => {
     };
 
     const handleGenerateCertificate = (achievement) => {
-        setSelectedAchievement(achievement);
+        if (!isGenerating) {
+            setIsGenerating(true);
+            setSelectedAchievement(achievement);
+        }
+    };
+
+    const handleGenerationComplete = () => {
+        setSelectedAchievement(null);
+        setIsGenerating(false);
     };
 
     return (
@@ -85,7 +93,11 @@ const StudentDetail = () => {
                             {achievements.map((achievement) => (
                                 <tr key={achievement.id} className="achievement-row">
                                     <td>{achievement.activityName}</td>
-                                    <td>{new Date(achievement.activityDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</td>
+                                    <td>{new Date(achievement.activityDate).toLocaleDateString('en-GB', { 
+                                        day: 'numeric', 
+                                        month: 'long', 
+                                        year: 'numeric' 
+                                    })}</td>
                                     <td>{achievement.activitypoints}</td>
                                     <td>
                                         {achievement.firstPosition ? 'First Position' :
@@ -93,13 +105,23 @@ const StudentDetail = () => {
                                          achievement.thirdPosition ? 'Third Position' : 'Participation'}
                                     </td>
                                     <td>
-                                        <button onClick={() => handleEditClick(achievement)} className="icon-button">
-                                        <FiEdit3 />
+                                        <button 
+                                            onClick={() => handleEditClick(achievement)} 
+                                            className="icon-button"
+                                        >
+                                            <FiEdit3 />
                                         </button>
-                                        <button onClick={() => handleDeleteClick(achievement.id)} className="delete-icon-button">
+                                        <button 
+                                            onClick={() => handleDeleteClick(achievement.id)} 
+                                            className="delete-icon-button"
+                                        >
                                             <FaTrash title="Delete" />
                                         </button>
-                                        <button onClick={() => handleGenerateCertificate(achievement)} className="download-icon-button">
+                                        <button 
+                                            onClick={() => handleGenerateCertificate(achievement)} 
+                                            className="download-icon-button"
+                                            disabled={isGenerating}
+                                        >
                                             <FaDownload title="Download Certificate" />
                                         </button>
                                     </td>
@@ -110,7 +132,12 @@ const StudentDetail = () => {
                 </div>
             )}
 
-            {selectedAchievement && <CertificateGenerator achievement={selectedAchievement} />}
+            {selectedAchievement && (
+                <CertificateGenerator 
+                    achievement={selectedAchievement}
+                    onComplete={handleGenerationComplete}
+                />
+            )}
         </div>
     );
 };
