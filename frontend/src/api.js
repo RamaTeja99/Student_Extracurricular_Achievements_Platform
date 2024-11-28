@@ -3,9 +3,7 @@ import { getTokenInfo } from './utils/tokenUtils';
 
 
 
-const API_URL = 'http://localhost:8080/api'; // Adjust according to your backend URL
-
-// Add axios interceptor
+const API_URL = 'http://localhost:8080/api'; 
 axios.interceptors.request.use(
     config => {
         const token = localStorage.getItem('token');
@@ -18,8 +16,6 @@ axios.interceptors.request.use(
         return Promise.reject(error);
     }
 );
-
-// Add axios response interceptor to handle token expiration
 axios.interceptors.response.use(
     response => response,
     error => {
@@ -33,7 +29,6 @@ axios.interceptors.response.use(
     }
 );
 
-// Authentication API
 export const login = async (username, password) => {
     try {
         const response = await axios.post(`${API_URL}/auth/login`, { username, password });
@@ -53,8 +48,16 @@ export const logout = async () => {
         throw error;
     }
 };
+export const sendMail = async (to, subject, text) => {
+    try {
+        const response = await axios.post(`${API_URL}/mail/send`, { to, subject, text });
+        return response;
+    } catch (error) {
+        console.error('API error during logout:', error);
+        throw error;
+    }
+};
 
-// Admin APIs
 export const getColleges = async () => {
     return await axios.get(`${API_URL}/admin/colleges`);
 };
@@ -78,8 +81,6 @@ export const addCollegeUser = async (user) => {
 export const updateCollege = async (collegeId, college) => {
     return await axios.put(`${API_URL}/admin/colleges/${collegeId}`, college);
 };
-
-// Update college credentials by collegeId
 export const updateCollegeCredentials = async (collegeId, newUsername, newPassword) => {
     return await axios.put(`${API_URL}/admin/update-college-credentials/${collegeId}`, null, {
         params: {
@@ -104,8 +105,6 @@ export const getAllAchievements = async () => {
 export const getStudents = async () => {
     return await axios.get(`${API_URL}/admin/students`);
 };
-
-// College APIs
 export const getStudentsByCollege = async () => {
     const tokenInfo = getTokenInfo();
     let collegeId = null;
@@ -141,17 +140,14 @@ export const deleteStudent = async (id) => {
 export const deleteStudentUser = async (id) => {
     return await axios.delete(`${API_URL}/colleges/studentsuser/${id}`);
 }
-// Update an achievement by ID
 export const updateAchievement = async (achievementId, updatedAchievement) => {
     return await axios.put(`${API_URL}/colleges/achievements/update/${achievementId}`, updatedAchievement);
 };
 
-// Delete an achievement by ID
 export const deleteAchievement = async (achievementId) => {
     return await axios.delete(`${API_URL}/colleges/achievements/delete/${achievementId}`);
 };
 
-// Student APIs
 export const getStudentAchievements = async () => {
     const tokenInfo = getTokenInfo();
     let studentId = null;
@@ -170,12 +166,9 @@ export const getStudentProfile = async () => {
     return await axios.get(`${API_URL}/students/${studentId}`);
 };
 
-// Student APIs
 export const updateStudentProfile = async (studentId, studentData) => {
     return await axios.put(`${API_URL}/students/${studentId}`, studentData);
 };
-
-// Add these new endpoints to your existing api.js file
 
 
 
@@ -184,15 +177,15 @@ export const verifyUserPassword = async (credentials) => {
 };
 export const updateStudentPassword = async (studentId, newPassword) => {
     return await axios.put(`${API_URL}/auth/update-student-password/${studentId}`, 
-        { newPassword }); // wrap in an object
+        { newPassword }); 
     };
 export const updateCollegeUserPassword = async (collegeId, newPassword) => {
     return await axios.put(`${API_URL}/auth/update-college-password/${collegeId}`, 
-    { newPassword }); // wrap in an object
+    { newPassword }); 
 };
 export const updateAdminUserPassword = async (adminId, newPassword) => {
     return await axios.put(`${API_URL}/auth/update-admin-password/${adminId}`, 
-    { newPassword }); // wrap in an object
+    { newPassword }); 
 };
 
 export const updateStudentProfilePhoto = async (studentId, formData) => {
@@ -235,22 +228,14 @@ export const getAdminProfilePhoto = async (adminId) => {
 };
 
 
-// Fetch total number of colleges
 export const fetchCollegeCount = async () => {
     return await axios.get(`${API_URL}/admin/colleges/count`);
 };
 
-// Fetch total number of students
 export const fetchStudentCount = async () => {
     return await axios.get(`${API_URL}/admin/students/count`);
 };
 
-// Fetch total number of achievements
 export const fetchAchievementCount = async () => {
     return await axios.get(`${API_URL}/admin/achievements/count`);
 };
-
-
-
-
-

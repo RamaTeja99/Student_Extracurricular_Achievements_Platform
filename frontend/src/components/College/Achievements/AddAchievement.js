@@ -63,6 +63,18 @@ const AddAchievement = () => {
             setTimeout(() => setMessage(null), 3000);
         }
     };
+    const reformatDate = (dateStr) => {
+        if(!dateStr){
+            return null;
+        }
+        console.log(dateStr);
+        const trimmedDateStr = dateStr.trim(); 
+        const dateParts = trimmedDateStr.split('-');
+        const [day, month, year] = dateParts;
+        console.log(day, month, year);
+        return `${year}-${month}-${day}`; 
+
+    };
 
     const handleCsvUpload = (e) => {
         const file = e.target.files[0];
@@ -75,13 +87,17 @@ const AddAchievement = () => {
         Papa.parse(file, {
             header: true,
             complete: (results) => {
+                console.log(results.data, results.achievement);
                 const parsedData = results.data.map((achievement) => ({
                     ...achievement,
-                    firstPosition: achievement.position === 'First Position',
-                    secondPosition: achievement.position === 'Second Position',
-                    thirdPosition: achievement.position === 'Third Position',
-                    participation: achievement.position === 'Participation',
+                    activityDate: reformatDate(achievement.activityDate),
+                    firstPosition: achievement.firstPosition === 'TRUE',
+                    secondPosition: achievement.secondPosition === 'TRUE',
+                    thirdPosition: achievement.thirdPosition === 'TRUE',
+                    participation: achievement.participation === 'TRUE',
                 }));
+                console.log(parsedData);
+
                 setCsvData(parsedData);
                 setMessage({ type: 'success', text: 'CSV file parsed successfully. Ready to save achievements.' });
                 setTimeout(() => setMessage(null), 3000);
@@ -96,6 +112,7 @@ const AddAchievement = () => {
     const saveAchievementsFromCsv = async () => {
         for (const achievement of csvData) {
             try {
+                console.log(achievement.data);
                 await addAchievement(achievement.studentRollNumber, achievement);
             } catch (error) {
                 console.error('Failed to save achievement:', achievement, error);

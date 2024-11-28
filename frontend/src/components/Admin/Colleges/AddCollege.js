@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { addCollege, addCollegeUser } from '../../../api';
+import { addCollege, addCollegeUser,sendMail } from '../../../api';
 import './AddCollege.css';
 
 const AddCollege = () => {
@@ -29,10 +29,28 @@ const AddCollege = () => {
         try {
             const college = { name, location, email };
             const response = await addCollege(college);
+            if (!response?.data) {
+                throw new Error('Failed to create college');
+            }
             const savedCollege = response.data;
             const user = { username, password, role: 'college', roleSpecificId: savedCollege.id };
-            await addCollegeUser(user);
-
+            const userResponse = await addCollegeUser(user);
+            if (!userResponse?.data) {
+                throw new Error('Failed to create college user');
+            }
+            try {
+                const emailBody = `Your username is ${userResponse.data.username} and password is ${userResponse.data.password}. Please do not share your credentials with anyone. Thanks for using SEA.`;
+                await sendMail(
+                    savedCollege.email,
+                    'College Credentials from SEA',
+                    emailBody
+                );
+                setMessage({ type: 'success', text: 'College added successfully and credentials sent!' });
+            } catch (emailError) {
+                // If email fails, still consider the operation successful
+                console.error('Email sending failed:', emailError);
+                setMessage({ type: 'success', text: 'College added successfully! (Email delivery failed)' });
+            }
             setMessage({ type: 'success', text: 'College added successfully!' });
             setName('');
             setLocation('');

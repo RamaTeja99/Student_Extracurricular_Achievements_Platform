@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
-import { addStudent, addStudentUser } from '../../../api';
+import { addStudent, addStudentUser, sendMail } from '../../../api';
 import './AddStudent.css';
 import Papa from 'papaparse';
 
@@ -154,7 +154,6 @@ const AddStudent = () => {
             };
             const response = await addStudent(student);
             const savedStudent = response.data;
-
             const nameParts = name.trim().split(' ');
             let passwordBase = '';
     
@@ -181,8 +180,15 @@ const AddStudent = () => {
                 roleSpecificId: savedStudent.id,
             };
 
-            await addStudentUser(user);
+            const userResponse = await addStudentUser(user);
             setMessage({ type: 'success', text: 'Student added successfully!' });
+            try {
+                const emailBody = `Hello ${response.data.name},\n\nWelcome to our platform!\nYour credentials are:\n  Username: ${userResponse.data.username}\n  Password: ${userResponse.data.password}\n\nThank you.`;
+                await sendMail(response.data.email, 'Your Student Credentials', emailBody);
+                setMessage({ type: 'success', text: 'Student added successfully and email sent!' });
+            } catch {
+                setMessage({ type: 'success', text: 'Student added successfully! (Email delivery failed)' });
+            }
 
             // Reset form fields
             setName('');
@@ -238,7 +244,15 @@ const AddStudent = () => {
                     roleSpecificId: savedStudent.id,
                 };
 
-                await addStudentUser(user);
+                const userResponse = await addStudentUser(user);
+                try {
+                    const emailBody = `Hello ${response.data.name},\n\nWelcome to our platform! \nYour credentials are: \n  Username: ${userResponse.data.username}\n  Password: ${userResponse.data.password}\n\nThank you.`;
+                    await sendMail(response.data.email, 'Your Student Credentials', emailBody);
+                    setMessage({ type: 'success', text: 'Student added successfully and email sent!' });
+                } catch {
+                    setMessage({ type: 'success', text: 'Student added successfully! (Email delivery failed)' });
+                }
+    
             } catch (error) {
                 console.error('Failed to save student:', studentData, error);
             }
