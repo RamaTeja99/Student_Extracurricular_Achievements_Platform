@@ -2,22 +2,22 @@
 
 :root {
   /* Dark theme colors */
-  --dark-primary: #021526;      
-  --dark-secondary: #03346E;    
-  --dark-background: #021526;    
-  --dark-text: #ffff00;         
-  --dark-surface: #6EACDA;      
-  --dark-sky-blue: #6EACDA;    
-  --dark-content: #6EACDA;
-  --dark-text-whiite:#fff;
-  --dark-navbar-shadow:  rgba(255, 255, 255, 0.1);
+  --dark-primary: #9CF6F6;   
+  --dark-secondary: #E3B505;  
+  --dark-background: #001021;  
+  --dark-text: #F7F4F3;
+  --dark-surface: #2a394c;     
+  --dark-sky-blue: #1C7BFF;    
+  --dark-content: #F7F4F3;
+  --dark-text-white:#F7F4F3;
+  --dark-navbar-shadow:  #656262;
 
   /* Light theme colors */
   --light-primary: #F2E5BF;      
   --light-secondary: #257180;    
   --light-background: #FAFAF6;    
   --light-text: #222831;         
-  --light-surface: rgba(255, 255, 255, 0.9); 
+  --light-surface: #e2e2e2; 
   --light-sky-blue: #FD8B51;     
   --light-content: #f7e8bb;  
   --light-text-black: #000;
@@ -150,14 +150,14 @@ body {
 }
 
 .admin-nav a:hover {
-  background-color: var(--primary-color);
+  background-color: var(--secondary-color);
   transform: translateY(-3px) scale(1.05);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .admin-content {
   flex-grow: 1;
-  background-color: var(--content-color);
+  background-color: var(--surface-color);
   border-radius: 10px;
   padding: 20px;
   backdrop-filter: blur(10px);
@@ -179,7 +179,7 @@ body {
 }
 
 .stat-card {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background: linear-gradient(45deg, var(--primary-color), var(--background-color));
   border-radius: 10px;
   padding: 20px;
   text-align: center;

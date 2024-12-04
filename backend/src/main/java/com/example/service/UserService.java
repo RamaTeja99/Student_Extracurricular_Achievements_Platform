@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.entity.User;
+
 import com.example.repository.UserRepository;
 
 import java.util.Optional;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-
+     
+   
+    
     public User findByUsernameandPassword(String username,String password) {
         return userRepository.findByUsernameAndPassword(username,password);
     }
@@ -29,6 +32,7 @@ public class UserService {
         if (password.length() < 8 || !password.matches("(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&]).*")) {
             throw new IllegalArgumentException("Password must be at least 8 characters long and include letters, numbers, and symbols.");
         }
+      
         
         return userRepository.save(user);
     }

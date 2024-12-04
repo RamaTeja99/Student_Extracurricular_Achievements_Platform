@@ -1,100 +1,116 @@
 import { useEffect, useCallback } from 'react';
 import jsPDF from 'jspdf';
 import './CertificateGenerator.css';
+import certificateImage from './image.png'; 
 
 const CertificateGenerator = ({ achievement, onComplete }) => {
     const generateCertificate = useCallback(() => {
         try {
-            
             const doc = new jsPDF({
                 orientation: 'landscape',
                 unit: 'mm',
-                format: 'a4'
+                format: 'a4',
             });
 
-            // Set background color
-            doc.setFillColor(255, 255, 255);
-            doc.rect(0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height, 'F');
+            const pageWidth = doc.internal.pageSize.width;
+            const pageHeight = doc.internal.pageSize.height;
 
-            // Add border
-            doc.setDrawColor(0, 0, 238);
-            doc.setLineWidth(2);
-            doc.rect(10, 10, doc.internal.pageSize.width - 20, doc.internal.pageSize.height - 20);
+            // Outer Decorative Border
+            doc.setDrawColor(210, 210, 210); // Light gray
+            doc.setLineWidth(0.5);
+            doc.rect(1, 1, pageWidth-3, pageHeight-3);
 
-            // Add inner border
-            doc.setDrawColor(255, 0, 0);
+            // Inner Decorative Border
+            doc.setDrawColor(230, 120, 0); // Orange-like for inner border
+            doc.setLineWidth(0.7);
+            doc.rect(3, 3, pageWidth-7, pageHeight-7);
+
+            // Add square corners
+            doc.setDrawColor(210, 210, 210); // Light gray
             doc.setLineWidth(1);
-            doc.rect(15, 15, doc.internal.pageSize.width - 30, doc.internal.pageSize.height - 30);
+            doc.rect(1, 1, 1, 1); // Top left corner
+            doc.rect(pageWidth-3, 1, 1, 1); // Top right corner
+            doc.rect(1, pageHeight-3, 1, 1); // Bottom left corner
+            doc.rect(pageWidth-3, pageHeight - 3, 1, 1); // Bottom right corner
 
-            // Add college logo placeholder
-            doc.setDrawColor(0);
-            doc.circle(40, 40, 15);
+            // Fill main content area
+            doc.addImage(certificateImage, 'PNG', 5, 5, pageWidth - 11, pageHeight - 11, '', 'FAST');
 
-            // Add college name
-            doc.setFontSize(40);
-            doc.setTextColor(0);
-            doc.setFont("helvetica", "bold");
-            doc.text(achievement.student.college.name, doc.internal.pageSize.width / 2, 40, { align: "center" });
+            // Title
+            doc.setFontSize(26);
+            doc.setFont('roman','bold');
+            doc.text('CERTIFICATE OF ACHIEVEMENT', (pageWidth / 2), 65, { align: 'center' });
+            doc.setFontSize(15);
+            doc.setFont('normal','normal');
+            doc.text('Proudly presents to:', (pageWidth / 2), 77, { align: 'center' });
 
-            // Add "Certificate" text
-            doc.setFontSize(30);
-            doc.setFont("times", "bold");
-            doc.text("Certificate", doc.internal.pageSize.width / 2, 70, { align: "center" });
+            // Student Name
+            doc.setFontSize(50);
+            doc.setFont('normal','bold');
+            doc.text(achievement.student.name, pageWidth / 2, 105, { align: 'center' });
 
-            // Add "of" text
-            doc.setFontSize(30);
-            doc.text("of", doc.internal.pageSize.width / 2, 85, { align: "center" });
-
-            // Add achievement type based on positions
-            let certificateType = "Participation";
-            if (achievement.firstPosition) certificateType = "Excellence (First Position)";
-            else if (achievement.secondPosition) certificateType = "Excellence (Second Position)";
-            else if (achievement.thirdPosition) certificateType = "Excellence (Third Position)";
-
-            doc.text(certificateType, doc.internal.pageSize.width / 2, 100, { align: "center" });
-
-            // Add student name
-            doc.setFontSize(24);
-            doc.setFont("helvetica", "bolditalic");
-            doc.text(achievement.student.name, doc.internal.pageSize.width / 2, 130, { align: "center" });
-
-            // Add achievement details
-            doc.setFontSize(16);
-            doc.setFont("helvetica", "normal");
-            const detailsText = `For successfully participating in ${achievement.activityName}`;
-            doc.text(detailsText, doc.internal.pageSize.width / 2, 150, { align: "center" });
-
-            // Add category and date
-            doc.setFontSize(12);
-            doc.text(`Category: ${achievement.activityCategory}`, doc.internal.pageSize.width / 2, 170, { align: "center" });
-            doc.text(`Date: ${achievement.activityDate}`, doc.internal.pageSize.width / 2, 180, { align: "center" });
-
-            // Add additional text
-            doc.setFontSize(14);
-            doc.setFont("helvetica", "italic");
-            doc.text("We acknowledge your dedication and outstanding achievement!", doc.internal.pageSize.width / 2, 190, { align: "center" });
-
-            // Save the PDF
-            const fileName = `${achievement.activityName.replace(/\s+/g, '_')}_Certificate.pdf`;
             
+            
+             // Achievement Type
+             let certificateType = 'Participation';
+             if (achievement.firstPosition) certificateType = 'First Position';
+             else if (achievement.secondPosition) certificateType = 'Second Position';
+             else if (achievement.thirdPosition) certificateType = 'Third Position';
+             // Achievement Details
+             doc.setFontSize(12);
+             doc.setFont('normal','normal');
+             doc.text(
+                `This certificate is awarded for the successful completion of ${achievement.activityName} Activity on ${new Date(achievement.activityDate).toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                })}.`,
+                pageWidth / 2,
+                125,
+                { align: 'center' }
+            );
+            doc.text(
+                `The accomplishment demonstrated in this activity was ${achievement.activityDescription}`,
+                pageWidth / 2,
+                135,
+                { align: 'center' }
+            );
+            doc.text(
+                `This certificate, awarded for ${certificateType} recognition, acknowledges the continuous dedication to excellence.`,
+                pageWidth / 2,
+                130,
+                { align: 'center' }
+            );
+            doc.text(
+                `It also acknowledges their significant contributions to ${achievement.activityCategory} Activities at ${achievement.student.college.name}.`,
+                pageWidth / 2,
+                140,
+                { align: 'center' }
+            );
+            
+            
+            
+            
+
+            // Save PDF
+            const fileName = `${achievement.student.name}_${achievement.activityName.replace(/\s+/g, '_')}_Certificate.pdf`;
             doc.save(fileName);
-            
-            // Call onComplete callback after successful generation
+
             if (onComplete) {
-                setTimeout(onComplete, 100); // Small delay to ensure PDF is saved
+                setTimeout(onComplete, 100);
             }
         } catch (error) {
             console.error('Error generating certificate:', error);
             if (onComplete) {
-                onComplete(); // Still call onComplete to reset UI state
+                onComplete();
             }
         }
-    }, [achievement, onComplete]);
+    }, [achievement,  onComplete]);
+
 
     useEffect(() => {
         if (achievement) {
-            // Small delay to ensure component is mounted
-            const timeoutId = setTimeout(generateCertificate, 100);
+            const timeoutId = setTimeout(generateCertificate, 100); // Delay the generation to ensure the logo is loaded
             return () => clearTimeout(timeoutId);
         }
     }, [achievement, generateCertificate]);

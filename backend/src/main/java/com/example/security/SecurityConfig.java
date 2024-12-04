@@ -33,6 +33,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/login").permitAll()
                 .requestMatchers("/api/auth/validate-token").permitAll()
+                .requestMatchers("/api/mail/send").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/colleges/**").hasAnyRole("ADMIN", "COLLEGE")
                 .requestMatchers("/api/students/**").hasAnyRole("ADMIN", "COLLEGE", "STUDENT")

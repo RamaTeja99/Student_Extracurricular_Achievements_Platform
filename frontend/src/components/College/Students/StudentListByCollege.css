@@ -17,7 +17,7 @@ body {
 }
 
 .student-list-container h3 {
-  font-size: 24px;
+  font-size: 36px;
   margin-bottom: 15px;
   color: var(--college-text-color);
 }
@@ -33,20 +33,21 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: var(--college-primary-color);
+  background-color: var(--college-background-color);
   margin-bottom: 8px;
   border-radius: 8px;
   transition: background-color 0.3s ease;
 }
 
 .student-item:hover {
-  background-color: var(--surface-colors);
+  background: linear-gradient(135deg, var(--surface-color), var(--college-secondary-color));
 }
 
 .student-roll {
   color: var(--college-text-color);
   cursor: pointer;
   font-weight: 600;
+  font-size: 1.2rem;
   transition: color 0.3s ease;
 }
 
@@ -56,7 +57,7 @@ body {
 
 .icon-container {
   display: flex;
-  gap: 10px;
+  gap: 40px;
 }
 
 .details-icon,
@@ -65,7 +66,7 @@ body {
   color: var(--college-text-color);
   cursor: pointer;
   transition: color 0.3s ease, transform 0.3s ease;
-  font-size: 24px; /* Increase the icon size */
+  font-size: 32px; /* Increase the icon size */
 }
 
 .details-icon:hover {

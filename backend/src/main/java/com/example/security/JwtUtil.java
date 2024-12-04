@@ -9,11 +9,10 @@ import javax.crypto.SecretKey;
 @Component
 public class JwtUtil {
     private final SecretKey secretKey;
-    private final long ONE_DAY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    private final long ONE_DAY = 24 * 60 * 60 * 1000; 
 
     public JwtUtil() {
-        // In production, this should be stored securely and not in code
-        String secretString = "your_very_long_and_secure_secret_key_that_is_at_least_256_bits";
+        String secretString = "62fc888bc30adf3ac6934eb5598f8241ee32a12922da6d06b392716c0b0e7859";
         this.secretKey = Keys.hmacShaKeyFor(secretString.getBytes());
     }
 

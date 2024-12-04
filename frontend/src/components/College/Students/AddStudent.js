@@ -97,7 +97,7 @@ const customSelectStyles = {
     }),
     menu: (base) => ({
         ...base,
-        backgroundColor: 'var(--college-secondary-color)', // Dropdown menu background
+        backgroundColor: 'var(--college-primary-color)', // Dropdown menu background
         borderRadius: '15px',
         marginTop: '0.5rem',
         boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',

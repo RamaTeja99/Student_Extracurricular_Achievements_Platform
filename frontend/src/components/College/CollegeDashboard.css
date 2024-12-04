@@ -2,14 +2,14 @@
 
 :root {
   /* Dark theme colors */
-  --college-dark-primary: #F9A828;
-  --college-dark-secondary: #ECECEB;
-  --college-dark-background: #181C14;
-  --college-dark-text: #E2E2B6;        
-  --college-dark-surface: #6EACDA;       
+  --college-dark-primary: #9CF6F6;
+  --college-dark-secondary: #E3B505;
+  --college-dark-background: #1F1300;
+  --college-dark-text: #F7F4F3;       
+  --college-dark-surface: #5D737E;       
   --college-dark-sky-blue: #07617D;    
   --college-dark-text-white: #fff;
-  --college-dark-content: #6EACDA;
+  --college-dark-content: #5D737E;
   --college-dark-backgrounds: #8ca1aa;
 
   /* Light theme colors */
@@ -81,7 +81,7 @@ body {
   transition: background 0.3s ease;
 }
 .college-header:hover {
-  background: var(--surface-colors);
+  background: var(--surface-color);
 }
 
 .college-header h2 {
@@ -118,7 +118,7 @@ body {
 }
 
 .college-nav a:hover {
-  background-color: var(--college-primary-color);
+  background:linear-gradient(135deg, var(--college-primary-color), var(--college-surface-color));
   transform: translateY(-3px) scale(1.05);
 }
 

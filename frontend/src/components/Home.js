@@ -69,7 +69,7 @@ const Home = () => {
             </div>
             <div className="feature">
               <i className="fas fa-users"></i>
-              <h3>Connect with Peers</h3>
+              <h3>Download Certificates</h3>
             </div>
           </div>
         </section>
@@ -94,7 +94,7 @@ const Home = () => {
       </main>
 
       <footer className="home-footer">
-        <p>&copy; 2023 Student Extracurricular Achievements. All rights reserved.</p>
+        <p>&copy; 2024 Student Extracurricular Achievements. All rights reserved.</p>
       </footer>
     </div>
   );

@@ -1,5 +1,6 @@
 .collegelist-container {
   background-color: var(--background-color);
+  border-radius: 10px;
   min-height: 100vh;
   padding: 2rem;
   font-family: 'Roboto', sans-serif;
@@ -25,9 +26,11 @@
   align-items: center;
   padding: 1rem;
   margin-bottom: 1rem;
-  background-color: var(--surface-colors);
   border-radius: 8px;
   transition: background-color 0.3s;
+}
+.collegelist-item:hover {
+  background: linear-gradient(90deg, var(--background-color), var(--secondary-color));
 }
 
 
@@ -42,7 +45,7 @@
     font-size: 2.5rem;
     margin-bottom: 20px;
     text-align: center;
-    background: linear-gradient(45deg, var(--sky-blue), var(--secondary-color));
+    background: linear-gradient(45deg, var(--text-color), var(--secondary-color));
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
