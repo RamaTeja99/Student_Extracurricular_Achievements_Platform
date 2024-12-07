@@ -25,6 +25,7 @@ import CollegeEditProfile from './components/College/CollegeEditProfile';
 import CollegeSettings from './components/College/CollegeSettings';
 import AdminEditProfile from './components/Admin/AdminEditProfile';
 import AdminSettings from './components/Admin/AdminSettings';
+import SubscriptionPage from "./components/College/SubscriptionPage";
 const ProtectedRoute = ({ children, allowedRole }) => {
     const location = useLocation();
     const tokenInfo = getTokenInfo();
@@ -87,6 +88,11 @@ const App = () => {
                     <Route path="student-detail" element={<StudentDetail />} />
                     <Route path="edit-profile" element={<CollegeEditProfile />} />
                     <Route path="settings" element={<CollegeSettings />} />
+                    <Route path="subscribe" element={
+                        <ProtectedRoute allowedRole="college">
+                            <SubscriptionPage />
+                        </ProtectedRoute>
+                    } />
                 </Route>
 
                 {/* Student Routes */}

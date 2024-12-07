@@ -1,11 +1,33 @@
 import { useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import './CertificateGenerator.css';
-import certificateImage from './image.png'; 
+import certificateImage from './image1.png';
+import { getTokenInfo } from '../../../utils/tokenUtils'; // Utility to fetch token info
 
 const CertificateGenerator = ({ achievement, onComplete }) => {
+    const navigate = useNavigate();
+    const tokenInfo = getTokenInfo(); // Get token info
+
     const generateCertificate = useCallback(() => {
         try {
+            // Check if the college is premium or not
+            if (tokenInfo.role === 'college') {
+                const collegeIsPremium = achievement.student.college.premium; // Check if the college is premium
+                console.log(achievement);
+                if (!collegeIsPremium) {
+                    // If the college is not premium, redirect to subscription page
+                    navigate('/college/dashboard/subscribe');
+                    return;
+                }
+            }
+
+            if (tokenInfo.role === 'student') {
+                // If the user is a student, show an alert
+                alert('Please contact your college for generating the certificate.');
+                return;
+            }
+
             const doc = new jsPDF({
                 orientation: 'landscape',
                 unit: 'mm',
@@ -15,51 +37,30 @@ const CertificateGenerator = ({ achievement, onComplete }) => {
             const pageWidth = doc.internal.pageSize.width;
             const pageHeight = doc.internal.pageSize.height;
 
-            // Outer Decorative Border
-            doc.setDrawColor(210, 210, 210); // Light gray
-            doc.setLineWidth(0.5);
-            doc.rect(1, 1, pageWidth-3, pageHeight-3);
-
-            // Inner Decorative Border
-            doc.setDrawColor(230, 120, 0); // Orange-like for inner border
-            doc.setLineWidth(0.7);
-            doc.rect(3, 3, pageWidth-7, pageHeight-7);
-
-            // Add square corners
-            doc.setDrawColor(210, 210, 210); // Light gray
-            doc.setLineWidth(1);
-            doc.rect(1, 1, 1, 1); // Top left corner
-            doc.rect(pageWidth-3, 1, 1, 1); // Top right corner
-            doc.rect(1, pageHeight-3, 1, 1); // Bottom left corner
-            doc.rect(pageWidth-3, pageHeight - 3, 1, 1); // Bottom right corner
-
-            // Fill main content area
+            // Fill main content area with certificate background image
             doc.addImage(certificateImage, 'PNG', 5, 5, pageWidth - 11, pageHeight - 11, '', 'FAST');
 
-            // Title
-            doc.setFontSize(26);
-            doc.setFont('roman','bold');
-            doc.text('CERTIFICATE OF ACHIEVEMENT', (pageWidth / 2), 65, { align: 'center' });
-            doc.setFontSize(15);
-            doc.setFont('normal','normal');
-            doc.text('Proudly presents to:', (pageWidth / 2), 77, { align: 'center' });
+            // Title (optional, if required)
+            // doc.setFontSize(26);
+            // doc.setFont('roman', 'bold');
+            // doc.text('CERTIFICATE OF ACHIEVEMENT', (pageWidth / 2), 65, { align: 'center' });
 
             // Student Name
             doc.setFontSize(50);
-            doc.setFont('normal','bold');
-            doc.text(achievement.student.name, pageWidth / 2, 105, { align: 'center' });
+            doc.setTextColor(128, 128, 128);
+            doc.setFont('times', 'bold');
+            doc.text(achievement.student.name, pageWidth / 2, 115, { align: 'center' });
 
-            
-            
-             // Achievement Type
-             let certificateType = 'Participation';
-             if (achievement.firstPosition) certificateType = 'First Position';
-             else if (achievement.secondPosition) certificateType = 'Second Position';
-             else if (achievement.thirdPosition) certificateType = 'Third Position';
-             // Achievement Details
-             doc.setFontSize(12);
-             doc.setFont('normal','normal');
-             doc.text(
+            // Achievement Type (Participation, First Position, etc.)
+            let certificateType = 'Participation';
+            if (achievement.firstPosition) certificateType = 'First Position';
+            else if (achievement.secondPosition) certificateType = 'Second Position';
+            else if (achievement.thirdPosition) certificateType = 'Third Position';
+
+            // Achievement Details
+            doc.setFontSize(12);
+            doc.setFont('normal', 'normal');
+            doc.text(
                 `This certificate is awarded for the successful completion of ${achievement.activityName} Activity on ${new Date(achievement.activityDate).toLocaleDateString('en-GB', {
                     day: 'numeric',
                     month: 'long',
@@ -70,7 +71,7 @@ const CertificateGenerator = ({ achievement, onComplete }) => {
                 { align: 'center' }
             );
             doc.text(
-                `The accomplishment demonstrated in this activity was ${achievement.activityDescription}`,
+                `The accomplishment demonstrated in this activity was ${achievement.activityDescription}.`,
                 pageWidth / 2,
                 135,
                 { align: 'center' }
@@ -87,10 +88,6 @@ const CertificateGenerator = ({ achievement, onComplete }) => {
                 140,
                 { align: 'center' }
             );
-            
-            
-            
-            
 
             // Save PDF
             const fileName = `${achievement.student.name}_${achievement.activityName.replace(/\s+/g, '_')}_Certificate.pdf`;
@@ -105,8 +102,7 @@ const CertificateGenerator = ({ achievement, onComplete }) => {
                 onComplete();
             }
         }
-    }, [achievement,  onComplete]);
-
+    }, [achievement, tokenInfo, onComplete, navigate]);
 
     useEffect(() => {
         if (achievement) {

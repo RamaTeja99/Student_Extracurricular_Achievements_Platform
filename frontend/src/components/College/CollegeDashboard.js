@@ -8,10 +8,9 @@ import './CollegeDashboard.css';
 
 const CollegeDashboard = () => {
     const location = useLocation();
-    
     const isDarkMode = useSelector((state) => state.theme.isDarkMode);
 
-   
+    
 
     return (
         <div className={`college-dashboard ${isDarkMode ? 'dark' : 'light'}`}>

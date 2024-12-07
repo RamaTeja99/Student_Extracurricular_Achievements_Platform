@@ -49,6 +49,7 @@ const StudentAchievements = () => {
                             <div className="achievement-content">
                                 <h3>Activity: {achievement.activityName}</h3>
                                 <p>Date: {new Date(achievement.activityDate).toLocaleDateString()}</p>
+                                <p>Category: {achievement.activityCategory}</p>
                                 <p>Points: {achievement.activitypoints}</p>
                                 <p>Position: {achievement.firstPosition ? 'First' : 
                                            achievement.secondPosition ? 'Second' : 

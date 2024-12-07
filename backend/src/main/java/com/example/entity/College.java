@@ -15,6 +15,17 @@ public class College {
     private String location;
     @Column(unique = true)
     private String email;
+    private boolean isPremium = false;
+
+    // Getters and Setters
+    public boolean isPremium() {
+        return isPremium;
+    }
+
+    public void setPremium(boolean premium) {
+        isPremium = premium;
+    }
+
 	public Long getId() {
 		return id;
 	}
