@@ -9,17 +9,17 @@ import com.example.service.MailService;
 @RequestMapping("/api/mail")
 public class MailController {
 
-    @Autowired
-    private MailService mailService;
+   @Autowired
+   private MailService mailService;
 
-    @PostMapping("/send")
-    public String sendMail(@RequestBody MailRequest mailRequest) {
-        try {
-            mailService.sendEmail(mailRequest.getTo(), mailRequest.getSubject(), mailRequest.getText());
-            return "Mail sent successfully!";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error while sending mail: " + e.getMessage();
-        }
-    }
+   @PostMapping("/send")
+   public String sendMail(@RequestBody MailRequest mailRequest) {
+       try {
+           mailService.sendEmail(mailRequest.getTo(), mailRequest.getSubject(), mailRequest.getText());
+           return "Mail sent successfully!";
+       } catch (Exception e) {
+           e.printStackTrace();
+           return "Error while sending mail: " + e.getMessage();
+       }
+   }
 }
