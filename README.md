@@ -42,6 +42,8 @@ This platform bridges the gap between academics and co-curricular development by
 - Providing admins/faculty with tools for verification.
 - Generating digital portfolios for students.
 
+  Production Link - https://seap.netlify.app/
+
 ---
 
 ## ✨ Features
